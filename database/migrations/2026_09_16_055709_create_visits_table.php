@@ -13,6 +13,17 @@ return new class extends Migration
     {
         Schema::create('visits', function (Blueprint $table) {
             $table->id();
+            $table->string('visit_id')->unique();
+            $table->foreignId('patient_id')->constrained()->cascadeOnDelete();
+            $table->foreignId('doctor_id')->constrained()->cascadeOnDelete();
+            $table->foreignId('appointment_id')->nullable()->constrained()->nullOnDelete();
+            $table->date('visit_date');
+            $table->string('symptoms')->nullable();
+            $table->string('blood_pressure')->nullable();
+            $table->string('weight')->nullable();
+            $table->string('temperature')->nullable();
+            $table->text('notes')->nullable();
+            $table->string('status')->default('Completed');
             $table->timestamps();
         });
     }

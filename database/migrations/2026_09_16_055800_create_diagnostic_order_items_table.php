@@ -13,6 +13,10 @@ return new class extends Migration
     {
         Schema::create('diagnostic_order_items', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('diagnostic_order_id')->constrained()->cascadeOnDelete();
+            $table->foreignId('test_id')->constrained()->cascadeOnDelete();
+            $table->decimal('price', 10, 2)->default(0);
+            $table->string('status')->default('Pending'); // Pending, Sample Collected, In Progress, Completed
             $table->timestamps();
         });
     }

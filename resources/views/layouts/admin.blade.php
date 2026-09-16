@@ -29,7 +29,9 @@
         <a href="{{ route('patients.index') }}" class="{{ request()->routeIs('patients.*') ? 'active' : '' }}"><i class="fa-solid fa-users me-2"></i> Patient Management</a>
         <a href="{{ route('doctors.index') }}" class="{{ request()->routeIs('doctors.*') ? 'active' : '' }}"><i class="fa-solid fa-user-doctor me-2"></i> Doctor Management</a>
         <a href="{{ route('appointments.index') }}" class="{{ request()->routeIs('appointments.*') ? 'active' : '' }}"><i class="fa-solid fa-calendar-check me-2"></i> Appointments</a>
-        <a href="{{ route('tests.index') }}" class="{{ request()->routeIs('tests.*') ? 'active' : '' }}"><i class="fa-solid fa-vial-circle-check me-2"></i> Diagnostic Tests</a>
+        <a href="{{ route('consultations.index') }}" class="{{ request()->routeIs('consultations.*') ? 'active' : '' }}"><i class="fa-solid fa-stethoscope me-2"></i> OPD Consultations</a>
+        <a href="{{ route('tests.index') }}" class="{{ request()->routeIs('tests.*') ? 'active' : '' }}"><i class="fa-solid fa-microscope me-2"></i> Master Tests</a>
+        <a href="{{ route('diagnostic-orders.index') }}" class="{{ request()->routeIs('diagnostic-orders.*') ? 'active' : '' }}"><i class="fa-solid fa-vial-circle-check me-2"></i> Lab Orders</a>
         <a href="{{ route('invoices.index') }}" class="{{ request()->routeIs('invoices.*') ? 'active' : '' }}"><i class="fa-solid fa-file-invoice-dollar me-2"></i> Billing</a>
         <a href="#"><i class="fa-solid fa-gear me-2"></i> Settings</a>
         

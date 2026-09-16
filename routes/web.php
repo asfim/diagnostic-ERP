@@ -17,6 +17,8 @@ Route::middleware('auth')->group(function () {
     Route::resource('appointments', \App\Http\Controllers\AppointmentController::class);
     Route::resource('tests', \App\Http\Controllers\TestController::class);
     Route::resource('invoices', \App\Http\Controllers\InvoiceController::class);
+    Route::resource('diagnostic-orders', \App\Http\Controllers\DiagnosticOrderController::class);
+    Route::resource('consultations', \App\Http\Controllers\ConsultationController::class);
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');

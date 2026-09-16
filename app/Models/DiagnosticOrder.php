@@ -6,5 +6,16 @@ use Illuminate\Database\Eloquent\Model;
 
 class DiagnosticOrder extends Model
 {
-    //
+    use HasFactory;
+
+    protected $fillable = [
+        'order_id', 'patient_id', 'doctor_id', 'order_date', 
+        'total_amount', 'discount', 'paid_amount', 'due_amount', 
+        'payment_status', 'order_status'
+    ];
+
+    public function patient()
+    {
+        return $this->belongsTo(Patient::class);
+    }
 }
