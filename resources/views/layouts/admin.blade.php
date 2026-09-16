@@ -1,118 +1,431 @@
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>{{ config('app.name', 'Clinic ERP') }} - @yield('title')</title>
-
-    <!-- Bootstrap 5.3 CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-    <!-- FontAwesome -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
-    <!-- Custom CSS -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@yield('title', 'Dashboard') - {{ config('app.name', 'Diagnostic ERP') }}</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
     <style>
-        body { font-family: 'Inter', sans-serif; background-color: #f8f9fa; }
-        .sidebar { min-height: 100vh; background: #2c3e50; color: white; padding-top: 1rem; width: 250px; position: fixed; }
-        .sidebar a { color: #ecf0f1; text-decoration: none; padding: 10px 20px; display: block; transition: 0.3s; }
-        .sidebar a:hover { background: #34495e; padding-left: 25px; }
-        .sidebar .active { background: #3498db; }
-        .main-content { margin-left: 250px; padding: 20px; }
-        .navbar-custom { background: white; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
+        :root {
+            --primary: #4e73df;
+            --primary-dark: #2e59d9;
+            --secondary: #858796;
+            --success: #1cc88a;
+            --info: #36b9cc;
+            --warning: #f6c23e;
+            --danger: #e74a3b;
+            --dark: #1a2035;
+            --light: #f8f9fc;
+            --sidebar-bg: #1e293b;
+            --sidebar-hover: #334155;
+            --sidebar-text: #e2e8f0;
+            --card-shadow: 0 0.15rem 1.75rem 0 rgba(58, 59, 69, 0.15);
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f1f5f9;
+            color: #334155;
+            overflow-x: hidden;
+        }
+
+        /* Sidebar Styling */
+        .sidebar {
+            width: 260px;
+            height: 100vh;
+            position: fixed;
+            top: 0;
+            left: 0;
+            background: var(--sidebar-bg);
+            color: var(--sidebar-text);
+            padding-top: 20px;
+            z-index: 1000;
+            box-shadow: 4px 0 10px rgba(0,0,0,0.1);
+            transition: all 0.3s;
+            overflow-y: auto;
+        }
+        
+        .sidebar::-webkit-scrollbar {
+            width: 5px;
+        }
+        .sidebar::-webkit-scrollbar-track {
+            background: var(--sidebar-bg);
+        }
+        .sidebar::-webkit-scrollbar-thumb {
+            background: var(--sidebar-hover);
+            border-radius: 10px;
+        }
+
+        .sidebar .brand {
+            padding: 15px 20px 25px;
+            text-align: center;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+            margin-bottom: 15px;
+        }
+
+        .sidebar .brand h4 {
+            font-weight: 700;
+            color: #fff;
+            letter-spacing: 1px;
+            margin: 0;
+        }
+
+        .sidebar a {
+            padding: 12px 25px;
+            display: flex;
+            align-items: center;
+            color: var(--sidebar-text);
+            text-decoration: none;
+            transition: all 0.3s ease;
+            font-weight: 500;
+            font-size: 0.95rem;
+            margin: 2px 15px;
+            border-radius: 8px;
+        }
+        
+        .sidebar a i {
+            width: 24px;
+            font-size: 1.1rem;
+            opacity: 0.8;
+            margin-right: 10px;
+        }
+
+        .sidebar a:hover {
+            background: var(--sidebar-hover);
+            color: #fff;
+            transform: translateX(3px);
+        }
+
+        .sidebar a.active {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: #fff;
+            box-shadow: 0 4px 10px rgba(78, 115, 223, 0.4);
+        }
+        .sidebar a.active i {
+            opacity: 1;
+        }
+
+        /* Sidebar Dropdown */
+        .sidebar .collapse {
+            background: rgba(0,0,0,0.15);
+            margin: 0 15px;
+            border-radius: 8px;
+        }
+        .sidebar .collapse a {
+            padding: 10px 15px 10px 45px;
+            margin: 2px 0;
+            font-size: 0.85rem;
+            font-weight: 400;
+            border-radius: 0;
+        }
+        .sidebar .collapse a:hover {
+            background: rgba(255,255,255,0.05);
+            transform: none;
+        }
+        .sidebar .collapse a.text-info {
+            color: var(--info) !important;
+            font-weight: 600;
+            background: rgba(255,255,255,0.05);
+        }
+        
+        .dropdown-toggle::after {
+            margin-left: auto;
+        }
+
+        /* Main Content */
+        .main-content {
+            margin-left: 260px;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            transition: all 0.3s;
+        }
+
+        /* Top Navbar */
+        .top-navbar {
+            background: #fff;
+            padding: 15px 30px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.03);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 999;
+        }
+
+        .top-navbar .page-title {
+            margin: 0;
+            font-weight: 600;
+            color: var(--dark);
+            font-size: 1.25rem;
+        }
+
+        .top-navbar .user-profile {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .top-navbar .user-profile img {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid var(--primary);
+            padding: 2px;
+        }
+
+        .content-body {
+            padding: 30px;
+            flex-grow: 1;
+        }
+
+        /* Global UI Overrides */
+        .card {
+            border: none;
+            border-radius: 12px;
+            box-shadow: var(--card-shadow);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            margin-bottom: 25px;
+        }
+        
+        .card-header {
+            background-color: #fff;
+            border-bottom: 1px solid #e3e6f0;
+            padding: 1.25rem 1.5rem;
+            border-radius: 12px 12px 0 0 !important;
+            font-weight: 600;
+            color: var(--primary);
+        }
+
+        .btn {
+            border-radius: 8px;
+            font-weight: 500;
+            padding: 0.5rem 1.25rem;
+            transition: all 0.2s;
+        }
+        
+        .btn-sm {
+            padding: 0.35rem 0.75rem;
+            border-radius: 6px;
+        }
+
+        .btn-primary {
+            background-color: var(--primary);
+            border-color: var(--primary);
+            box-shadow: 0 3px 8px rgba(78, 115, 223, 0.3);
+        }
+
+        .btn-primary:hover {
+            background-color: var(--primary-dark);
+            border-color: var(--primary-dark);
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(78, 115, 223, 0.4);
+        }
+
+        /* Table Styling */
+        .table {
+            color: #475569;
+        }
+        .table > :not(caption) > * > * {
+            padding: 1rem 1.25rem;
+            border-bottom-color: #e2e8f0;
+        }
+        .table-dark {
+            background-color: var(--primary);
+            color: #fff;
+            border-bottom: 2px solid var(--primary-dark);
+        }
+        .table-dark th {
+            font-weight: 600;
+            text-transform: uppercase;
+            font-size: 0.8rem;
+            letter-spacing: 0.5px;
+            color: #ffffff;
+        }
+        .table-hover tbody tr:hover {
+            background-color: #f1f5f9;
+        }
+        .table-bordered {
+            border: 1px solid #e2e8f0;
+        }
+        
+        /* Badges */
+        .badge {
+            padding: 0.4em 0.8em;
+            border-radius: 6px;
+            font-weight: 500;
+        }
+        
+        /* Form Inputs */
+        .form-control, .form-select {
+            border-radius: 8px;
+            border: 1px solid #cbd5e1;
+            padding: 0.6rem 1rem;
+            font-size: 0.95rem;
+        }
+        .form-control:focus, .form-select:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 0.25rem rgba(78, 115, 223, 0.15);
+        }
+        .form-label {
+            font-weight: 500;
+            color: #475569;
+            margin-bottom: 0.4rem;
+        }
     </style>
 </head>
 <body>
 
     <!-- Sidebar -->
     <div class="sidebar">
-        <h4 class="text-center mb-4"><i class="fa-solid fa-hospital"></i> {{ config('app.name') }}</h4>
-        <a href="{{ route('dashboard') }}" class="{{ request()->routeIs('dashboard') ? 'active' : '' }}"><i class="fa-solid fa-chart-pie me-2"></i> Dashboard</a>
+        <div class="brand">
+            <h4><i class="fa-solid fa-hospital text-info me-2"></i> {{ config('app.name') }}</h4>
+        </div>
         
+        <div class="px-3 mb-2 text-uppercase text-secondary small fw-bold" style="font-size: 0.7rem; letter-spacing: 1px;">Core</div>
+
+        <a href="{{ route('dashboard') }}" class="{{ request()->routeIs('dashboard') ? 'active' : '' }}">
+            <i class="fa-solid fa-chart-pie"></i> Dashboard
+        </a>
+        
+        <div class="px-3 mt-4 mb-2 text-uppercase text-secondary small fw-bold" style="font-size: 0.7rem; letter-spacing: 1px;">Modules</div>
+
         @can('view patients')
-        <a href="{{ route('patients.index') }}" class="{{ request()->routeIs('patients.*') ? 'active' : '' }}"><i class="fa-solid fa-users me-2"></i> Patient Management</a>
+        <a href="{{ route('patients.index') }}" class="{{ request()->routeIs('patients.*') ? 'active' : '' }}">
+            <i class="fa-solid fa-users"></i> Patients
+        </a>
         @endcan
         
         @can('view doctors')
-        <a href="{{ route('doctors.index') }}" class="{{ request()->routeIs('doctors.*') ? 'active' : '' }}"><i class="fa-solid fa-user-doctor me-2"></i> Doctor Management</a>
+        <a href="{{ route('doctors.index') }}" class="{{ request()->routeIs('doctors.*') ? 'active' : '' }}">
+            <i class="fa-solid fa-user-doctor"></i> Doctors
+        </a>
         @endcan
         
         @can('view appointments')
-        <a href="{{ route('appointments.index') }}" class="{{ request()->routeIs('appointments.*') ? 'active' : '' }}"><i class="fa-solid fa-calendar-check me-2"></i> Appointments</a>
+        <a href="{{ route('appointments.index') }}" class="{{ request()->routeIs('appointments.*') ? 'active' : '' }}">
+            <i class="fa-solid fa-calendar-check"></i> Appointments
+        </a>
         @endcan
         
         @can('view consultations')
-        <a href="{{ route('consultations.index') }}" class="{{ request()->routeIs('consultations.*') ? 'active' : '' }}"><i class="fa-solid fa-stethoscope me-2"></i> OPD Consultations</a>
+        <a href="{{ route('consultations.index') }}" class="{{ request()->routeIs('consultations.*') ? 'active' : '' }}">
+            <i class="fa-solid fa-stethoscope"></i> OPD Consultations
+        </a>
         @endcan
         
+        <div class="px-3 mt-4 mb-2 text-uppercase text-secondary small fw-bold" style="font-size: 0.7rem; letter-spacing: 1px;">Laboratory</div>
+
         @can('view tests')
-        <a href="{{ route('tests.index') }}" class="{{ request()->routeIs('tests.*') ? 'active' : '' }}"><i class="fa-solid fa-microscope me-2"></i> Master Tests</a>
+        <a href="{{ route('tests.index') }}" class="{{ request()->routeIs('tests.*') ? 'active' : '' }}">
+            <i class="fa-solid fa-microscope"></i> Master Tests
+        </a>
         @endcan
         
         @can('view lab orders')
-        <a href="{{ route('diagnostic-orders.index') }}" class="{{ request()->routeIs('diagnostic-orders.*') ? 'active' : '' }}"><i class="fa-solid fa-vial-circle-check me-2"></i> Lab Orders</a>
+        <a href="{{ route('diagnostic-orders.index') }}" class="{{ request()->routeIs('diagnostic-orders.*') ? 'active' : '' }}">
+            <i class="fa-solid fa-vial-circle-check"></i> Lab Orders
+        </a>
         @endcan
         
         @can('view lab results')
-        <a href="{{ route('test-results.index') }}" class="{{ request()->routeIs('test-results.*') ? 'active' : '' }}"><i class="fa-solid fa-file-medical me-2"></i> Lab Results</a>
+        <a href="{{ route('test-results.index') }}" class="{{ request()->routeIs('test-results.*') ? 'active' : '' }}">
+            <i class="fa-solid fa-file-medical"></i> Lab Results
+        </a>
         @endcan
         
+        <div class="px-3 mt-4 mb-2 text-uppercase text-secondary small fw-bold" style="font-size: 0.7rem; letter-spacing: 1px;">Finance & Reports</div>
+
         @can('view billing')
-        <a href="{{ route('invoices.index') }}" class="{{ request()->routeIs('invoices.*') ? 'active' : '' }}"><i class="fa-solid fa-file-invoice-dollar me-2"></i> Billing</a>
+        <a href="{{ route('invoices.index') }}" class="{{ request()->routeIs('invoices.*') ? 'active' : '' }}">
+            <i class="fa-solid fa-file-invoice-dollar"></i> Billing
+        </a>
         @endcan
         
         @can('view accounts')
-        <a href="{{ route('accounts.index') }}" class="{{ request()->routeIs('accounts.*') ? 'active' : '' }}"><i class="fa-solid fa-wallet me-2"></i> Account</a>
+        <a href="{{ route('accounts.index') }}" class="{{ request()->routeIs('accounts.*') ? 'active' : '' }}">
+            <i class="fa-solid fa-wallet"></i> Accounts
+        </a>
         @endcan
         
         @can('view reports')
-        <!-- Reports Dropdown -->
         <a class="dropdown-toggle" data-bs-toggle="collapse" href="#reportsMenu" role="button" aria-expanded="{{ request()->routeIs('reports.*') ? 'true' : 'false' }}">
-            <i class="fa-solid fa-file-lines me-2"></i> Reports
+            <i class="fa-solid fa-chart-line"></i> Reports
         </a>
         <div class="collapse {{ request()->routeIs('reports.*') ? 'show' : '' }}" id="reportsMenu">
-            <div class="ps-3 border-start border-secondary ms-3 mt-1 mb-2">
-                <a href="{{ route('reports.account') }}" class="py-1 {{ request()->routeIs('reports.account') ? 'text-info' : '' }}">Account Report</a>
-                <a href="{{ route('reports.patient') }}" class="py-1 {{ request()->routeIs('reports.patient') ? 'text-info' : '' }}">Patient Report</a>
-                <a href="{{ route('reports.doctor') }}" class="py-1 {{ request()->routeIs('reports.doctor') ? 'text-info' : '' }}">Doctor Report</a>
-                <a href="{{ route('reports.labOrder') }}" class="py-1 {{ request()->routeIs('reports.labOrder') ? 'text-info' : '' }}">Lab Order Report</a>
-            </div>
+            <a href="{{ route('reports.account') }}" class="{{ request()->routeIs('reports.account') ? 'text-info' : '' }}"><i class="fa-solid fa-angle-right"></i> Account Report</a>
+            <a href="{{ route('reports.patient') }}" class="{{ request()->routeIs('reports.patient') ? 'text-info' : '' }}"><i class="fa-solid fa-angle-right"></i> Patient Report</a>
+            <a href="{{ route('reports.doctor') }}" class="{{ request()->routeIs('reports.doctor') ? 'text-info' : '' }}"><i class="fa-solid fa-angle-right"></i> Doctor Report</a>
+            <a href="{{ route('reports.labOrder') }}" class="{{ request()->routeIs('reports.labOrder') ? 'text-info' : '' }}"><i class="fa-solid fa-angle-right"></i> Lab Order Report</a>
         </div>
         @endcan
 
+        <div class="px-3 mt-4 mb-2 text-uppercase text-secondary small fw-bold" style="font-size: 0.7rem; letter-spacing: 1px;">Administration</div>
+
         @can('view staff')
-        <a href="{{ route('staff.index') }}" class="{{ request()->routeIs('staff.*') ? 'active' : '' }}"><i class="fa-solid fa-user-tie me-2"></i> Staff</a>
+        <a href="{{ route('staff.index') }}" class="{{ request()->routeIs('staff.*') ? 'active' : '' }}">
+            <i class="fa-solid fa-user-tie"></i> Staff
+        </a>
         @endcan
 
         @can('view settings')
-        <a href="{{ route('roles.index') }}" class="{{ request()->routeIs('roles.*') ? 'active' : '' }}"><i class="fa-solid fa-user-shield me-2"></i> Roles & Permissions</a>
-        <a href="#"><i class="fa-solid fa-gear me-2"></i> Settings</a>
+        <a href="{{ route('roles.index') }}" class="{{ request()->routeIs('roles.*') ? 'active' : '' }}">
+            <i class="fa-solid fa-user-shield"></i> Roles & Permissions
+        </a>
+        <a href="#">
+            <i class="fa-solid fa-gear"></i> Settings
+        </a>
         @endcan
         
-        <form method="POST" action="{{ route('logout') }}" class="mt-5">
-            @csrf
-            <button type="submit" class="btn btn-link text-white text-decoration-none w-100 text-start ps-4"><i class="fa-solid fa-right-from-bracket me-2"></i> Logout</button>
-        </form>
+        <div style="height: 50px;"></div> <!-- Bottom Padding -->
     </div>
 
     <!-- Main Content -->
     <div class="main-content">
+        
         <!-- Top Navbar -->
-        <nav class="navbar navbar-expand-lg navbar-custom mb-4 rounded">
-            <div class="container-fluid">
-                <span class="navbar-brand mb-0 h1">@yield('title')</span>
-                <div class="d-flex">
-                    <span class="navbar-text me-3">
-                        <i class="fa-solid fa-user-circle"></i> {{ Auth::user()->name ?? 'Admin' }}
-                    </span>
+        <div class="top-navbar">
+            <h5 class="page-title">@yield('title', 'Dashboard')</h5>
+            
+            <div class="user-profile dropdown">
+                <div class="d-flex align-items-center" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    <div class="text-end me-3 d-none d-md-block">
+                        <div class="fw-bold" style="font-size: 0.9rem; color: #1e293b;">{{ Auth::user()->name ?? 'Administrator' }}</div>
+                        <div class="text-secondary" style="font-size: 0.75rem;">{{ Auth::user()->roles->first()->name ?? 'Admin' }}</div>
+                    </div>
+                    <img src="https://ui-avatars.com/api/?name={{ urlencode(Auth::user()->name ?? 'A') }}&background=4e73df&color=fff" alt="User">
                 </div>
+                
+                <ul class="dropdown-menu dropdown-menu-end border-0 shadow-sm" style="border-radius: 12px; margin-top: 10px;">
+                    <li><a class="dropdown-item py-2" href="#"><i class="fa-regular fa-user me-2 text-secondary"></i> My Profile</a></li>
+                    <li><a class="dropdown-item py-2" href="#"><i class="fa-solid fa-gear me-2 text-secondary"></i> Settings</a></li>
+                    <li><hr class="dropdown-divider"></li>
+                    <li>
+                        <form method="POST" action="{{ route('logout') }}">
+                            @csrf
+                            <button type="submit" class="dropdown-item py-2 text-danger"><i class="fa-solid fa-arrow-right-from-bracket me-2"></i> Logout</button>
+                        </form>
+                    </li>
+                </ul>
             </div>
-        </nav>
+        </div>
 
         <!-- Page Content -->
-        @yield('content')
+        <div class="content-body">
+            @yield('content')
+        </div>
     </div>
 
     <!-- Bootstrap 5.3 JS Bundle -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     @stack('scripts')
 </body>
 </html>
