@@ -30,7 +30,7 @@
         <a href="{{ route('doctors.index') }}" class="{{ request()->routeIs('doctors.*') ? 'active' : '' }}"><i class="fa-solid fa-user-doctor me-2"></i> Doctor Management</a>
         <a href="{{ route('appointments.index') }}" class="{{ request()->routeIs('appointments.*') ? 'active' : '' }}"><i class="fa-solid fa-calendar-check me-2"></i> Appointments</a>
         <a href="{{ route('tests.index') }}" class="{{ request()->routeIs('tests.*') ? 'active' : '' }}"><i class="fa-solid fa-vial-circle-check me-2"></i> Diagnostic Tests</a>
-        <a href="#"><i class="fa-solid fa-file-invoice-dollar me-2"></i> Billing</a>
+        <a href="{{ route('invoices.index') }}" class="{{ request()->routeIs('invoices.*') ? 'active' : '' }}"><i class="fa-solid fa-file-invoice-dollar me-2"></i> Billing</a>
         <a href="#"><i class="fa-solid fa-gear me-2"></i> Settings</a>
         
         <form method="POST" action="{{ route('logout') }}" class="mt-5">
