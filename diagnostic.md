@@ -1,81 +1,127 @@
-Build a complete, production-ready **Clinic & Diagnostic Center Management ERP** using:
+অবশ্যই। নিচে আমি আপনার জন্য আরও **professional, organized এবং AI coding tool-এ দেওয়ার মতো complete project plan** দিলাম। এটা এমনভাবে সাজানো যে আগে architecture/database final হবে, তারপর UI, তারপর module-by-module development হবে।
+
+# 🏥 Clinic & Diagnostic Center Management ERP
+
+## 1. Project Overview
+
+Build a complete, production-ready **Clinic & Diagnostic Center Management ERP** for clinics, diagnostic centers, pathology laboratories and imaging centers.
+
+The system must manage the complete workflow from:
+
+**Patient Registration → Appointment → Consultation → Test Order → Billing → Sample Collection → Laboratory Processing → Result Entry → Verification → Report Approval → PDF/QR Report → Patient Portal**
+
+The application must be scalable, secure, responsive and suitable for commercial deployment.
+
+---
+
+# 2. Technology Stack
+
+### Backend
 
 * Laravel 12+
 * PHP 8.3+
 * MySQL 8+
-* Bootstrap 5.3
+* Laravel Queue
+* Laravel Notifications
+* Laravel Storage
+
+### Frontend
+
 * Blade
+* Bootstrap 5.3
 * JavaScript
 * AJAX / Fetch API
 * jQuery where useful
 * DataTables
 * Chart.js
 * SweetAlert2
-* Laravel Notifications
-* Laravel Storage
+
+### Packages
+
 * Spatie Laravel Permission
+* Laravel DomPDF
+* QR Code package
+* Excel export package
+* Barcode generation package
 
-The software must be designed as a professional commercial ERP suitable for Bangladesh-based clinics and diagnostic centers.
+Use stable and actively maintained packages.
 
-Do NOT build a simple CRUD application. Build a complete real-world ERP with proper relationships, workflows, validation, permissions, audit logs, reporting, responsive UI and scalable architecture.
+---
 
-==================================================
+# 3. System Architecture
 
-1. SYSTEM CONCEPT
-   ==================================================
+Use a clean modular architecture.
 
-The software will manage:
+```text
+Authentication
+      ↓
+Roles & Permissions
+      ↓
+Branch & Settings
+      ↓
+Core Modules
+      ↓
+Clinic
+Diagnostic
+Radiology
+Billing
+Operations
+Reports
+Online Portal
+```
 
-1. Clinic / OPD
-2. Diagnostic Laboratory
-3. Pathology
-4. Radiology / Imaging
-5. Patient Management
-6. Doctor Management
-7. Appointment & Token
-8. Prescription
-9. Test Booking
-10. Sample Collection
-11. Test Result
-12. Report Generation
-13. Billing & Payments
-14. Doctor Commission
-15. Expenses
-16. Staff Management
-17. Inventory for diagnostic consumables
-18. SMS / Notification
-19. Patient Portal
-20. Website Appointment & Test Booking
-21. Reports
-22. Settings
-23. Roles & Permissions
-24. Audit Logs
+Business logic must not be placed directly inside controllers.
 
-The system should support future multi-branch functionality.
+Use:
 
-==================================================
-2. USER ROLES
-=============
+```text
+Models
+Controllers
+Form Requests
+Policies
+Services
+Events
+Listeners
+Jobs
+Notifications
+Enums
+Traits
+Reusable Components
+```
 
-Create role-based access control.
+---
 
-Default roles:
+# 4. User Roles
 
-Super Admin
-Admin
-Branch Manager
-Receptionist
-Doctor
-Lab Technician
-Pathologist
-Radiologist
-Accountant
-Nurse
-Report Manager
-Inventory Manager
+Create granular role-based permissions.
 
-Permission examples:
+### Default Roles
 
+1. Super Admin
+2. Admin
+3. Branch Manager
+4. Receptionist
+5. Doctor
+6. Nurse
+7. Lab Technician
+8. Pathologist
+9. Radiologist
+10. Accountant
+11. Report Manager
+12. Inventory Manager
+13. Home Collection Collector
+
+Users must only see the modules and records they are authorized to access.
+
+---
+
+# 5. Permission System
+
+Use Spatie Laravel Permission.
+
+Example permissions:
+
+```text
 patient.view
 patient.create
 patient.edit
@@ -86,6 +132,10 @@ appointment.create
 appointment.edit
 appointment.cancel
 
+consultation.view
+consultation.create
+consultation.edit
+
 test.view
 test.create
 test.edit
@@ -93,86 +143,129 @@ test.delete
 
 sample.collect
 sample.receive
-sample.process
+sample.reject
 
+result.view
 result.create
 result.edit
 result.verify
-result.approve
 
 report.view
+report.approve
+report.publish
 report.print
 report.download
-report.approve
 
+invoice.view
 invoice.create
 invoice.edit
+
 payment.create
-refund.create
+payment.refund
 
-doctor.commission.view
-doctor.commission.pay
-
+expense.view
 expense.create
-expense.edit
+
+commission.view
+commission.pay
 
 settings.manage
+users.manage
+roles.manage
+```
 
-Every module must have granular permissions.
+---
 
-==================================================
-3. DASHBOARD
-============
+# 6. Multi-Branch Architecture
 
-Create a modern professional dashboard.
+The system must be multi-branch ready.
 
-Top cards:
+Create:
 
+```text
+branches
+```
+
+Each relevant transaction should support:
+
+```text
+branch_id
+```
+
+Super Admin:
+
+```text
+All Branches
+```
+
+Branch Manager:
+
+```text
+Own Branch
+```
+
+Branch-specific users:
+
+```text
+Only authorized branch data
+```
+
+---
+
+# 7. Dashboard
+
+Create a modern medical ERP dashboard.
+
+### Statistics
+
+```text
 Today's Patients
 Today's Appointments
+Today's Consultations
 Today's Tests
+Pending Samples
+Pending Results
 Pending Reports
-Completed Reports
 Today's Collection
 Today's Due
 Monthly Revenue
+```
 
-Charts:
+### Charts
 
-Daily Patient Statistics
+```text
+Patient Registration
 Daily Revenue
-Test-wise Sales
+Test Sales
 Doctor-wise Patients
+Department-wise Tests
 Pending vs Completed Reports
+```
 
-Quick Actions:
+### Quick Actions
 
-* New Patient
-* New Appointment
-* New Test Invoice
-* Sample Collection
-* New Expense
-* Doctor Visit
+```text
++ New Patient
++ Appointment
++ OPD Consultation
++ Diagnostic Order
++ Sample Collection
++ Payment
++ Expense
+```
 
-Recent Activities:
+---
 
-Patient registered
-Appointment created
-Test booked
-Sample collected
-Result entered
-Report approved
-Payment received
+# 8. Patient Management
 
-==================================================
-4. PATIENT MANAGEMENT
-=====================
+## Patient Registration
 
-Patient registration fields:
+Fields:
 
+```text
 Patient ID
-Barcode / QR Code
 Name
+Photo
 Gender
 Date of Birth
 Age
@@ -181,51 +274,66 @@ Mobile
 Alternative Mobile
 Email
 NID / Passport
-Address
 Guardian Name
 Guardian Mobile
-Occupation
+Address
 Emergency Contact
-Photo
 Notes
+```
 
-Patient ID must be automatically generated.
+Auto-generated patient number:
 
-Example:
-
+```text
 P-2026-000001
+```
 
-Create patient profile page:
+## Patient Profile
 
-Patient Information
-Visit History
-Appointment History
-Prescription History
-Diagnostic History
+Create a professional patient profile with tabs:
+
+```text
+Overview
+Appointments
+Visits
+Prescriptions
+Diagnostic Orders
 Lab Reports
 Radiology Reports
-Billing History
-Payment History
-Doctor History
+Invoices
+Payments
 Documents
+Timeline
+```
 
-Patient timeline:
+Patient timeline example:
 
-Registration
+```text
+Patient Registered
+       ↓
+Appointment
+       ↓
 Consultation
-Test
+       ↓
+Prescription
+       ↓
+Diagnostic Test
+       ↓
+Sample Collection
+       ↓
 Result
+       ↓
 Report
+       ↓
 Payment
+```
 
-Allow printing patient card.
+---
 
-==================================================
-5. DOCTOR MANAGEMENT
-====================
+# 9. Doctor Management
 
 Doctor fields:
 
+```text
 Doctor ID
 Name
 Photo
@@ -237,49 +345,54 @@ Email
 Address
 Consultation Fee
 Status
+User Account
+```
 
-Doctor schedule:
+## Doctor Schedule
 
+```text
 Day
 Start Time
 End Time
 Break Time
-Maximum Patients
+Maximum Patient
+Consultation Fee
+```
 
 Example:
 
+```text
 Saturday
-5:00 PM - 9:00 PM
-Maximum 30 patients
+05:00 PM - 09:00 PM
+Maximum 30 Patients
+```
 
-Doctor commission configuration:
+---
 
-Consultation commission
-Test commission
-Percentage commission
-Fixed commission
-
-==================================================
-6. APPOINTMENT SYSTEM
-=====================
+# 10. Appointment Management
 
 Appointment fields:
 
+```text
 Appointment ID
 Patient
 Doctor
+Branch
 Date
 Time
-Token Number
+Token
 Appointment Type
 Consultation Fee
 Discount
-Payment Status
+Paid
+Due
 Status
 Notes
+```
 
 Statuses:
 
+```text
 Scheduled
 Confirmed
 Waiting
@@ -287,203 +400,343 @@ In Consultation
 Completed
 Cancelled
 No Show
+```
 
-Create calendar view.
-
-Create daily token queue.
+## Token System
 
 Example:
 
-Token 01 - Waiting
-Token 02 - In Consultation
-Token 03 - Completed
+```text
+Token 01 — Completed
+Token 02 — In Consultation
+Token 03 — Waiting
+Token 04 — Waiting
+```
 
-Receptionist can call next patient.
+Receptionist can call the next patient.
 
-==================================================
-7. OPD / CONSULTATION
-=====================
+---
 
-Doctor dashboard.
+# 11. Clinic / OPD Module
 
-Doctor can see:
+Doctor dashboard:
 
-Today's appointments
-Waiting patients
-Completed patients
-Patient history
+```text
+Today's Appointments
+Waiting Patients
+Current Patient
+Completed Visits
+Follow-ups
+```
 
-Consultation screen:
+## Consultation
 
+Record:
+
+```text
 Chief Complaint
 Symptoms
+Medical History
 Vitals
+Clinical Notes
+Diagnosis
+Advice
+Follow-up
+```
+
+## Vitals
+
+```text
 Blood Pressure
 Pulse
 Temperature
 Weight
 Height
-Oxygen Saturation
+BMI
+SpO2
+Respiratory Rate
+```
 
-Diagnosis
-Clinical Notes
-Advice
-Follow-up Date
+## Diagnosis
+
+Allow multiple diagnoses.
+
+```text
+Diagnosis Name
+ICD Code
+Notes
+```
+
+---
+
+# 12. Prescription Management
 
 Prescription:
 
+```text
 Medicine
 Dosage
 Frequency
 Duration
+Route
 Instruction
-
-Doctor can save prescription and print it.
-
-==================================================
-8. DIAGNOSTIC TEST MANAGEMENT
-=============================
-
-Create:
-
-Test Categories
+Before/After Meal
+Notes
+```
 
 Example:
 
+```text
+Medicine
+Paracetamol
+
+Dosage
+500mg
+
+Frequency
+1+1+1
+
+Duration
+5 Days
+```
+
+Allow:
+
+```text
+Print Prescription
+PDF
+Patient Portal
+```
+
+---
+
+# 13. Diagnostic Department
+
+Create diagnostic departments:
+
+```text
 Hematology
 Biochemistry
 Clinical Pathology
-Immunology
 Microbiology
-Hormone
+Immunology
 Serology
-Radiology
-Ultrasonography
-X-Ray
-CT Scan
-MRI
+Hormone
+Histopathology
+```
+
+---
+
+# 14. Test Management
 
 Test fields:
 
+```text
 Test Code
 Test Name
+Department
 Category
 Specimen Type
 Container
-Department
 Price
 Cost
 Turnaround Time
-Reference Range
 Status
+```
 
 Example:
 
+```text
 CBC
+Code: LAB-CBC
+Price: 500
+Specimen: Blood
+```
 
-Parameters:
+---
 
-Hemoglobin
-WBC
-RBC
-Platelet
-ESR
-MCV
-MCH
-MCHC
+# 15. Test Parameter Management
 
-Each parameter must have:
+Each test can have multiple parameters.
 
+Example:
+
+```text
+CBC
+│
+├── Hemoglobin
+├── RBC
+├── WBC
+├── Platelet
+├── MCV
+├── MCH
+├── MCHC
+└── ESR
+```
+
+Parameter fields:
+
+```text
 Parameter Name
+Short Name
 Unit
-Normal Range
-Male Range
-Female Range
-Child Range
 Display Order
 Result Type
+```
 
-Result type:
+Result Types:
 
+```text
 Numeric
 Text
+Positive / Negative
 Dropdown
-Positive/Negative
+```
 
-==================================================
-9. TEST PACKAGE
-===============
+---
 
-Create test packages.
+# 16. Reference Range
+
+Reference ranges must support:
+
+```text
+Male
+Female
+Child
+Infant
+Age Based
+Pregnancy
+```
+
+Fields:
+
+```text
+Parameter
+Gender
+Age From
+Age To
+Minimum
+Maximum
+Critical Minimum
+Critical Maximum
+Unit
+```
+
+The system automatically determines whether the result is:
+
+```text
+LOW
+NORMAL
+HIGH
+CRITICAL
+```
+
+---
+
+# 17. Test Packages
+
+Create diagnostic packages.
 
 Example:
 
-Executive Health Package
+### Executive Health Package
 
-Contains:
-
+```text
 CBC
 Blood Sugar
 Lipid Profile
 SGPT
 Creatinine
 Urine R/E
+```
 
-Package price:
+Individual Price:
 
-Individual total = 3500
-Package price = 2500
+```text
+৳3,500
+```
 
-When package is booked, all tests must automatically appear in the patient's diagnostic order.
+Package Price:
 
-==================================================
-10. TEST BOOKING / ORDER
-========================
+```text
+৳2,500
+```
 
-Create diagnostic order.
+When package is selected, all included tests are automatically added to the diagnostic order.
+
+---
+
+# 18. Unified Services
+
+Create a `services` table.
+
+Services may include:
+
+```text
+Doctor Consultation
+CBC
+Blood Sugar
+USG
+X-Ray
+ECG
+Echo
+Home Sample Collection
+Other Services
+```
+
+This allows the billing system to manage all chargeable services consistently.
+
+---
+
+# 19. Diagnostic Order
 
 Workflow:
 
+```text
 Patient
-↓
-Select Test / Package
-↓
-Apply Discount
-↓
-Generate Invoice
-↓
+   ↓
+Test / Package Selection
+   ↓
+Order Creation
+   ↓
+Invoice
+   ↓
 Payment
-↓
+   ↓
 Sample Collection
-↓
+   ↓
 Processing
-↓
+   ↓
 Result Entry
-↓
+   ↓
 Verification
-↓
+   ↓
 Report Approval
-↓
-Report Delivery
+   ↓
+Report Published
+```
 
-Diagnostic order fields:
+Diagnostic Order fields:
 
+```text
 Order ID
 Patient
 Doctor
 Branch
 Order Date
 Priority
-Discount
 Subtotal
+Discount
 Total
 Paid
 Due
 Payment Status
 Order Status
+```
 
-Order statuses:
+Statuses:
 
+```text
 Pending
 Sample Pending
 Processing
@@ -491,288 +744,346 @@ Result Pending
 Verification Pending
 Completed
 Cancelled
+```
 
-==================================================
-11. SAMPLE COLLECTION
-=====================
+---
 
-Create sample collection module.
+# 20. Sample Collection & Barcode
 
-Sample ID must be generated.
+Generate unique sample number:
 
-Example:
-
+```text
 S-2026-000001
+```
 
 Fields:
 
+```text
 Sample ID
 Order ID
 Patient
 Test
 Sample Type
+Barcode
+Collected By
 Collection Date
 Collection Time
-Collected By
-Barcode
+Received By
+Received Time
 Status
+Rejection Reason
+```
 
 Statuses:
 
+```text
 Pending
 Collected
 Received
 Processing
 Rejected
 Completed
-
-Sample rejection reason:
-
-Insufficient Sample
-Wrong Container
-Hemolyzed
-Improper Storage
-Other
-
-Allow barcode printing.
-
-==================================================
-12. LAB RESULT ENTRY
-====================
-
-Create professional result-entry interface.
-
-Technician sees:
-
-Patient
-Sample
-Test
-Parameter
-Unit
-Reference Range
-
-Example:
-
-Hemoglobin | 13.5 | g/dL | 13-17
+```
 
 Allow:
 
-Numeric result
-Text result
-Positive / Negative
-Dropdown
+```text
+Barcode Generate
+Barcode Print
+Barcode Scan
+Sample Search
+```
 
-Automatically flag:
+---
 
-LOW
-HIGH
-NORMAL
-CRITICAL
+# 21. Laboratory Result Entry
 
-Critical value alert.
+Create a fast technician interface.
 
-Technician submits result.
+```text
+Patient Information
 
-Then:
+Sample Information
 
-Technician Submit
-↓
-Pathologist Verification
-↓
-Report Approval
+Test Information
 
-==================================================
-13. PATHOLOGY REPORT
-====================
+-------------------------------------
+Parameter | Result | Unit | Range
+-------------------------------------
+Hemoglobin | 13.5 | g/dL | 13-17
+WBC        | 8000 | /µL  | 4000-11000
+Platelet   | 250  | K/µL | 150-450
+-------------------------------------
+```
 
-Create professional pathology report templates.
+Features:
 
-Report header:
+```text
+Auto Flag
+Critical Alert
+Draft Save
+Edit Result
+Submit Result
+```
 
-Clinic / Diagnostic Center Logo
-Name
+---
+
+# 22. Result Verification
+
+Workflow:
+
+```text
+Lab Technician
+       ↓
+Result Submitted
+       ↓
+Pathologist
+       ↓
+Verify
+       ↓
+Approve
+       ↓
+Publish
+```
+
+A technician should not be able to approve their own result when separation-of-duty is enabled.
+
+---
+
+# 23. Pathology Report
+
+Create professional A4 report.
+
+### Header
+
+```text
+Logo
+Diagnostic Center Name
 Address
 Phone
 Email
+```
 
-Patient section:
+### Patient Section
 
+```text
 Patient Name
 Patient ID
 Age
 Gender
 Sample ID
+Collection Date
 Report Date
+```
 
-Test result table:
+### Result
 
+```text
 Parameter
 Result
 Unit
 Reference Range
 Flag
+```
 
-Footer:
+### Footer
 
+```text
 Pathologist Name
 Qualification
-Registration Number
+BMDC / Registration No
 Digital Signature
+```
 
 Generate:
 
-Print
+```text
 PDF
+Print
 Download
+QR Verification
+```
 
-Use A4 professional report layout.
+---
 
-==================================================
-14. RADIOLOGY / IMAGING
-=======================
+# 24. Radiology Module
 
-Create Radiology module.
+Separate Radiology from Laboratory.
 
 Types:
 
+```text
 X-Ray
 USG
 CT Scan
 MRI
 Mammography
 Echo
+```
 
 Radiology order:
 
+```text
 Patient
 Doctor
 Study
 Clinical History
+Technician
+```
+
+Radiologist report:
+
+```text
 Findings
 Impression
-Technologist
-Radiologist
+Recommendation
+```
 
-Allow image/document attachment.
+Allow image/document attachments.
 
-Radiologist enters:
+---
 
-Findings
-Impression
-Advice
+# 25. Report Versioning
 
-Generate radiology report.
+Never delete an approved report.
 
-==================================================
-15. BILLING SYSTEM
-==================
+Statuses:
 
-Create unified billing system.
+```text
+Draft
+Result Entered
+Verification Pending
+Verified
+Approval Pending
+Approved
+Published
+Amended
+Cancelled
+```
+
+If a published report needs correction:
+
+```text
+Report #001
+Version 1
+       ↓
+Amended
+       ↓
+Report #001
+Version 2
+```
+
+Maintain complete history.
+
+---
+
+# 26. Billing System
+
+Create unified billing.
 
 Invoice types:
 
+```text
 Consultation
 Diagnostic Test
 Test Package
 Radiology
-Other Services
+Other Service
+```
 
-Invoice fields:
+Example:
 
-Invoice No
-Patient
-Date
-Items
-Subtotal
-Discount
-Tax
-Total
-Paid
-Due
-Payment Method
+```text
+Consultation       ৳800
+CBC                ৳500
+Blood Sugar         ৳200
+USG                 ৳800
+-------------------------
+Subtotal          ৳2300
+Discount            ৳300
+-------------------------
+Total              ৳2000
+Paid               ৳1000
+Due                ৳1000
+```
 
 Payment methods:
 
+```text
 Cash
 Card
-Mobile Banking
+bKash
+Nagad
+Rocket
 Bank
 Online Payment
+```
 
-Auto-generate invoice number.
+---
 
-Example:
+# 27. Payment & Refund
 
-INV-2026-000001
+Support partial payment.
 
-Allow:
+Maintain:
 
-Print Invoice
-PDF
-Payment Receipt
+```text
+Payment History
+Due History
+Refund History
+```
 
-==================================================
-16. PAYMENT & DUE
-=================
+Financial transactions must never be silently deleted.
 
-Allow partial payments.
+Refund:
 
-Example:
-
-Total = 3000
-Paid = 1000
-Due = 2000
-
-Later:
-
-Paid = 1000
-Remaining = 1000
-
-Keep complete payment history.
-
-Refund system:
-
-Refund amount
+```text
+Refund Amount
 Reason
-Approved by
-Refund date
+Approved By
+Date
+Payment Method
+```
 
-Never delete financial transactions.
+---
 
-==================================================
-17. DOCTOR COMMISSION
-=====================
+# 28. Doctor Commission
 
-Automatically calculate doctor commission.
+Support:
+
+```text
+Consultation Commission
+Diagnostic Commission
+Fixed Commission
+Percentage Commission
+```
 
 Example:
 
-Consultation Fee = 1000
-Doctor Commission = 30%
+```text
+Consultation = ৳1000
+Commission = 30%
 
-Commission = 300
+Doctor Commission = ৳300
+```
 
-For diagnostic tests:
+Statuses:
 
-CBC = 500
-Doctor commission = 10%
-
-Commission = 50
-
-Commission statuses:
-
+```text
 Pending
 Approved
 Paid
+```
 
-Generate doctor commission statement.
+Create doctor commission statement.
 
-==================================================
-18. EXPENSE MANAGEMENT
-======================
+---
 
-Expense categories:
+# 29. Expense Management
 
+Categories:
+
+```text
 Rent
 Electricity
 Internet
@@ -782,9 +1093,11 @@ Maintenance
 Marketing
 Office Expense
 Other
+```
 
-Expense fields:
+Fields:
 
+```text
 Expense No
 Category
 Amount
@@ -793,375 +1106,279 @@ Payment Method
 Description
 Attachment
 Created By
+Branch
+```
 
-==================================================
-19. INVENTORY
-=============
+---
 
-Inventory is only for clinic/diagnostic requirements.
+# 30. Diagnostic Inventory
 
-Items:
+Manage:
 
+```text
 Reagents
 Test Tubes
 Syringes
 Gloves
 Masks
-Cotton
 Chemical
+Cotton
 Printer Paper
-Radiology Consumables
-
-Fields:
-
-Item
-Category
-Unit
-Purchase Price
-Stock
-Minimum Stock
-Supplier
-Expiry Date
+Other Consumables
+```
 
 Features:
 
+```text
 Purchase
 Stock In
 Stock Out
 Adjustment
-Expiry Alert
 Low Stock Alert
+Expiry Alert
+Supplier
+```
 
-==================================================
-20. STAFF MANAGEMENT
-====================
+---
+
+# 31. Home Sample Collection
+
+Patient can request home collection.
+
+Workflow:
+
+```text
+Request
+ ↓
+Admin Confirmation
+ ↓
+Collector Assignment
+ ↓
+Sample Collection
+ ↓
+Laboratory
+ ↓
+Result
+ ↓
+Report
+```
+
+Fields:
+
+```text
+Patient
+Address
+Mobile
+Date
+Time
+Collector
+Collection Charge
+Status
+```
+
+---
+
+# 32. Staff Management
 
 Staff:
 
+```text
 Receptionist
 Lab Technician
 Nurse
 Accountant
-Cleaner
 Manager
+Collector
 Other
+```
 
-Fields:
+Features:
 
-Name
-Photo
-Mobile
-Email
-Address
-Joining Date
-Salary
-Designation
-Status
-
-Attendance:
-
-Present
-Absent
-Late
+```text
+Employee Profile
+Attendance
 Leave
+Salary
+Advance
+Salary Payment
+```
 
-Basic payroll system.
+---
 
-==================================================
-21. PATIENT PORTAL
-==================
+# 33. Patient Portal
 
-Create patient login.
+Patient login.
 
-Patient can see:
+Dashboard:
 
+```text
+Upcoming Appointment
+Recent Reports
+Due Amount
+Recent Prescriptions
+```
+
+Patient can view:
+
+```text
 Profile
 Appointments
+Consultations
 Prescriptions
 Diagnostic Orders
 Lab Reports
 Radiology Reports
 Invoices
 Payments
-Due
+```
 
-Patient can download PDF reports.
+Patient can download reports.
 
-==================================================
-22. ONLINE APPOINTMENT
-======================
+---
+
+# 34. Online Appointment
 
 Public website:
 
+```text
 Doctors
 Departments
 Services
-Tests
+Diagnostic Tests
 Packages
 Appointment Booking
+```
 
 Patient submits:
 
+```text
 Name
 Mobile
 Doctor
 Date
 Time
+```
 
-Admin receives booking notification.
+Admin confirms appointment.
 
-Receptionist confirms appointment.
+---
 
-==================================================
-23. ONLINE TEST BOOKING
-=======================
+# 35. Online Diagnostic Booking
 
-Patients can select:
+Allow:
 
-Test
-Package
+```text
+Test Selection
+Package Selection
 Preferred Date
-Home Sample Collection
-
-Fields:
-
-Patient Name
-Mobile
+Home Collection
 Address
-Test
-Date
-Time
+```
 
-Order goes to admin.
+Online booking should generate a pending order/request that staff can confirm.
 
-==================================================
-24. HOME SAMPLE COLLECTION
-==========================
+---
 
-Create Home Collection module.
+# 36. Notification System
 
-Fields:
-
-Patient
-Address
-Collection Date
-Time
-Collector
-Mobile
-Order
-Collection Charge
-Status
-
-Statuses:
-
-Requested
-Assigned
-Collected
-Completed
-Cancelled
-
-==================================================
-25. SMS / WHATSAPP NOTIFICATION
-===============================
-
-Prepare notification architecture.
+Prepare provider-independent notification architecture.
 
 Events:
 
+```text
 Appointment Confirmation
 Appointment Reminder
+Payment Confirmation
 Sample Collected
 Report Ready
 Due Reminder
-Payment Confirmation
+```
 
-Use provider abstraction so SMS/WhatsApp API can be connected later.
+Keep SMS/WhatsApp providers configurable.
 
-Do not hardcode one provider.
+---
 
-==================================================
-26. REPORTS
-===========
+# 37. Reports
 
-Create professional reporting module.
+Create:
 
-Patient Reports
-Appointment Reports
-Doctor Reports
-Diagnostic Sales
-Test-wise Sales
+### Patient Reports
+
+```text
+Patient Registration
+Patient History
+Daily Patients
+Doctor-wise Patients
+```
+
+### Diagnostic Reports
+
+```text
+Test Sales
+Department Sales
 Package Sales
-Daily Collection
-Monthly Collection
-Due Report
-Refund Report
-Expense Report
-Doctor Commission
-Sample Collection
 Pending Reports
 Completed Reports
 Cancelled Tests
+Sample Collection
+```
+
+### Financial Reports
+
+```text
+Daily Collection
+Monthly Collection
+Due Report
+Payment Report
+Refund Report
+Expense Report
+Doctor Commission
 Profit/Loss Summary
+```
 
 Filters:
 
+```text
 Date From
 Date To
-Doctor
-Test
-Category
-Payment Status
 Branch
+Doctor
+Department
+Test
+Payment Status
+```
 
 Export:
 
+```text
 PDF
 Excel
 CSV
 Print
+```
 
-==================================================
-27. DATABASE DESIGN
-===================
+---
 
-Use normalized relational database.
+# 38. Audit Log
 
-Main tables:
+Track sensitive activities:
 
-users
-roles
-permissions
-model_has_roles
-model_has_permissions
+```text
+Patient Edited
+Invoice Created
+Payment Received
+Refund Created
+Result Edited
+Result Verified
+Report Approved
+Report Amended
+Permission Changed
+User Login
+```
 
-patients
-patient_documents
+Audit fields:
 
-doctors
-doctor_schedules
-doctor_commissions
-
-appointments
-appointment_status_histories
-
-visits
-vitals
-diagnoses
-
-prescriptions
-prescription_items
-
-departments
-
-test_categories
-tests
-test_parameters
-test_parameter_ranges
-test_packages
-test_package_items
-
-diagnostic_orders
-diagnostic_order_items
-
-samples
-sample_collections
-sample_status_histories
-
-test_results
-test_result_values
-
-report_templates
-reports
-report_approvals
-
-radiology_orders
-radiology_reports
-radiology_attachments
-
-invoices
-invoice_items
-payments
-refunds
-
-expenses
-expense_categories
-
-inventory_items
-inventory_categories
-inventory_transactions
-suppliers
-purchases
-purchase_items
-
-staff
-staff_attendance
-salary_payments
-
-home_collection_requests
-
-notifications
-settings
-branches
-
-audit_logs
-
-==================================================
-28. IMPORTANT DATABASE RELATIONSHIPS
-====================================
-
-Patient:
-
-patients
-hasMany appointments
-hasMany visits
-hasMany diagnostic_orders
-hasMany invoices
-hasMany payments
-hasMany prescriptions
-
-Doctor:
-
-doctors
-hasMany appointments
-hasMany visits
-hasMany doctor_commissions
-
-Diagnostic Order:
-
-diagnostic_orders
-belongsTo patient
-belongsTo doctor
-hasMany diagnostic_order_items
-hasMany samples
-belongsTo invoice
-
-Test:
-
-tests
-belongsTo test_category
-hasMany test_parameters
-
-Test Parameter:
-
-test_parameters
-belongsTo test
-hasMany test_parameter_ranges
-
-Report:
-
-reports
-belongsTo diagnostic_order
-belongsTo patient
-belongsTo approved_by
-
-==================================================
-29. AUDIT LOG
-=============
-
-Every important action must be logged.
-
-Example:
-
+```text
 User
 Action
 Module
@@ -1170,593 +1387,857 @@ Old Value
 New Value
 IP Address
 Timestamp
+```
 
-Track:
+---
 
-Patient edit
-Invoice edit
-Payment
-Refund
-Result edit
-Report approval
-Permission change
-
-Financial and medical records must not be silently deleted.
-
-==================================================
-30. SECURITY
-============
+# 39. Security
 
 Implement:
 
+```text
 CSRF Protection
 XSS Protection
-Validation
 Authorization
-Role Permission
+Form Validation
 Rate Limiting
 Secure File Upload
-File Type Validation
-Private Patient Documents
-Audit Logging
+Private Medical Documents
+Role Permissions
+Audit Logs
+Database Transactions
+```
 
-Patient medical documents must not be publicly accessible through direct URLs.
+Medical documents must use private storage.
 
-Use Laravel Storage private disk.
+Do not expose patient files through public direct URLs.
 
-==================================================
-31. UI / UX DESIGN
-==================
+---
 
-Create a premium professional medical ERP dashboard.
+# 40. Database Architecture
 
-Design style:
+Core:
 
-Clean
-Modern
-Minimal
-Professional
-Medical
-Responsive
+```text
+users
+branches
+settings
+roles
+permissions
+model_has_roles
+model_has_permissions
+audit_logs
+```
 
-Desktop:
+Patient:
 
-Sidebar
-Top Navbar
-Main Content
+```text
+patients
+patient_documents
+```
 
-Mobile:
+Doctor:
 
-Responsive sidebar
-Mobile-friendly tables
-Mobile-friendly forms
+```text
+doctors
+doctor_schedules
+doctor_commissions
+```
+
+Clinic:
+
+```text
+appointments
+appointment_status_histories
+visits
+vitals
+diagnoses
+prescriptions
+prescription_items
+follow_ups
+```
+
+Diagnostic:
+
+```text
+departments
+test_categories
+tests
+test_parameters
+test_parameter_ranges
+test_packages
+test_package_items
+services
+```
+
+Orders:
+
+```text
+diagnostic_orders
+diagnostic_order_items
+```
+
+Samples:
+
+```text
+samples
+sample_status_histories
+```
+
+Results:
+
+```text
+test_results
+test_result_values
+```
+
+Reports:
+
+```text
+reports
+report_versions
+report_approvals
+```
+
+Radiology:
+
+```text
+radiology_orders
+radiology_reports
+radiology_attachments
+```
+
+Billing:
+
+```text
+invoices
+invoice_items
+payments
+refunds
+```
+
+Operations:
+
+```text
+expense_categories
+expenses
+suppliers
+inventory_categories
+inventory_items
+inventory_transactions
+purchases
+purchase_items
+```
+
+HR:
+
+```text
+staff
+staff_attendance
+salary_payments
+```
+
+Online:
+
+```text
+home_collection_requests
+online_appointments
+online_test_bookings
+```
+
+---
+
+# 41. Important Database Relationships
+
+```text
+Patient
+ ├── Appointments
+ ├── Visits
+ ├── Prescriptions
+ ├── Diagnostic Orders
+ ├── Reports
+ └── Invoices
+
+Doctor
+ ├── Schedules
+ ├── Appointments
+ ├── Visits
+ └── Commissions
+
+Diagnostic Order
+ ├── Order Items
+ ├── Samples
+ └── Billing Reference
+
+Test
+ ├── Parameters
+ └── Packages
+
+Test Parameter
+ └── Reference Ranges
+
+Sample
+ └── Result
+
+Test Result
+ └── Result Values
+
+Report
+ ├── Approvals
+ └── Versions
+
+Invoice
+ ├── Invoice Items
+ ├── Payments
+ └── Refunds
+```
+
+---
+
+# 42. UI / UX Design
+
+Create a premium medical ERP interface.
+
+## Admin Layout
+
+```text
+┌──────────────────────────────────────────┐
+│ Logo       Search      Notification User │
+├───────────┬──────────────────────────────┤
+│           │                              │
+│ Dashboard │       Main Content           │
+│ Patients  │                              │
+│ Clinic    │                              │
+│ Diagnostic│                              │
+│ Radiology │                              │
+│ Billing   │                              │
+│ Reports   │                              │
+│ Settings  │                              │
+│           │                              │
+└───────────┴──────────────────────────────┘
+```
 
 Use:
 
-Bootstrap 5.3
-Cards
+```text
+Clean Cards
+Modern Tables
+Status Badges
 Tabs
-Modals
+Modal Forms
 Offcanvas
+Charts
 DataTables
-Badges
-Alerts
-Progress indicators
+Responsive Forms
+```
 
-Color usage should feel like a modern healthcare application, not a generic admin template.
+---
 
-==================================================
-32. SIDEBAR STRUCTURE
-=====================
+# 43. Role-Based Dashboard
 
-Dashboard
+Do not show the same dashboard to every user.
 
-Patient Management
+### Receptionist
 
-* All Patients
-* Add Patient
-* Patient History
-
+```text
+Patients
 Appointments
-
-* Calendar
-* Today's Appointments
-* Token Queue
-
-Clinic
-
-* OPD
-* Visits
-* Prescriptions
-
-Diagnostic
-
-* Test Categories
-* Tests
-* Test Parameters
-* Test Packages
-* Diagnostic Orders
-* Sample Collection
-* Result Entry
-* Pending Reports
-* Completed Reports
-
-Radiology
-
-* Orders
-* Reports
-
+Token Queue
+Diagnostic Orders
 Billing
-
-* Invoices
-* Payments
-* Due
-* Refunds
-
-Doctor Commission
-
-Home Collection
-
-Inventory
-
-Expenses
-
-Staff & HR
-
-Reports
-
-Users & Roles
-
-Settings
-
-==================================================
-33. PATIENT PROFILE UI
-======================
-
-Create a professional patient profile.
-
-Header:
-
-Patient Photo
-Patient Name
-Patient ID
-Age
-Gender
-Mobile
-Blood Group
-
-Tabs:
-
-Overview
-Appointments
-Visits
-Prescriptions
-Diagnostic Tests
-Reports
-Invoices
 Payments
-Documents
+```
 
-Add timeline on Overview.
+### Doctor
 
-==================================================
-34. DIAGNOSTIC ORDER UI
-=======================
+```text
+Appointments
+Waiting Patients
+Consultation
+Prescription
+Patient History
+```
 
-Design a fast reception-friendly interface.
+### Lab Technician
 
-Left:
+```text
+Pending Samples
+Received Samples
+Result Entry
+Pending Results
+```
 
+### Pathologist
+
+```text
+Verification Queue
+Pending Reports
+Approved Reports
+```
+
+### Accountant
+
+```text
+Collection
+Due
+Expenses
+Refund
+Commission
+Financial Reports
+```
+
+---
+
+# 44. Diagnostic Reception UI
+
+Create a fast POS-style screen.
+
+```text
 Patient Search
-
-Middle:
-
-Available Tests / Packages
-
-Right:
-
+       ↓
+Select Test / Package
+       ↓
 Current Order
+       ↓
+Discount
+       ↓
+Payment
+       ↓
+Print Invoice
+       ↓
+Print Barcode
+```
 
 Example:
 
-CBC                 500
-Blood Sugar         200
-Lipid Profile       800
+```text
+CBC                 ৳500
+Blood Sugar         ৳200
+Lipid Profile       ৳800
 
-Subtotal             1500
-Discount              100
-Total                1400
-Paid                 1000
-Due                   400
+Subtotal           ৳1500
+Discount             ৳100
+Total              ৳1400
+Paid               ৳1000
+Due                 ৳400
+```
 
-Buttons:
+---
 
-Save Order
-Receive Payment
-Print Invoice
-Print Sample Label
+# 45. Laboratory UI
 
-==================================================
-35. RESULT ENTRY UI
-===================
+Lab Technician:
 
-Create table-based result entry.
-
-Patient information at top.
-
-Test information.
-
-Then:
-
-Parameter | Result | Unit | Reference | Flag
-
-Allow keyboard-friendly navigation.
-
-Auto-save draft.
-
-Submit Result button.
-
-Technician cannot approve own report if approval separation is enabled.
-
-==================================================
-36. REPORT DESIGN
-=================
-
-A4 report.
-
-Header:
-
-Logo
-Diagnostic Center Name
-Address
-Contact
-
-Patient information.
-
-Report title.
-
-Result table.
-
-Doctor / Pathologist information.
-
-QR Code containing report verification URL.
-
-Footer:
-
-"This report is electronically generated."
-
-Add report verification page:
-
-/report/verify/{report_uuid}
-
-Patient or doctor can scan QR and verify report authenticity.
-
-==================================================
-37. SETTINGS
-============
-
-General Settings:
-
-Company Name
-Logo
-Favicon
-Address
-Phone
-Email
-Website
-
-Invoice Settings
-
-Report Settings
-
-Patient ID Prefix
-
-Invoice Prefix
-
-Sample Prefix
-
-Date Format
-
-Currency
-
-Timezone
-
-Notification Settings
-
-SMS API Settings
-
-WhatsApp API Settings
-
-Payment Gateway Settings
-
-==================================================
-38. BANGLADESH READY
-====================
-
-Default currency:
-
-BDT / ৳
-
-Date format:
-
-DD-MM-YYYY
-
-Timezone:
-
-Asia/Dhaka
-
-Payment methods should support:
-
-Cash
-bKash
-Nagad
-Rocket
-Card
-Bank
-
-Keep payment gateway architecture configurable.
-
-==================================================
-39. MULTI-BRANCH READY
-======================
-
-Even if multi-branch is initially disabled, database architecture must support it.
-
-branches table.
-
-Relevant records should contain:
-
-branch_id
-
-Admin can select branch.
-
-Branch users should only see authorized branch data.
-
-Super Admin can see all branches.
-
-==================================================
-40. SOFTWARE WORKFLOW
-=====================
-
-CLINIC:
-
+```text
+Pending Samples
+      ↓
+Scan Barcode
+      ↓
 Patient
-↓
-Appointment
-↓
-Token
-↓
-Doctor Consultation
-↓
-Diagnosis
-↓
-Prescription
-↓
-Test Recommendation
-↓
-Diagnostic Order
-↓
-Payment
-↓
-Sample Collection
-↓
-Result
-↓
-Report
-
-DIAGNOSTIC:
-
-Patient
-↓
-Test Selection
-↓
-Invoice
-↓
-Payment
-↓
-Sample Collection
-↓
-Lab Processing
-↓
+      ↓
+Test
+      ↓
 Result Entry
-↓
-Pathologist Verification
-↓
-Report Approval
-↓
-PDF Report
-↓
-Patient Download
+      ↓
+Submit
+```
 
-HOME COLLECTION:
+Keep this interface extremely simple and keyboard-friendly.
 
-Online Request
-↓
-Admin Confirmation
-↓
-Collector Assignment
-↓
-Sample Collection
-↓
-Laboratory
-↓
-Result
-↓
-Report
+---
 
-==================================================
-41. DEVELOPMENT ARCHITECTURE
-============================
+# 46. Report Verification
 
-Use clean Laravel architecture.
+Each approved report receives a unique public UUID.
 
-Use:
+QR Code:
 
-Models
-Controllers
-Form Requests
-Policies
+```text
+Scan QR
+   ↓
+Report Verification Page
+   ↓
+Report ID
+Patient
+Test
+Report Date
+Status
+```
+
+Do not expose unnecessary patient information publicly.
+
+---
+
+# 47. Route Structure
+
+```text
+/dashboard
+
+/patients
+/patients/create
+/patients/{patient}
+
+/doctors
+/doctors/create
+/doctors/{doctor}
+/doctors/schedules
+
+/appointments
+/appointments/calendar
+/appointments/token
+
+/clinic/consultations
+/clinic/consultations/{visit}
+
+/diagnostic/tests
+/diagnostic/categories
+/diagnostic/parameters
+/diagnostic/packages
+/diagnostic/orders
+/diagnostic/samples
+/diagnostic/results
+
+/radiology/orders
+/radiology/reports
+
+/billing/invoices
+/billing/payments
+/billing/refunds
+/billing/due
+
+/commissions
+
+/home-collection
+
+/inventory
+
+/expenses
+
+/staff
+
+/reports
+
+/users
+/roles
+/permissions
+
+/settings
+
+/report/verify/{uuid}
+```
+
+All routes must be protected by authentication and permissions.
+
+---
+
+# 48. Development Phases
+
+## Phase 1 — Foundation
+
+```text
+Laravel Setup
+MySQL
+Authentication
+Spatie Permission
+Branch
+Settings
+Admin Layout
+Audit Log
+```
+
+## Phase 2 — Patient & Doctor
+
+```text
+Patient
+Doctor
+Doctor Schedule
+Appointment
+Token
+```
+
+## Phase 3 — Clinic
+
+```text
+Consultation
+Vitals
+Diagnosis
+Prescription
+Follow-up
+```
+
+## Phase 4 — Diagnostic Master
+
+```text
+Departments
+Categories
+Tests
+Parameters
+Reference Ranges
+Packages
 Services
-Repositories where useful
-Events
-Listeners
-Notifications
-Jobs
-Enums
-Traits
+```
 
-Business logic must not be placed entirely inside controllers.
+## Phase 5 — Diagnostic Workflow
 
-Create services such as:
+```text
+Diagnostic Order
+Sample
+Barcode
+Result Entry
+Verification
+Report
+QR Verification
+```
 
-PatientService
-AppointmentService
-DiagnosticOrderService
-SampleService
-ResultService
-ReportService
-BillingService
-PaymentService
-CommissionService
-InventoryService
+## Phase 6 — Radiology
 
-==================================================
-42. DATABASE RULES
-==================
+```text
+X-Ray
+USG
+CT
+MRI
+Echo
+Radiology Reports
+Attachments
+```
 
-Use:
+## Phase 7 — Billing
 
-Primary Keys
-Foreign Keys
-Indexes
-Unique Constraints
-Soft Deletes where appropriate
-Transactions for financial operations
-
-Never physically delete:
-
+```text
 Invoices
 Payments
-Refunds
-Medical reports
-Approved results
+Due
+Refund
+Doctor Commission
+```
 
-Use status fields instead.
+## Phase 8 — Operations
 
-Use UUID where useful for public report verification.
+```text
+Expenses
+Inventory
+Suppliers
+Purchases
+Staff
+Attendance
+Salary
+```
 
-==================================================
-43. SEEDERS
-===========
+## Phase 9 — Online System
 
-Create demo data.
+```text
+Online Appointment
+Online Test Booking
+Home Collection
+Patient Portal
+Notifications
+```
 
-Roles
+## Phase 10 — Reports & Security
+
+```text
+Advanced Reports
+Export
+Audit
+Security
+Performance
+Testing
+Backup
+```
+
+---
+
+# 49. Testing Strategy
+
+Use Pest/PHPUnit.
+
+Test:
+
+```text
+Patient Registration
+Appointment Creation
+Token Generation
+Consultation
+Prescription
+Diagnostic Order
+Package Calculation
+Invoice Calculation
+Discount
+Partial Payment
+Due Calculation
+Refund
+Sample Workflow
+Result Flagging
+Critical Value
+Report Approval
+Commission Calculation
 Permissions
-Departments
-Doctors
-Patients
-Tests
-Test Parameters
-Packages
-Appointments
-Diagnostic Orders
+Branch Isolation
+```
+
+---
+
+# 50. Critical Business Rules
+
+### Patient
+
+Patient ID must be unique.
+
+### Appointment
+
+Same doctor + same time slot must not create conflicting appointments.
+
+### Token
+
+Token must be unique for doctor/date/branch.
+
+### Invoice
+
+Invoice totals must be calculated server-side.
+
+### Payment
+
+Payment cannot exceed allowed outstanding amount unless overpayment handling is explicitly implemented.
+
+### Refund
+
+Refund cannot exceed refundable amount.
+
+### Result
+
+Approved results cannot be directly edited.
+
+### Report
+
+Published reports cannot be deleted.
+
+### Amendment
+
+Corrections create a new report version.
+
+### Branch
+
+Branch users cannot access unauthorized branch records.
+
+### Permission
+
+Every sensitive action must check authorization.
+
+---
+
+# 51. Seed Demo Data
+
+Create realistic demo data:
+
+```text
+1 Admin
+1 Branch
+5 Doctors
+50 Patients
+20 Tests
+100 Parameters
+5 Packages
+30 Appointments
+30 Diagnostic Orders
+Samples
+Results
+Reports
 Invoices
+Payments
+Expenses
+```
 
-Create realistic demo data for testing.
+Create demo credentials through seeders.
 
-==================================================
-44. INSTALLATION
-================
+---
 
-Create installation-ready project.
+# 52. Final Quality Requirements
 
-Include:
+The final ERP must be:
 
-.env.example
-Database migration
-Seeders
-Storage setup
-Admin account setup
+* Production Ready
+* Responsive
+* Secure
+* Fast
+* Scalable
+* Multi-branch Ready
+* Role-based
+* Audit-friendly
+* Medical-record safe
+* Financially accurate
+* Commercially usable
 
-Provide installation instructions.
+Do not build it as a simple CRUD project.
 
-==================================================
-45. FINAL REQUIREMENT
-=====================
+Every module must contain:
 
-The final application must feel like a real commercial Clinic & Diagnostic ERP, not a student project.
-
-Prioritize:
-
-1. Correct database relationships
-2. Real-world workflow
-3. Fast reception operation
-4. Accurate billing
-5. Secure medical records
-6. Professional diagnostic reports
-7. Role-based access
-8. Audit trail
-9. Responsive UI
-10. Scalable architecture
-
-Before coding:
-
-First create:
-
-A. Complete database ERD
-B. Database table list
-C. Relationship explanation
-D. Module dependency map
-E. User workflow
-F. UI page list
-G. Route structure
-H. Permission matrix
-
-Then implement the software module by module.
-
-For every module provide:
-
+```text
 Migration
 Model
-Relationship
+Relationships
 Form Request
 Policy
 Service
 Controller
 Routes
 Blade Views
-JavaScript/AJAX
 Validation
-Permission
+Permissions
 Seeder
-Report/Print functionality where applicable.
+Reports
+```
 
-Do not skip database design.
+Where applicable.
 
-Do not create duplicate tables for the same concept.
+---
 
-Use reusable components and layouts.
+# 53. Development Rule
 
-Create:
+DO NOT start by generating hundreds of files randomly.
 
-resources/views/layouts/admin.blade.php
-resources/views/layouts/auth.blade.php
-resources/views/components/
-resources/views/admin/
+First complete:
 
-Keep:
+### Step 1
 
-header
-sidebar
-footer
-breadcrumb
-modal
-alert
-form
-table
-pagination
+Database ERD
 
-as reusable components.
+### Step 2
 
-The final UI must be clean, responsive, fast and suitable for commercial deployment.
+Complete table/column specification
+
+### Step 3
+
+Relationship map
+
+### Step 4
+
+Permission matrix
+
+### Step 5
+
+Module dependency map
+
+### Step 6
+
+Route map
+
+### Step 7
+
+UI page map
+
+### Step 8
+
+Laravel migrations
+
+### Step 9
+
+Models & relationships
+
+### Step 10
+
+Module-by-module implementation
+
+After every phase:
+
+```text
+Migration Test
+Database Test
+Feature Test
+Permission Test
+UI Test
+Workflow Test
+```
+
+Only after one phase is stable should the next phase begin.
+
+---
+
+# 54. Final Core Workflow
+
+## Clinic
+
+```text
+Patient Registration
+        ↓
+Appointment
+        ↓
+Token
+        ↓
+Doctor Consultation
+        ↓
+Diagnosis
+        ↓
+Prescription
+        ↓
+Test Recommendation
+        ↓
+Diagnostic Order
+```
+
+## Diagnostic
+
+```text
+Diagnostic Order
+        ↓
+Invoice
+        ↓
+Payment
+        ↓
+Sample Collection
+        ↓
+Barcode
+        ↓
+Lab Processing
+        ↓
+Result Entry
+        ↓
+Pathologist Verification
+        ↓
+Report Approval
+        ↓
+PDF + QR
+        ↓
+Patient Portal
+```
+
+## Radiology
+
+```text
+Order
+ ↓
+Patient Preparation
+ ↓
+Imaging
+ ↓
+Technician
+ ↓
+Radiologist
+ ↓
+Findings
+ ↓
+Impression
+ ↓
+Approval
+ ↓
+PDF Report
+```
+
+## Home Collection
+
+```text
+Online Request
+ ↓
+Confirmation
+ ↓
+Collector Assignment
+ ↓
+Sample Collection
+ ↓
+Laboratory
+ ↓
+Result
+ ↓
+Report
+```
+
+The completed application should provide a seamless connection between **Clinic, Diagnostic Laboratory, Radiology, Patient, Doctor, Billing and Management** while maintaining strict permission control, medical data security, financial accuracy and a professional healthcare user experience.
