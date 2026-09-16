@@ -43,9 +43,14 @@
                             <span class="badge bg-warning text-dark">{{ $visit->status }}</span>
                         @endif
                     </td>
-                    <td>
-                        <a href="{{ route('consultations.show', $visit->id) }}" class="btn btn-sm btn-info" title="View"><i class="fa-solid fa-eye"></i></a>
-                        <a href="{{ route('consultations.show', $visit->id) }}" class="btn btn-sm btn-success" title="Prescription"><i class="fa-solid fa-prescription"></i> Write</a>
+                    <td class="d-flex gap-1">
+                        <a href="{{ route('consultations.show', $visit->id) }}" class="btn btn-sm btn-info" title="View/Print"><i class="fa-solid fa-eye"></i></a>
+                        <a href="{{ route('consultations.edit', $visit->id) }}" class="btn btn-sm btn-warning" title="Edit"><i class="fa-solid fa-pen"></i></a>
+                        <form action="{{ route('consultations.destroy', $visit->id) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this visit?');">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit" class="btn btn-sm btn-danger" title="Delete"><i class="fa-solid fa-trash"></i></button>
+                        </form>
                     </td>
                 </tr>
                 @empty

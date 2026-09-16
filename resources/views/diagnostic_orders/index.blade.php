@@ -55,9 +55,13 @@
                             <span class="badge bg-secondary">{{ $order->order_status }}</span>
                         @endif
                     </td>
-                    <td>
-                        <a href="#" class="btn btn-sm btn-info" title="View"><i class="fa-solid fa-eye"></i></a>
-                        <a href="#" class="btn btn-sm btn-primary" title="Print Invoice"><i class="fa-solid fa-print"></i></a>
+                    <td class="d-flex gap-1">
+                        <a href="{{ route('diagnostic-orders.edit', $order->id) }}" class="btn btn-sm btn-warning" title="Edit"><i class="fa-solid fa-pen"></i></a>
+                        <form action="{{ route('diagnostic-orders.destroy', $order->id) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this order?');">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit" class="btn btn-sm btn-danger" title="Delete"><i class="fa-solid fa-trash"></i></button>
+                        </form>
                     </td>
                 </tr>
                 @empty

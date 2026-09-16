@@ -49,8 +49,13 @@
                             <span class="badge bg-secondary">{{ $apt->status }}</span>
                         @endif
                     </td>
-                    <td>
-                        <a href="#" class="btn btn-sm btn-info" title="View"><i class="fa-solid fa-eye"></i></a>
+                    <td class="d-flex gap-1">
+                        <a href="{{ route('appointments.edit', $apt->id) }}" class="btn btn-sm btn-warning" title="Edit"><i class="fa-solid fa-pen"></i></a>
+                        <form action="{{ route('appointments.destroy', $apt->id) }}" method="POST" onsubmit="return confirm('Are you sure you want to cancel this appointment?');">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit" class="btn btn-sm btn-danger" title="Delete"><i class="fa-solid fa-trash"></i></button>
+                        </form>
                     </td>
                 </tr>
                 @empty
