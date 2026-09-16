@@ -34,6 +34,21 @@
         <a href="{{ route('diagnostic-orders.index') }}" class="{{ request()->routeIs('diagnostic-orders.*') ? 'active' : '' }}"><i class="fa-solid fa-vial-circle-check me-2"></i> Lab Orders</a>
         <a href="{{ route('test-results.index') }}" class="{{ request()->routeIs('test-results.*') ? 'active' : '' }}"><i class="fa-solid fa-file-medical me-2"></i> Lab Results</a>
         <a href="{{ route('invoices.index') }}" class="{{ request()->routeIs('invoices.*') ? 'active' : '' }}"><i class="fa-solid fa-file-invoice-dollar me-2"></i> Billing</a>
+        <a href="{{ route('accounts.index') }}" class="{{ request()->routeIs('accounts.*') ? 'active' : '' }}"><i class="fa-solid fa-wallet me-2"></i> Account</a>
+        
+        <!-- Reports Dropdown -->
+        <a class="dropdown-toggle" data-bs-toggle="collapse" href="#reportsMenu" role="button" aria-expanded="{{ request()->routeIs('reports.*') ? 'true' : 'false' }}">
+            <i class="fa-solid fa-file-lines me-2"></i> Reports
+        </a>
+        <div class="collapse {{ request()->routeIs('reports.*') ? 'show' : '' }}" id="reportsMenu">
+            <div class="ps-3 border-start border-secondary ms-3 mt-1 mb-2">
+                <a href="{{ route('reports.account') }}" class="py-1 {{ request()->routeIs('reports.account') ? 'text-info' : '' }}"><i class="fa-solid fa-angle-right me-1"></i> Account Report</a>
+                <a href="{{ route('reports.patient') }}" class="py-1 {{ request()->routeIs('reports.patient') ? 'text-info' : '' }}"><i class="fa-solid fa-angle-right me-1"></i> Patient Report</a>
+                <a href="{{ route('reports.doctor') }}" class="py-1 {{ request()->routeIs('reports.doctor') ? 'text-info' : '' }}"><i class="fa-solid fa-angle-right me-1"></i> Doctor Report</a>
+                <a href="{{ route('reports.labOrder') }}" class="py-1 {{ request()->routeIs('reports.labOrder') ? 'text-info' : '' }}"><i class="fa-solid fa-angle-right me-1"></i> Lab Order Report</a>
+            </div>
+        </div>
+
         <a href="#"><i class="fa-solid fa-gear me-2"></i> Settings</a>
         
         <form method="POST" action="{{ route('logout') }}" class="mt-5">

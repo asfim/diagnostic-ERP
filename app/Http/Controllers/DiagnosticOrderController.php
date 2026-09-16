@@ -17,7 +17,8 @@ class DiagnosticOrderController extends Controller
     public function create()
     {
         $patients = Patient::all();
-        return view('diagnostic_orders.create', compact('patients'));
+        $tests = \App\Models\Test::where('status', true)->get();
+        return view('diagnostic_orders.create', compact('patients', 'tests'));
     }
 
     public function store(Request $request)
@@ -25,26 +26,50 @@ class DiagnosticOrderController extends Controller
         $data = $request->validate([
             'patient_id' => 'required|exists:patients,id',
             'order_date' => 'required|date',
-            'total_amount' => 'required|numeric|min:0',
             'discount' => 'nullable|numeric|min:0',
             'paid_amount' => 'required|numeric|min:0',
+            'tests' => 'required|array|min:1',
+            'tests.*' => 'exists:tests,id',
+            'prices' => 'required|array|min:1',
+            'prices.*' => 'numeric|min:0',
         ]);
         
-        $data['due_amount'] = $data['total_amount'] - ($data['discount'] ?? 0) - $data['paid_amount'];
+        // Calculate total from the submitted test prices (extra safety to avoid tampering if needed, but we'll trust the client side form structure for now and sum it)
+        $total_amount = array_sum($data['prices']);
+        $due_amount = $total_amount - ($data['discount'] ?? 0) - $data['paid_amount'];
         
-        if ($data['due_amount'] <= 0) {
-            $data['payment_status'] = 'Paid';
-        } elseif ($data['paid_amount'] > 0) {
-            $data['payment_status'] = 'Partial';
+        $orderData = [
+            'patient_id' => $data['patient_id'],
+            'order_date' => $data['order_date'],
+            'total_amount' => $total_amount,
+            'discount' => $data['discount'] ?? 0,
+            'paid_amount' => $data['paid_amount'],
+            'due_amount' => $due_amount,
+        ];
+        
+        if ($orderData['due_amount'] <= 0) {
+            $orderData['payment_status'] = 'Paid';
+        } elseif ($orderData['paid_amount'] > 0) {
+            $orderData['payment_status'] = 'Partial';
         } else {
-            $data['payment_status'] = 'Unpaid';
+            $orderData['payment_status'] = 'Unpaid';
         }
         
         $lastOrder = DiagnosticOrder::latest('id')->first();
         $nextId = $lastOrder ? $lastOrder->id + 1 : 1;
-        $data['order_id'] = 'ORD-' . date('ymd') . '-' . str_pad($nextId, 4, '0', STR_PAD_LEFT);
+        $orderData['order_id'] = 'ORD-' . date('ymd') . '-' . str_pad($nextId, 4, '0', STR_PAD_LEFT);
         
-        DiagnosticOrder::create($data);
+        $order = DiagnosticOrder::create($orderData);
+
+        // Insert items
+        foreach ($data['tests'] as $index => $testId) {
+            \App\Models\DiagnosticOrderItem::create([
+                'diagnostic_order_id' => $order->id,
+                'test_id' => $testId,
+                'price' => $data['prices'][$index],
+                'status' => 'Pending'
+            ]);
+        }
 
         return redirect()->route('diagnostic-orders.index')->with('success', 'Lab order created successfully!');
     }

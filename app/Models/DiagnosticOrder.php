@@ -19,4 +19,9 @@ class DiagnosticOrder extends Model
     {
         return $this->belongsTo(Patient::class);
     }
+
+    public function items()
+    {
+        return $this->hasMany(DiagnosticOrderItem::class);
+    }
 }

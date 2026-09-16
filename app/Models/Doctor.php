@@ -14,4 +14,14 @@ class Doctor extends Model
         'qualification', 'bmdc_reg', 'mobile', 'email', 'address', 
         'consultation_fee', 'status'
     ];
+
+    public function appointments()
+    {
+        return $this->hasMany(Appointment::class);
+    }
+
+    public function department()
+    {
+        return $this->belongsTo(Department::class); // Assuming department_id exists, otherwise it returns null
+    }
 }

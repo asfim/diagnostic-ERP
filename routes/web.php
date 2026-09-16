@@ -1,6 +1,9 @@
 <?php
 
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\InvoiceController;
+use App\Http\Controllers\AccountController;
+use App\Http\Controllers\ReportController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -30,6 +33,18 @@ Route::middleware('auth')->group(function () {
     Route::resource('diagnostic-orders', \App\Http\Controllers\DiagnosticOrderController::class);
     Route::resource('consultations', \App\Http\Controllers\ConsultationController::class);
     Route::resource('test-results', \App\Http\Controllers\TestResultController::class);
+
+    // Accounts
+    Route::get('/accounts', [AccountController::class, 'index'])->name('accounts.index');
+
+    // Reports
+    Route::prefix('reports')->name('reports.')->group(function () {
+        Route::get('/account', [ReportController::class, 'account'])->name('account');
+        Route::get('/patient', [ReportController::class, 'patient'])->name('patient');
+        Route::get('/doctor', [ReportController::class, 'doctor'])->name('doctor');
+        Route::get('/lab-order', [ReportController::class, 'labOrder'])->name('labOrder');
+    });
+
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
