@@ -44,8 +44,8 @@
                         @endif
                     </td>
                     <td>
-                        <a href="#" class="btn btn-sm btn-info" title="View"><i class="fa-solid fa-eye"></i></a>
-                        <a href="#" class="btn btn-sm btn-primary" title="Print Report"><i class="fa-solid fa-print"></i> Report</a>
+                        <a href="{{ route('test-results.show', $result->id) }}" class="btn btn-sm btn-info" title="View"><i class="fa-solid fa-eye"></i></a>
+                        <a href="{{ route('test-results.show', $result->id) }}" class="btn btn-sm btn-primary" title="Print Report"><i class="fa-solid fa-print"></i> Report</a>
                     </td>
                 </tr>
                 @empty

@@ -50,8 +50,8 @@
                         @endif
                     </td>
                     <td>
-                        <a href="#" class="btn btn-sm btn-info" title="View"><i class="fa-solid fa-eye"></i></a>
-                        <a href="#" class="btn btn-sm btn-primary" title="Print"><i class="fa-solid fa-print"></i></a>
+                        <a href="{{ route('invoices.show', $invoice->id) }}" class="btn btn-sm btn-info" title="View"><i class="fa-solid fa-eye"></i></a>
+                        <a href="{{ route('invoices.show', $invoice->id) }}" class="btn btn-sm btn-primary" title="Print"><i class="fa-solid fa-print"></i></a>
                     </td>
                 </tr>
                 @empty
