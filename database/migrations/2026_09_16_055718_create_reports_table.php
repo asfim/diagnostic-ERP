@@ -13,6 +13,11 @@ return new class extends Migration
     {
         Schema::create('reports', function (Blueprint $table) {
             $table->id();
+            $table->string('report_id')->unique();
+            $table->foreignId('diagnostic_order_id')->constrained()->cascadeOnDelete();
+            $table->foreignId('patient_id')->constrained()->cascadeOnDelete();
+            $table->string('report_status')->default('Draft'); // Draft, Published
+            $table->text('summary')->nullable();
             $table->timestamps();
         });
     }

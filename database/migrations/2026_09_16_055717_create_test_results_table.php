@@ -13,6 +13,12 @@ return new class extends Migration
     {
         Schema::create('test_results', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('diagnostic_order_id')->constrained()->cascadeOnDelete();
+            $table->foreignId('test_id')->constrained()->cascadeOnDelete();
+            $table->foreignId('patient_id')->constrained()->cascadeOnDelete();
+            $table->string('result_value')->nullable();
+            $table->text('remarks')->nullable();
+            $table->string('status')->default('Pending'); // Pending, Completed, Verified
             $table->timestamps();
         });
     }

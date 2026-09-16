@@ -32,6 +32,7 @@
         <a href="{{ route('consultations.index') }}" class="{{ request()->routeIs('consultations.*') ? 'active' : '' }}"><i class="fa-solid fa-stethoscope me-2"></i> OPD Consultations</a>
         <a href="{{ route('tests.index') }}" class="{{ request()->routeIs('tests.*') ? 'active' : '' }}"><i class="fa-solid fa-microscope me-2"></i> Master Tests</a>
         <a href="{{ route('diagnostic-orders.index') }}" class="{{ request()->routeIs('diagnostic-orders.*') ? 'active' : '' }}"><i class="fa-solid fa-vial-circle-check me-2"></i> Lab Orders</a>
+        <a href="{{ route('test-results.index') }}" class="{{ request()->routeIs('test-results.*') ? 'active' : '' }}"><i class="fa-solid fa-file-medical me-2"></i> Lab Results</a>
         <a href="{{ route('invoices.index') }}" class="{{ request()->routeIs('invoices.*') ? 'active' : '' }}"><i class="fa-solid fa-file-invoice-dollar me-2"></i> Billing</a>
         <a href="#"><i class="fa-solid fa-gear me-2"></i> Settings</a>
         
