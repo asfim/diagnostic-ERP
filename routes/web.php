@@ -8,7 +8,17 @@ Route::get('/', function () {
 });
 
 Route::get('/dashboard', function () {
-    return view('admin.dashboard');
+    $data = [
+        'total_patients' => \App\Models\Patient::count(),
+        'total_doctors' => \App\Models\Doctor::count(),
+        'total_appointments' => \App\Models\Appointment::count(),
+        'total_invoices' => \App\Models\Invoice::count(),
+        'total_revenue' => \App\Models\Invoice::sum('paid'),
+        'total_lab_orders' => \App\Models\DiagnosticOrder::count(),
+        'recent_patients' => \App\Models\Patient::latest()->take(5)->get(),
+        'recent_appointments' => \App\Models\Appointment::with(['patient', 'doctor'])->latest()->take(5)->get(),
+    ];
+    return view('admin.dashboard', $data);
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {
