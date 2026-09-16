@@ -12,8 +12,8 @@ class ReportController extends Controller
 {
     public function account(Request $request)
     {
-        $startDate = $request->input('start_date', date('Y-m-01'));
-        $endDate = $request->input('end_date', date('Y-m-t'));
+        $startDate = $request->input('start_date', date('Y-m-d', strtotime('-30 days')));
+        $endDate = $request->input('end_date', date('Y-m-d'));
         
         $invoices = Invoice::whereBetween('created_at', [$startDate . ' 00:00:00', $endDate . ' 23:59:59'])->get();
         $labOrders = DiagnosticOrder::whereBetween('created_at', [$startDate . ' 00:00:00', $endDate . ' 23:59:59'])->get();
@@ -25,8 +25,8 @@ class ReportController extends Controller
 
     public function patient(Request $request)
     {
-        $startDate = $request->input('start_date', date('Y-m-01'));
-        $endDate = $request->input('end_date', date('Y-m-t'));
+        $startDate = $request->input('start_date', date('Y-m-d', strtotime('-30 days')));
+        $endDate = $request->input('end_date', date('Y-m-d'));
         
         $patients = Patient::whereBetween('created_at', [$startDate . ' 00:00:00', $endDate . ' 23:59:59'])->get();
         
@@ -38,8 +38,8 @@ class ReportController extends Controller
 
     public function doctor(Request $request)
     {
-        $startDate = $request->input('start_date', date('Y-m-01'));
-        $endDate = $request->input('end_date', date('Y-m-t'));
+        $startDate = $request->input('start_date', date('Y-m-d', strtotime('-30 days')));
+        $endDate = $request->input('end_date', date('Y-m-d'));
         
         // Count appointments per doctor
         $doctors = Doctor::withCount(['appointments' => function($q) use ($startDate, $endDate) {
@@ -51,8 +51,8 @@ class ReportController extends Controller
 
     public function labOrder(Request $request)
     {
-        $startDate = $request->input('start_date', date('Y-m-01'));
-        $endDate = $request->input('end_date', date('Y-m-t'));
+        $startDate = $request->input('start_date', date('Y-m-d', strtotime('-30 days')));
+        $endDate = $request->input('end_date', date('Y-m-d'));
         
         $orders = DiagnosticOrder::with('items.test')
             ->whereBetween('order_date', [$startDate, $endDate])

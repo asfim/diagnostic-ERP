@@ -42,10 +42,10 @@
         </a>
         <div class="collapse {{ request()->routeIs('reports.*') ? 'show' : '' }}" id="reportsMenu">
             <div class="ps-3 border-start border-secondary ms-3 mt-1 mb-2">
-                <a href="{{ route('reports.account') }}" class="py-1 {{ request()->routeIs('reports.account') ? 'text-info' : '' }}"><i class="fa-solid fa-angle-right me-1"></i> Account Report</a>
-                <a href="{{ route('reports.patient') }}" class="py-1 {{ request()->routeIs('reports.patient') ? 'text-info' : '' }}"><i class="fa-solid fa-angle-right me-1"></i> Patient Report</a>
-                <a href="{{ route('reports.doctor') }}" class="py-1 {{ request()->routeIs('reports.doctor') ? 'text-info' : '' }}"><i class="fa-solid fa-angle-right me-1"></i> Doctor Report</a>
-                <a href="{{ route('reports.labOrder') }}" class="py-1 {{ request()->routeIs('reports.labOrder') ? 'text-info' : '' }}"><i class="fa-solid fa-angle-right me-1"></i> Lab Order Report</a>
+                <a href="{{ route('reports.account') }}" class="py-1 {{ request()->routeIs('reports.account') ? 'text-info' : '' }}">Account Report</a>
+                <a href="{{ route('reports.patient') }}" class="py-1 {{ request()->routeIs('reports.patient') ? 'text-info' : '' }}">Patient Report</a>
+                <a href="{{ route('reports.doctor') }}" class="py-1 {{ request()->routeIs('reports.doctor') ? 'text-info' : '' }}">Doctor Report</a>
+                <a href="{{ route('reports.labOrder') }}" class="py-1 {{ request()->routeIs('reports.labOrder') ? 'text-info' : '' }}">Lab Order Report</a>
             </div>
         </div>
 
