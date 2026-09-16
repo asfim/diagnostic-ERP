@@ -6,5 +6,16 @@ use Illuminate\Database\Eloquent\Model;
 
 class Test extends Model
 {
-    //
+    use HasFactory;
+
+    protected $fillable = [
+        'test_code', 'name', 'department_id', 'test_category_id', 
+        'specimen_type', 'container', 'price', 'cost', 
+        'turnaround_time', 'status'
+    ];
+
+    public function department()
+    {
+        return $this->belongsTo(Department::class);
+    }
 }
