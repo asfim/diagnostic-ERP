@@ -2,63 +2,78 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Appointment;
+use App\Models\Patient;
+use App\Models\Doctor;
 use Illuminate\Http\Request;
 
 class AppointmentController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
-        //
+        $appointments = Appointment::with(['patient', 'doctor'])->latest()->paginate(10);
+        return view('appointments.index', compact('appointments'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
     public function create()
     {
-        //
+        $patients = Patient::all();
+        $doctors = Doctor::where('status', true)->get();
+        return view('appointments.create', compact('patients', 'doctors'));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
-        //
+        $data = $request->validate([
+            'patient_id' => 'required|exists:patients,id',
+            'doctor_id' => 'required|exists:doctors,id',
+            'date' => 'required|date',
+            'time' => 'required',
+            'appointment_type' => 'required|string',
+            'consultation_fee' => 'required|numeric|min:0',
+            'discount' => 'nullable|numeric|min:0',
+            'paid' => 'required|numeric|min:0',
+        ]);
+        
+        $data['due'] = $data['consultation_fee'] - ($data['discount'] ?? 0) - $data['paid'];
+        
+        $lastAppt = Appointment::latest('id')->first();
+        $nextId = $lastAppt ? $lastAppt->id + 1 : 1;
+        $data['appointment_id'] = 'APT-' . date('ymd') . '-' . str_pad($nextId, 4, '0', STR_PAD_LEFT);
+        $data['token'] = $nextId; // Simple token generation
+        
+        Appointment::create($data);
+
+        return redirect()->route('appointments.index')->with('success', 'Appointment booked successfully!');
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
+    public function show(Appointment $appointment)
     {
-        //
+        return view('appointments.show', compact('appointment'));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
+    public function edit(Appointment $appointment)
     {
-        //
+        $patients = Patient::all();
+        $doctors = Doctor::where('status', true)->get();
+        return view('appointments.edit', compact('appointment', 'patients', 'doctors'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
+    public function update(Request $request, Appointment $appointment)
     {
-        //
+        $data = $request->validate([
+            'date' => 'required|date',
+            'time' => 'required',
+            'status' => 'required|string',
+        ]);
+        
+        $appointment->update($data);
+        return redirect()->route('appointments.index')->with('success', 'Appointment updated successfully!');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
+    public function destroy(Appointment $appointment)
     {
-        //
+        $appointment->delete();
+        return redirect()->route('appointments.index')->with('success', 'Appointment cancelled.');
     }
 }
