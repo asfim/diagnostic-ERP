@@ -37,6 +37,10 @@ Route::middleware('auth')->group(function () {
     // Accounts
     Route::get('/accounts', [AccountController::class, 'index'])->name('accounts.index');
 
+    // Staff & Roles
+    Route::resource('staff', \App\Http\Controllers\StaffController::class);
+    Route::resource('roles', \App\Http\Controllers\RoleController::class);
+
     // Reports
     Route::prefix('reports')->name('reports.')->group(function () {
         Route::get('/account', [ReportController::class, 'account'])->name('account');
