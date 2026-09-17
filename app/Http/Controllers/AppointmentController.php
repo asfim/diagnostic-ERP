@@ -9,9 +9,20 @@ use Illuminate\Http\Request;
 
 class AppointmentController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $appointments = Appointment::with(['patient', 'doctor'])->latest()->paginate(10);
+        $user = $request->user();
+        
+        $query = Appointment::with(['patient', 'doctor'])->latest();
+
+        if ($user->hasRole('Doctor')) {
+            $doctor = Doctor::where('user_id', $user->id)->first();
+            if ($doctor) {
+                $query->where('doctor_id', $doctor->id);
+            }
+        }
+
+        $appointments = $query->paginate(10);
         return view('appointments.index', compact('appointments'));
     }
 
@@ -33,9 +44,15 @@ class AppointmentController extends Controller
             'consultation_fee' => 'required|numeric|min:0',
             'discount' => 'nullable|numeric|min:0',
             'paid' => 'required|numeric|min:0',
+            'due' => 'nullable|numeric|min:0',
         ]);
         
-        $data['due'] = $data['consultation_fee'] - ($data['discount'] ?? 0) - $data['paid'];
+        if (!isset($data['due'])) {
+            $data['due'] = $data['consultation_fee'] - ($data['discount'] ?? 0) - $data['paid'];
+            if ($data['due'] < 0) {
+                $data['due'] = 0;
+            }
+        }
         
         $lastAppt = Appointment::latest('id')->first();
         $nextId = $lastAppt ? $lastAppt->id + 1 : 1;
@@ -65,10 +82,32 @@ class AppointmentController extends Controller
             'date' => 'required|date',
             'time' => 'required',
             'status' => 'required|string',
+            'consultation_fee' => 'required|numeric|min:0',
+            'discount' => 'nullable|numeric|min:0',
+            'paid' => 'required|numeric|min:0',
+            'due' => 'nullable|numeric|min:0',
         ]);
         
+        if (!isset($data['due'])) {
+            $data['due'] = $data['consultation_fee'] - ($data['discount'] ?? 0) - $data['paid'];
+            if ($data['due'] < 0) {
+                $data['due'] = 0;
+            }
+        }
+
         $appointment->update($data);
         return redirect()->route('appointments.index')->with('success', 'Appointment updated successfully!');
+    }
+
+    public function updateStatus(Request $request, Appointment $appointment)
+    {
+        $request->validate([
+            'status' => 'required|string|in:Pending,Confirmed,Completed,Cancelled'
+        ]);
+
+        $appointment->update(['status' => $request->status]);
+
+        return response()->json(['success' => true, 'message' => 'Status updated successfully']);
     }
 
     public function destroy(Appointment $appointment)

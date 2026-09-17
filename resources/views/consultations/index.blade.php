@@ -44,7 +44,8 @@
                         @endif
                     </td>
                     <td class="d-flex gap-1">
-                        <a href="{{ route('consultations.show', $visit->id) }}" class="btn btn-sm btn-info" title="View/Print"><i class="fa-solid fa-eye"></i></a>
+                        <a href="{{ route('consultations.show', $visit->id) }}" class="btn btn-sm btn-info text-white" title="View/Print"><i class="fa-solid fa-eye"></i></a>
+                        <a href="{{ route('prescriptions.form', $visit->id) }}" class="btn btn-sm btn-success" title="Write Prescription"><i class="fa-solid fa-prescription"></i></a>
                         <a href="{{ route('consultations.edit', $visit->id) }}" class="btn btn-sm btn-warning" title="Edit"><i class="fa-solid fa-pen"></i></a>
                         <form action="{{ route('consultations.destroy', $visit->id) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this visit?');">
                             @csrf

@@ -41,13 +41,12 @@
                     <td>{{ $apt->token }}</td>
                     <td>{{ number_format($apt->due, 2) }}</td>
                     <td>
-                        @if($apt->status == 'Pending')
-                            <span class="badge bg-warning text-dark">{{ $apt->status }}</span>
-                        @elseif($apt->status == 'Confirmed')
-                            <span class="badge bg-success">{{ $apt->status }}</span>
-                        @else
-                            <span class="badge bg-secondary">{{ $apt->status }}</span>
-                        @endif
+                        <select class="form-select form-select-sm status-dropdown shadow-sm {{ $apt->status == 'Pending' ? 'bg-warning text-dark' : ($apt->status == 'Confirmed' ? 'bg-success text-white' : 'bg-secondary text-white') }}" data-id="{{ $apt->id }}" style="width: 110px; font-weight: 500; cursor: pointer;">
+                            <option value="Pending" {{ $apt->status == 'Pending' ? 'selected' : '' }}>Pending</option>
+                            <option value="Confirmed" {{ $apt->status == 'Confirmed' ? 'selected' : '' }}>Confirmed</option>
+                            <option value="Completed" {{ $apt->status == 'Completed' ? 'selected' : '' }}>Completed</option>
+                            <option value="Cancelled" {{ $apt->status == 'Cancelled' ? 'selected' : '' }}>Cancelled</option>
+                        </select>
                     </td>
                     <td class="d-flex gap-1">
                         <a href="{{ route('appointments.edit', $apt->id) }}" class="btn btn-sm btn-warning" title="Edit"><i class="fa-solid fa-pen"></i></a>
@@ -68,4 +67,42 @@
         {{ $appointments->links() }}
     </div>
 </div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const dropdowns = document.querySelectorAll('.status-dropdown');
+    dropdowns.forEach(dropdown => {
+        dropdown.addEventListener('change', function() {
+            const appointmentId = this.dataset.id;
+            const newStatus = this.value;
+            const selectElement = this;
+
+            fetch(`/appointments/${appointmentId}/status`, {
+                method: 'PATCH',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                },
+                body: JSON.stringify({ status: newStatus })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    // Update classes based on status for visual feedback
+                    selectElement.className = 'form-select form-select-sm status-dropdown shadow-sm';
+                    if (newStatus === 'Pending') selectElement.classList.add('bg-warning', 'text-dark');
+                    else if (newStatus === 'Confirmed') selectElement.classList.add('bg-success', 'text-white');
+                    else selectElement.classList.add('bg-secondary', 'text-white');
+                } else {
+                    alert('Failed to update status.');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('An error occurred while updating status.');
+            });
+        });
+    });
+});
+</script>
 @endsection
