@@ -4,10 +4,8 @@
 
 @section('content')
 <div class="d-flex justify-content-between align-items-center mb-4">
-    <h4>Roles & Permissions</h4>
-    @can('manage settings')
+    <h4>Roles</h4>
     <a href="{{ route('roles.create') }}" class="btn btn-primary"><i class="fa-solid fa-plus me-1"></i> Add New Role</a>
-    @endcan
 </div>
 
 @if(session('success'))
@@ -38,7 +36,6 @@
                         @endforeach
                     </td>
                     <td>
-                        @can('manage settings')
                         <a href="{{ route('roles.edit', $role->id) }}" class="btn btn-sm btn-info text-white"><i class="fa-solid fa-pen-to-square"></i></a>
                         @if($role->name !== 'Admin')
                         <form action="{{ route('roles.destroy', $role->id) }}" method="POST" class="d-inline">
@@ -47,7 +44,6 @@
                             <button class="btn btn-sm btn-danger" onclick="return confirm('Delete this role?')"><i class="fa-solid fa-trash"></i></button>
                         </form>
                         @endif
-                        @endcan
                     </td>
                 </tr>
                 @endforeach

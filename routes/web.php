@@ -22,13 +22,13 @@ Route::middleware('auth')->group(function () {
     Route::resource('tests', \App\Http\Controllers\TestController::class);
     Route::resource('invoices', \App\Http\Controllers\InvoiceController::class);
     Route::resource('diagnostic-orders', \App\Http\Controllers\DiagnosticOrderController::class);
-    
+
     // Consultations & Prescriptions
     Route::resource('consultations', \App\Http\Controllers\ConsultationController::class);
     Route::patch('consultations/{visit}/status', [\App\Http\Controllers\ConsultationController::class, 'updateStatus'])->name('consultations.updateStatus');
     Route::get('visits/{visit}/prescription', [\App\Http\Controllers\PrescriptionController::class, 'form'])->name('prescriptions.form');
     Route::post('visits/{visit}/prescription', [\App\Http\Controllers\PrescriptionController::class, 'save'])->name('prescriptions.save');
-    
+
     Route::resource('test-results', \App\Http\Controllers\TestResultController::class);
 
     // Accounts
