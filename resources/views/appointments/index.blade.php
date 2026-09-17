@@ -44,7 +44,6 @@
                         <select class="form-select form-select-sm status-dropdown shadow-sm {{ $apt->status == 'Pending' ? 'bg-warning text-dark' : ($apt->status == 'Confirmed' ? 'bg-success text-white' : 'bg-secondary text-white') }}" data-id="{{ $apt->id }}" style="width: 110px; font-weight: 500; cursor: pointer;">
                             <option value="Pending" {{ $apt->status == 'Pending' ? 'selected' : '' }}>Pending</option>
                             <option value="Confirmed" {{ $apt->status == 'Confirmed' ? 'selected' : '' }}>Confirmed</option>
-                            <option value="Completed" {{ $apt->status == 'Completed' ? 'selected' : '' }}>Completed</option>
                             <option value="Cancelled" {{ $apt->status == 'Cancelled' ? 'selected' : '' }}>Cancelled</option>
                         </select>
                     </td>

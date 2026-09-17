@@ -37,11 +37,11 @@
                     <td>{{ $visit->patient->name ?? 'N/A' }}</td>
                     <td>{{ $visit->doctor->name ?? 'N/A' }}</td>
                     <td>
-                        @if($visit->status == 'Completed')
-                            <span class="badge bg-success">Completed</span>
-                        @else
-                            <span class="badge bg-warning text-dark">{{ $visit->status }}</span>
-                        @endif
+                        <select class="form-select form-select-sm status-dropdown shadow-sm {{ $visit->status == 'Pending' ? 'bg-warning text-dark' : ($visit->status == 'Completed' ? 'bg-success text-white' : 'bg-secondary text-white') }}" data-id="{{ $visit->id }}" style="width: 110px; font-weight: 500; cursor: pointer;">
+                            <option value="Pending" {{ $visit->status == 'Pending' ? 'selected' : '' }}>Pending</option>
+                            <option value="Completed" {{ $visit->status == 'Completed' ? 'selected' : '' }}>Completed</option>
+                            <option value="Cancelled" {{ $visit->status == 'Cancelled' ? 'selected' : '' }}>Cancelled</option>
+                        </select>
                     </td>
                     <td class="d-flex gap-1">
                         <a href="{{ route('consultations.show', $visit->id) }}" class="btn btn-sm btn-info text-white" title="View/Print"><i class="fa-solid fa-eye"></i></a>
@@ -64,4 +64,41 @@
         {{ $visits->links() }}
     </div>
 </div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const dropdowns = document.querySelectorAll('.status-dropdown');
+    dropdowns.forEach(dropdown => {
+        dropdown.addEventListener('change', function() {
+            const visitId = this.dataset.id;
+            const newStatus = this.value;
+            const selectElement = this;
+
+            fetch(`/consultations/${visitId}/status`, {
+                method: 'PATCH',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                },
+                body: JSON.stringify({ status: newStatus })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    selectElement.className = 'form-select form-select-sm status-dropdown shadow-sm';
+                    if (newStatus === 'Pending') selectElement.classList.add('bg-warning', 'text-dark');
+                    else if (newStatus === 'Completed') selectElement.classList.add('bg-success', 'text-white');
+                    else selectElement.classList.add('bg-secondary', 'text-white');
+                } else {
+                    alert('Failed to update status.');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('An error occurred while updating status.');
+            });
+        });
+    });
+});
+</script>
 @endsection

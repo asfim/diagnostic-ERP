@@ -22,6 +22,11 @@ class PrescriptionController extends Controller
         $visit = Visit::findOrFail($visit_id);
 
         $request->validate([
+            'symptoms' => 'nullable|string',
+            'blood_pressure' => 'nullable|string',
+            'weight' => 'nullable|string',
+            'temperature' => 'nullable|string',
+            'notes' => 'nullable|string',
             'advice' => 'nullable|string',
             'next_visit_date' => 'nullable|date',
             'medicines' => 'nullable|array',
@@ -29,6 +34,14 @@ class PrescriptionController extends Controller
             'medicines.*.dosage' => 'required|string',
             'medicines.*.duration' => 'required|string',
             'medicines.*.instruction' => 'nullable|string',
+        ]);
+
+        $visit->update([
+            'symptoms' => $request->symptoms,
+            'blood_pressure' => $request->blood_pressure,
+            'weight' => $request->weight,
+            'temperature' => $request->temperature,
+            'notes' => $request->notes,
         ]);
 
         $prescription = Prescription::firstOrCreate(

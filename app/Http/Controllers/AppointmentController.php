@@ -81,7 +81,7 @@ class AppointmentController extends Controller
         $data = $request->validate([
             'date' => 'required|date',
             'time' => 'required',
-            'status' => 'required|string',
+            'status' => 'required|string|in:Pending,Confirmed,Cancelled',
             'consultation_fee' => 'required|numeric|min:0',
             'discount' => 'nullable|numeric|min:0',
             'paid' => 'required|numeric|min:0',
@@ -96,18 +96,45 @@ class AppointmentController extends Controller
         }
 
         $appointment->update($data);
+
+        if ($data['status'] === 'Confirmed') {
+            $this->createVisitIfNotExists($appointment);
+        }
+
         return redirect()->route('appointments.index')->with('success', 'Appointment updated successfully!');
     }
 
     public function updateStatus(Request $request, Appointment $appointment)
     {
         $request->validate([
-            'status' => 'required|string|in:Pending,Confirmed,Completed,Cancelled'
+            'status' => 'required|string|in:Pending,Confirmed,Cancelled'
         ]);
 
         $appointment->update(['status' => $request->status]);
 
+        if ($request->status === 'Confirmed') {
+            $this->createVisitIfNotExists($appointment);
+        }
+
         return response()->json(['success' => true, 'message' => 'Status updated successfully']);
+    }
+
+    private function createVisitIfNotExists(Appointment $appointment)
+    {
+        $existingVisit = \App\Models\Visit::where('appointment_id', $appointment->id)->first();
+        if (!$existingVisit) {
+            $lastVisit = \App\Models\Visit::latest('id')->first();
+            $nextId = $lastVisit ? $lastVisit->id + 1 : 1;
+            
+            \App\Models\Visit::create([
+                'visit_id' => 'VST-' . date('ymd') . '-' . str_pad($nextId, 4, '0', STR_PAD_LEFT),
+                'patient_id' => $appointment->patient_id,
+                'doctor_id' => $appointment->doctor_id,
+                'appointment_id' => $appointment->id,
+                'visit_date' => $appointment->date,
+                'status' => 'Pending'
+            ]);
+        }
     }
 
     public function destroy(Appointment $appointment)

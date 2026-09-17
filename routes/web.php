@@ -25,6 +25,7 @@ Route::middleware('auth')->group(function () {
     
     // Consultations & Prescriptions
     Route::resource('consultations', \App\Http\Controllers\ConsultationController::class);
+    Route::patch('consultations/{visit}/status', [\App\Http\Controllers\ConsultationController::class, 'updateStatus'])->name('consultations.updateStatus');
     Route::get('visits/{visit}/prescription', [\App\Http\Controllers\PrescriptionController::class, 'form'])->name('prescriptions.form');
     Route::post('visits/{visit}/prescription', [\App\Http\Controllers\PrescriptionController::class, 'save'])->name('prescriptions.save');
     

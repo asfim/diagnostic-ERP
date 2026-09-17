@@ -74,6 +74,18 @@ class ConsultationController extends Controller
         return redirect()->route('consultations.index')->with('success', 'Visit updated successfully!');
     }
 
+    public function updateStatus(Request $request, $id)
+    {
+        $visit = Visit::findOrFail($id);
+        $request->validate([
+            'status' => 'required|string|in:Pending,Completed,Cancelled'
+        ]);
+
+        $visit->update(['status' => $request->status]);
+
+        return response()->json(['success' => true, 'message' => 'Status updated successfully']);
+    }
+
     public function destroy($id)
     {
         $visit = Visit::findOrFail($id);

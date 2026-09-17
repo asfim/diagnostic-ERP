@@ -14,14 +14,11 @@
 
 <div class="card mb-4 border-0 shadow-sm">
     <div class="card-body bg-light rounded">
-        <div class="row">
+        <div class="row mb-3">
             <div class="col-md-3"><strong>Patient:</strong> {{ $visit->patient->name ?? 'N/A' }}</div>
             <div class="col-md-3"><strong>Doctor:</strong> {{ $visit->doctor->name ?? 'N/A' }}</div>
             <div class="col-md-3"><strong>Visit ID:</strong> {{ $visit->visit_id }}</div>
             <div class="col-md-3"><strong>Date:</strong> {{ $visit->visit_date }}</div>
-        </div>
-        <div class="row mt-2">
-            <div class="col-12"><strong>Symptoms:</strong> {{ $visit->symptoms ?? 'None' }}</div>
         </div>
     </div>
 </div>
@@ -30,6 +27,30 @@
     <div class="card-body">
         <form action="{{ route('prescriptions.save', $visit->id) }}" method="POST">
             @csrf
+
+            <h5 class="mb-3 border-bottom pb-2 text-primary">Clinical Details</h5>
+            <div class="row g-3 mb-4">
+                <div class="col-md-12">
+                    <label class="form-label">Symptoms / Chief Complaints</label>
+                    <textarea name="symptoms" class="form-control" rows="2" placeholder="e.g. Fever, Headache">{{ $visit->symptoms }}</textarea>
+                </div>
+                <div class="col-md-4">
+                    <label class="form-label">Blood Pressure</label>
+                    <input type="text" name="blood_pressure" class="form-control" placeholder="e.g. 120/80" value="{{ $visit->blood_pressure }}">
+                </div>
+                <div class="col-md-4">
+                    <label class="form-label">Weight (kg)</label>
+                    <input type="text" name="weight" class="form-control" placeholder="e.g. 65" value="{{ $visit->weight }}">
+                </div>
+                <div class="col-md-4">
+                    <label class="form-label">Temperature (°F)</label>
+                    <input type="text" name="temperature" class="form-control" placeholder="e.g. 98.6" value="{{ $visit->temperature }}">
+                </div>
+                <div class="col-md-12">
+                    <label class="form-label">General Notes / History</label>
+                    <textarea name="notes" class="form-control" rows="2">{{ $visit->notes }}</textarea>
+                </div>
+            </div>
             
             <h5 class="mb-3 border-bottom pb-2 text-primary">Medicines (Rx)</h5>
             <div class="table-responsive">

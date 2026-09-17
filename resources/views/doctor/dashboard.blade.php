@@ -66,7 +66,6 @@
                                         <select class="form-select form-select-sm status-dropdown shadow-sm {{ $appointment->status == 'Pending' ? 'bg-warning text-dark' : ($appointment->status == 'Confirmed' ? 'bg-success text-white' : 'bg-secondary text-white') }}" data-id="{{ $appointment->id }}" style="width: 110px; font-weight: 500; cursor: pointer;">
                                             <option value="Pending" {{ $appointment->status == 'Pending' ? 'selected' : '' }}>Pending</option>
                                             <option value="Confirmed" {{ $appointment->status == 'Confirmed' ? 'selected' : '' }}>Confirmed</option>
-                                            <option value="Completed" {{ $appointment->status == 'Completed' ? 'selected' : '' }}>Completed</option>
                                             <option value="Cancelled" {{ $appointment->status == 'Cancelled' ? 'selected' : '' }}>Cancelled</option>
                                         </select>
                                     </td>
