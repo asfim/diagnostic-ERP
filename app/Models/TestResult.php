@@ -23,4 +23,9 @@ class TestResult extends Model
     {
         return $this->belongsTo(Patient::class);
     }
+
+    public function diagnosticOrder()
+    {
+        return $this->belongsTo(DiagnosticOrder::class);
+    }
 }

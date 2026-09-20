@@ -16,9 +16,13 @@
             <!-- Brand Info -->
             <div class="col-lg-4 col-md-6 mb-4 pe-lg-5">
                 <a class="d-flex align-items-center text-decoration-none mb-3" href="{{ url('/') }}">
-                    <i class="bi bi-heart-pulse-fill text-secondary fs-2 me-2"></i>
+                    @if(!empty($siteSettings['site_logo']))
+                        <img src="{{ asset('storage/' . $siteSettings['site_logo']) }}" alt="{{ $siteSettings['site_name'] ?? 'MediDiag' }}" style="height: 40px;" class="me-2">
+                    @else
+                        <i class="bi bi-heart-pulse-fill text-secondary fs-2 me-2"></i>
+                    @endif
                     <div>
-                        <h4 class="mb-0 text-white fw-bold">Medi<span class="text-secondary">Diag</span></h4>
+                        <h4 class="mb-0 text-white fw-bold">{{ $siteSettings['site_name'] ?? 'MediDiag' }}</h4>
                     </div>
                 </a>
                 <p class="mb-4">We are committed to providing accurate and timely diagnostic reports to help you make informed healthcare decisions.</p>
@@ -74,7 +78,7 @@
     
     <div class="footer-bottom text-center">
         <div class="container">
-            <p class="mb-0">&copy; {{ date('Y') }} MediDiag Diagnostic Center. All Rights Reserved. Designed for Excellence.</p>
+            <p class="mb-0">&copy; {{ date('Y') }} {{ $siteSettings['site_name'] ?? 'MediDiag' }} Diagnostic Center. All Rights Reserved.</p>
         </div>
     </div>
 </footer>

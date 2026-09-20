@@ -97,9 +97,9 @@
                                             <span class="badge bg-success-subtle text-success border border-success-subtle"><i class="bi bi-check-circle me-1"></i>Completed</span>
                                         </td>
                                         <td class="text-end pe-4">
-                                            <button class="btn btn-sm btn-outline-primary rounded-pill px-3" onclick="alert('PDF generation functionality will be integrated here.')">
+                                            <a href="{{ route('frontend.reports.download', $result->id) }}" class="btn btn-sm btn-outline-primary rounded-pill px-3">
                                                 <i class="bi bi-download me-1"></i> Download
-                                            </button>
+                                            </a>
                                         </td>
                                     </tr>
                                     @endforeach

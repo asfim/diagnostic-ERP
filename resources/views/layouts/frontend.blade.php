@@ -4,7 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Advanced Diagnostic Care You Can Trust">
-    <title>@yield('title', 'Diagnostic Center')</title>
+    <title>@yield('title', $siteSettings['site_name'] ?? 'Diagnostic Center') - {{ $siteSettings['site_name'] ?? 'MediDiag' }}</title>
+
+    @if(!empty($siteSettings['site_favicon']))
+        <link rel="icon" href="{{ asset('storage/' . $siteSettings['site_favicon']) }}" type="image/png">
+    @endif
 
     <!-- Bootstrap CSS (CDN) -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">

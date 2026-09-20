@@ -65,4 +65,13 @@ class ReportController extends Controller
         // If we want it to survive a refresh, we should flash to session. But passing to view is okay.
         return view('frontend.reports', compact('results', 'patient'));
     }
+
+    public function download($id)
+    {
+        $result = TestResult::with(['test', 'patient', 'diagnosticOrder'])->findOrFail($id);
+        
+        $pdf = \Barryvdh\DomPDF\Facade\Pdf::loadView('frontend.pdf.report', compact('result'));
+        
+        return $pdf->download('Test_Report_' . $result->diagnosticOrder->order_id . '.pdf');
+    }
 }

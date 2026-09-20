@@ -49,6 +49,7 @@ Route::post('/reports/search', [\App\Http\Controllers\Frontend\ReportController:
 Route::get('/reports/search', function () {
     return redirect('/reports');
 });
+Route::get('/reports/{id}/download', [\App\Http\Controllers\Frontend\ReportController::class, 'download'])->name('frontend.reports.download');
 
 Route::get('/blog', function () {
     return view('frontend.blog');
@@ -101,6 +102,10 @@ Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+
+    // Settings
+    Route::get('/settings', [\App\Http\Controllers\SettingController::class, 'index'])->name('settings.index');
+    Route::put('/settings', [\App\Http\Controllers\SettingController::class, 'update'])->name('settings.update');
 });
 
 require __DIR__.'/auth.php';

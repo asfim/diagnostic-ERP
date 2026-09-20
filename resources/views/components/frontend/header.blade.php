@@ -5,8 +5,8 @@
     <div class="container">
         <div class="row align-items-center">
             <div class="col-md-8 d-flex gap-4">
-                <span><i class="bi bi-telephone-fill"></i> Emergency: +880 1711 000 000</span>
-                <span><i class="bi bi-envelope-fill"></i> info@medidag.com</span>
+                <span><i class="bi bi-telephone-fill"></i> Emergency: {{ $siteSettings['site_phone'] ?? '+880 1711 000 000' }}</span>
+                <span><i class="bi bi-envelope-fill"></i> {{ $siteSettings['site_email'] ?? 'info@medidiag.com' }}</span>
                 <span><i class="bi bi-clock-fill"></i> Open 24/7</span>
             </div>
             <div class="col-md-4 text-end">
@@ -29,10 +29,14 @@
 
         <!-- Logo -->
         <a class="navbar-brand d-flex align-items-center gap-2" href="{{ url('/') }}">
-            <i class="bi bi-heart-pulse-fill text-secondary" style="font-size:2rem;"></i>
+            @if(!empty($siteSettings['site_logo']))
+                <img src="{{ asset('storage/' . $siteSettings['site_logo']) }}" alt="{{ $siteSettings['site_name'] ?? 'MediDiag' }}" style="height: 45px;">
+            @else
+                <i class="bi bi-heart-pulse-fill text-secondary" style="font-size:2rem;"></i>
+            @endif
             <div>
-                Medi<span>Diag</span>
-                <small>Diagnostic &amp; Clinic</small>
+                {{ $siteSettings['site_name'] ?? 'MediDiag' }}
+                <small>{{ $siteSettings['site_tagline'] ?? 'Diagnostic & Clinic' }}</small>
             </div>
         </a>
 
