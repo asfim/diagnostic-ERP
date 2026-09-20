@@ -414,6 +414,9 @@
             <a href="{{ route('roles.index') }}" class="{{ request()->routeIs('roles.*') ? 'active' : '' }}">
                 <i class="fa-solid fa-user-shield"></i> Roles & Permissions
             </a>
+            <a href="{{ route('cms.index') }}" class="{{ request()->routeIs('cms.*') ? 'active' : '' }}">
+                <i class="fa-solid fa-desktop"></i> Frontend CMS
+            </a>
             <a href="{{ route('settings.index') }}" class="{{ request()->routeIs('settings.*') ? 'active' : '' }}">
                 <i class="fa-solid fa-gear"></i> Settings
             </a>

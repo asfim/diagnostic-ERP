@@ -106,6 +106,11 @@ Route::middleware('auth')->group(function () {
     // Settings
     Route::get('/settings', [\App\Http\Controllers\SettingController::class, 'index'])->name('settings.index');
     Route::put('/settings', [\App\Http\Controllers\SettingController::class, 'update'])->name('settings.update');
+
+    // Frontend CMS
+    Route::get('/cms', [\App\Http\Controllers\FrontendCMSController::class, 'index'])->name('cms.index');
+    Route::put('/cms/hero', [\App\Http\Controllers\FrontendCMSController::class, 'updateHero'])->name('cms.hero.update');
+    Route::put('/cms/stats', [\App\Http\Controllers\FrontendCMSController::class, 'updateStats'])->name('cms.stats.update');
 });
 
 require __DIR__.'/auth.php';

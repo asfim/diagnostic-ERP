@@ -7,8 +7,19 @@
 {{-- ============================================================
      HERO SECTION
      ============================================================ --}}
-<section class="hero-section">
-    <div class="hero-bg">
+@if(!isset($hero) || (isset($hero) && $hero->status == 1))
+<section class="hero-section" style="
+    @if(!empty($hero->bg_image)) 
+        background-image: url('{{ asset('storage/' . $hero->bg_image) }}'); 
+        background-size: cover; 
+        background-position: center; 
+    @endif
+">
+    <div class="hero-bg" style="
+        @if(!empty($hero->bg_image) && !empty($hero->overlay_color)) 
+            background: {{ $hero->overlay_color }}; 
+        @endif
+    ">
         <div class="container" style="position:relative; z-index:2;">
             <div class="row align-items-center g-5">
                 <div class="col-lg-7" data-aos="fade-right" data-aos-duration="800">
@@ -20,14 +31,11 @@
 
                     {{-- Title --}}
                     <h1 class="display-4 fw-bold text-white mb-3">
-                        Advanced Care &<br>
-                        <span class="hero-title-accent">Precision Diagnostics</span><br>
-                        You Can Trust
+                        {!! nl2br(e($hero->title ?? "Advanced Care &\nPrecision Diagnostics\nYou Can Trust")) !!}
                     </h1>
 
                     <p class="text-white-50 mb-4" style="font-size:1.1rem; max-width:520px; line-height:1.8;">
-                        Expert consultants, state-of-the-art labs & compassionate care —
-                        available <strong class="text-white">24/7</strong> for you and your family.
+                        {!! nl2br(e($hero->subtitle ?? "Expert consultants, state-of-the-art labs & compassionate care —\navailable 24/7 for you and your family.")) !!}
                     </p>
 
                     {{-- Search Bar --}}
@@ -39,8 +47,8 @@
 
                     {{-- CTAs --}}
                     <div class="d-flex flex-wrap gap-3 mb-4">
-                        <a href="{{ url('/appointment') }}" class="btn btn-light text-primary fw-bold px-4 py-2 rounded-pill shadow">
-                            <i class="bi bi-calendar-check-fill me-2"></i>Book Appointment
+                        <a href="{{ $hero->button_link ?? url('/appointment') }}" class="btn btn-light text-primary fw-bold px-4 py-2 rounded-pill shadow">
+                            <i class="bi bi-calendar-check-fill me-2"></i>{{ $hero->button_text ?? 'Book Appointment' }}
                         </a>
                         <a href="{{ url('/packages') }}" class="btn btn-outline-light fw-bold px-4 py-2 rounded-pill">
                             <i class="bi bi-box-seam me-2"></i>View Packages
@@ -50,24 +58,29 @@
                     {{-- Stats Strip --}}
                     <div class="hero-stats">
                         <div class="hero-stat">
-                            <div class="stat-value">50+</div>
+                            <div class="stat-value">{{ $stats['doctors'] ?? '50+' }}</div>
                             <span class="stat-label">Expert Doctors</span>
                         </div>
                         <div class="hero-stat" style="border-left:1px solid rgba(255,255,255,.2); padding-left:2rem;">
-                            <div class="stat-value">500+</div>
+                            <div class="stat-value">{{ $stats['tests'] ?? '500+' }}</div>
                             <span class="stat-label">Diagnostic Tests</span>
                         </div>
                         <div class="hero-stat" style="border-left:1px solid rgba(255,255,255,.2); padding-left:2rem;">
-                            <div class="stat-value">100k+</div>
+                            <div class="stat-value">{{ $stats['patients'] ?? '100k+' }}</div>
                             <span class="stat-label">Happy Patients</span>
                         </div>
                         <div class="hero-stat" style="border-left:1px solid rgba(255,255,255,.2); padding-left:2rem;">
-                            <div class="stat-value">24/7</div>
-                            <span class="stat-label">Open Always</span>
+                            <div class="stat-value">{{ $stats['support'] ?? '24/7' }}</div>
+                            <span class="stat-label">Emergency Support</span>
                         </div>
                     </div>
                 </div>
 
+                @if(!empty($hero->image))
+                <div class="col-lg-5 d-none d-lg-block" data-aos="fade-left" data-aos-duration="1000">
+                    <img src="{{ asset('storage/' . $hero->image) }}" class="img-fluid rounded-4 shadow-lg" alt="Hero Image">
+                </div>
+                @else
                 {{-- Right side visual card --}}
                 <div class="col-lg-5 d-none d-lg-block" data-aos="fade-left" data-aos-duration="1000" data-aos-delay="200">
                     <div class="bg-white bg-opacity-10 rounded-4 p-4 border border-white border-opacity-25" style="backdrop-filter:blur(12px);">
@@ -109,9 +122,12 @@
                         </div>
                     </div>
                 </div>
+                @endif
             </div>
         </div>
     </div>
+</section>
+@endif
 
     {{-- ============================================================
          QUICK ACTION CARDS (overlap hero bottom)
