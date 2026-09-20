@@ -1,0 +1,168 @@
+:root {
+    /* Brand Colors */
+    --primary-color: #0b5ed7; /* Modern Medical Blue */
+    --secondary-color: #20c997; /* Teal / Health */
+    --dark-color: #212529;
+    --light-color: #f8f9fa;
+    --text-muted: #6c757d;
+    --white: #ffffff;
+    
+    /* Typography */
+    --font-primary: 'Inter', sans-serif;
+    
+    /* Box Shadow */
+    --shadow-sm: 0 .125rem .25rem rgba(0,0,0,.075);
+    --shadow-md: 0 .5rem 1rem rgba(0,0,0,.15);
+    --shadow-lg: 0 1rem 3rem rgba(0,0,0,.175);
+    --shadow-soft: 0 4px 20px rgba(0,0,0,.05);
+}
+
+body {
+    font-family: var(--font-primary);
+    color: var(--dark-color);
+    background-color: var(--white);
+    -webkit-font-smoothing: antialiased;
+}
+
+/* Typography Utilities */
+h1, h2, h3, h4, h5, h6 {
+    font-weight: 700;
+}
+
+.text-primary { color: var(--primary-color) !important; }
+.text-secondary { color: var(--secondary-color) !important; }
+
+/* Buttons */
+.btn-primary {
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
+    padding: 0.5rem 1.5rem;
+    font-weight: 600;
+    border-radius: 5px;
+    transition: all 0.3s ease;
+}
+
+.btn-primary:hover {
+    background-color: #094eb3;
+    border-color: #094eb3;
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-sm);
+}
+
+.btn-secondary {
+    background-color: var(--secondary-color);
+    border-color: var(--secondary-color);
+    color: white;
+    padding: 0.5rem 1.5rem;
+    font-weight: 600;
+    border-radius: 5px;
+    transition: all 0.3s ease;
+}
+
+.btn-secondary:hover {
+    background-color: #1aa179;
+    border-color: #1aa179;
+    color: white;
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-sm);
+}
+
+/* Topbar */
+.topbar {
+    background-color: var(--dark-color);
+    color: var(--white);
+    font-size: 0.85rem;
+    padding: 8px 0;
+}
+.topbar a {
+    color: var(--light-color);
+    text-decoration: none;
+    transition: color 0.3s;
+}
+.topbar a:hover {
+    color: var(--secondary-color);
+}
+.topbar-icons i {
+    margin-right: 5px;
+    color: var(--secondary-color);
+}
+
+/* Header & Navbar */
+.main-header {
+    background-color: var(--white);
+    box-shadow: var(--shadow-sm);
+    position: sticky;
+    top: 0;
+    z-index: 1030;
+    transition: all 0.3s ease;
+}
+.navbar-brand {
+    font-weight: 800;
+    font-size: 1.5rem;
+    color: var(--primary-color) !important;
+}
+.navbar-brand span {
+    color: var(--secondary-color);
+}
+.nav-link {
+    font-weight: 600;
+    color: var(--dark-color);
+    padding: 1rem 1rem !important;
+    transition: color 0.3s;
+}
+.nav-link:hover, .nav-link.active {
+    color: var(--primary-color);
+}
+
+/* Card Utilities */
+.card-soft {
+    border: none;
+    border-radius: 12px;
+    box-shadow: var(--shadow-soft);
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+.card-soft:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--shadow-md);
+}
+
+/* Sections */
+.section-padding {
+    padding: 80px 0;
+}
+.bg-light-soft {
+    background-color: #f4f7f6;
+}
+
+/* Footer */
+.main-footer {
+    background-color: var(--dark-color);
+    color: #a0a5aa;
+    padding-top: 60px;
+}
+.main-footer h5 {
+    color: var(--white);
+    font-weight: 700;
+    margin-bottom: 1.5rem;
+}
+.footer-links {
+    list-style: none;
+    padding: 0;
+}
+.footer-links li {
+    margin-bottom: 10px;
+}
+.footer-links a {
+    color: #a0a5aa;
+    text-decoration: none;
+    transition: color 0.3s, padding-left 0.3s;
+}
+.footer-links a:hover {
+    color: var(--secondary-color);
+    padding-left: 5px;
+}
+.footer-bottom {
+    background-color: #1a1d20;
+    padding: 20px 0;
+    margin-top: 40px;
+}
