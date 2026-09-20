@@ -18,6 +18,50 @@ Route::get('/contact', function () {
     return view('frontend.contact');
 });
 
+// Frontend Services
+Route::get('/departments', [\App\Http\Controllers\Frontend\DepartmentController::class, 'index']);
+Route::get('/departments/{slug}', [\App\Http\Controllers\Frontend\DepartmentController::class, 'show']);
+
+Route::get('/tests', [\App\Http\Controllers\Frontend\TestController::class, 'index']);
+Route::get('/tests/{id}', [\App\Http\Controllers\Frontend\TestController::class, 'show']);
+
+Route::get('/packages', [\App\Http\Controllers\Frontend\PackageController::class, 'index']);
+Route::get('/packages/{id}', [\App\Http\Controllers\Frontend\PackageController::class, 'show']);
+
+Route::get('/doctors', [\App\Http\Controllers\Frontend\DoctorController::class, 'index']);
+
+Route::get('/appointment', [\App\Http\Controllers\Frontend\AppointmentController::class, 'index'])->name('frontend.appointment');
+Route::post('/appointment', [\App\Http\Controllers\Frontend\AppointmentController::class, 'store'])->name('frontend.appointment.store');
+Route::get('/appointment/confirmation/{id}', [\App\Http\Controllers\Frontend\AppointmentController::class, 'confirmation'])->name('frontend.appointment.confirmation');
+
+// API routes for appointment form
+Route::get('/api/doctors-by-department', [\App\Http\Controllers\Frontend\AppointmentController::class, 'getDoctorsByDepartment']);
+Route::get('/api/doctor-slots', [\App\Http\Controllers\Frontend\AppointmentController::class, 'getAvailableSlots']);
+
+Route::get('/home-collection', function () {
+    return view('frontend.home-collection');
+});
+
+Route::get('/pricing', function () {
+    return view('frontend.pricing');
+});
+
+Route::get('/reports', function () {
+    return view('frontend.reports');
+});
+
+Route::get('/blog', function () {
+    return view('frontend.blog');
+});
+
+Route::get('/faq', function () {
+    return view('frontend.faq');
+});
+
+Route::get('/branches', function () {
+    return view('frontend.branches');
+});
+
 Route::get('/dashboard', [\App\Http\Controllers\DashboardController::class, 'index'])
     ->middleware(['auth', 'verified'])
     ->name('dashboard');

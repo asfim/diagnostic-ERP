@@ -115,9 +115,6 @@
                             <i class="bi bi-truck text-primary me-2"></i>Home Collection
                         </a>
                         <div class="dropdown-divider"></div>
-                        <a class="dropdown-item" href="{{ url('/login') }}">
-                            <i class="bi bi-person-circle text-secondary me-2"></i>Patient Login
-                        </a>
                         <a class="dropdown-item" href="{{ url('/register') }}">
                             <i class="bi bi-person-plus text-secondary me-2"></i>Register
                         </a>
@@ -224,7 +221,6 @@
                         <a class="d-block text-muted py-1" href="{{ url('/appointment') }}">Book Appointment</a>
                         <a class="d-block text-muted py-1" href="{{ url('/reports') }}">Online Reports</a>
                         <a class="d-block text-muted py-1" href="{{ url('/home-collection') }}">Home Collection</a>
-                        <a class="d-block text-muted py-1" href="{{ url('/login') }}">Patient Login</a>
                         <a class="d-block text-muted py-1" href="{{ url('/register') }}">Register</a>
                     </div>
                 </div>
@@ -295,145 +291,6 @@
     </div>
 </div>
 
-
-@push('styles')
-<style>
-/* ================================================================
-   FIXED HEADER WRAPPER
-   ================================================================ */
-.site-topbar {
-    position: fixed;
-    top: 0; left: 0; right: 0;
-    z-index: 1041;
-}
-.main-header {
-    position: fixed !important;
-    top: 37px; /* topbar height */
-    left: 0; right: 0;
-    z-index: 1040;
-}
-/* Hide topbar on mobile → header moves up */
-@media (max-width: 991.98px) {
-    .main-header { top: 0; }
-}
-
-/* ================================================================
-   HOVER DROPDOWN — BASE
-   ================================================================ */
-.nav-hover-dropdown {
-    position: static; /* let dropdown use navbar as reference */
-}
-
-/* Each dropdown positioned relative to the navbar container */
-.navbar-nav {
-    position: static;
-}
-
-/* The dropdown panel */
-.hover-dropdown-menu {
-    display: none;
-    position: fixed; /* fixed so it doesn't clip inside overflow:hidden */
-    top: auto;       /* set dynamically via JS */
-    background: #fff;
-    border-radius: 14px;
-    box-shadow: 0 12px 48px rgba(0,0,0,.16);
-    border: 1px solid rgba(0,0,0,.07);
-    padding: 1rem;
-    z-index: 9998;
-    min-width: 200px;
-    pointer-events: none;
-    opacity: 0;
-    transform: translateY(8px);
-    transition: opacity .2s ease, transform .2s ease;
-}
-
-/* Show on hover */
-.nav-hover-dropdown:hover > .hover-dropdown-menu {
-    display: block;
-    pointer-events: auto;
-    opacity: 1;
-    transform: translateY(0);
-}
-
-/* Keep visible when cursor moves into menu */
-.hover-dropdown-menu:hover {
-    display: block;
-    pointer-events: auto;
-    opacity: 1;
-    transform: translateY(0);
-}
-
-/* ================================================================
-   SERVICES DROPDOWN — 2-column, wider, left-anchored
-   ================================================================ */
-#servicesDropdown {
-    min-width: 460px;
-}
-
-/* ================================================================
-   SECTION LABELS inside dropdown
-   ================================================================ */
-.dropdown-section-label {
-    font-size: .7rem;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: .1em;
-    color: #adb5bd;
-    margin-bottom: .4rem;
-    padding: 0 .5rem;
-    display: block;
-}
-
-/* ================================================================
-   DROPDOWN ITEMS
-   ================================================================ */
-.hover-dropdown-menu .dropdown-item {
-    border-radius: 8px;
-    font-weight: 500;
-    font-size: .875rem;
-    padding: .45rem .7rem;
-    color: #212529;
-    white-space: nowrap;
-    transition: background .15s, color .15s, padding-left .15s;
-    display: flex;
-    align-items: center;
-}
-.hover-dropdown-menu .dropdown-item:hover {
-    background: rgba(11,94,215,.07);
-    color: #0b5ed7;
-    padding-left: 1rem;
-}
-.hover-dropdown-menu .dropdown-divider {
-    margin: .4rem 0;
-    opacity: .1;
-}
-
-/* ================================================================
-   CHEVRON ROTATE ON HOVER
-   ================================================================ */
-.nav-hover-dropdown:hover .bi-chevron-down {
-    transform: rotate(180deg);
-}
-.bi-chevron-down {
-    transition: transform .25s ease;
-    display: inline-block;
-}
-
-/* ================================================================
-   SCROLL SHRINK EFFECT
-   ================================================================ */
-.main-header.scrolled {
-    box-shadow: 0 4px 32px rgba(0,0,0,.14) !important;
-}
-
-/* ================================================================
-   ACTIVE NAV UNDERLINE
-   ================================================================ */
-.nav-link.active::after {
-    transform: scaleX(1) !important;
-}
-</style>
-@endpush
 
 @push('scripts')
 <script>
