@@ -17,16 +17,22 @@
                         <p class="text-muted">Enter your details to view and download your diagnostic reports securely.</p>
                     </div>
 
-                    <form onsubmit="event.preventDefault(); alert('Report generation functionality will be integrated here.');">
+                    <form action="{{ route('frontend.reports.search') }}" method="POST">
+                        @csrf
+                        
+                        @if(session('error'))
+                            <div class="alert alert-danger rounded-3">{{ session('error') }}</div>
+                        @endif
+
                         <div class="mb-4">
                             <label class="form-label fw-bold">Search By</label>
                             <div class="d-flex gap-3">
                                 <div class="form-check">
-                                    <input class="form-check-input" type="radio" name="searchType" id="typeInvoice" checked>
+                                    <input class="form-check-input" type="radio" name="searchType" id="typeInvoice" value="typeInvoice" {{ old('searchType', 'typeInvoice') == 'typeInvoice' ? 'checked' : '' }}>
                                     <label class="form-check-label" for="typeInvoice">Invoice ID</label>
                                 </div>
                                 <div class="form-check">
-                                    <input class="form-check-input" type="radio" name="searchType" id="typePatient">
+                                    <input class="form-check-input" type="radio" name="searchType" id="typePatient" value="typePatient" {{ old('searchType') == 'typePatient' ? 'checked' : '' }}>
                                     <label class="form-check-label" for="typePatient">Patient ID</label>
                                 </div>
                             </div>
@@ -34,12 +40,12 @@
 
                         <div class="mb-3">
                             <label class="form-label fw-bold">ID Number <span class="text-danger">*</span></label>
-                            <input type="text" class="form-control rounded-pill px-4" placeholder="e.g., INV-12345 or PAT-98765" required>
+                            <input type="text" name="id_number" class="form-control rounded-pill px-4" placeholder="e.g., ORD-260916-0001 or PT-260916-0001" value="{{ old('id_number') }}" required>
                         </div>
                         
                         <div class="mb-4">
                             <label class="form-label fw-bold">Registered Mobile Number <span class="text-danger">*</span></label>
-                            <input type="tel" class="form-control rounded-pill px-4" placeholder="+880 1..." required>
+                            <input type="tel" name="mobile" class="form-control rounded-pill px-4" placeholder="e.g., 01511112222" value="{{ old('mobile') }}" required>
                         </div>
 
                         <button type="submit" class="btn btn-primary btn-lg rounded-pill w-100 fw-bold">
@@ -52,6 +58,58 @@
                     </div>
                 </div>
             </div>
+            
+            @if(isset($results))
+            <div class="col-lg-8 mt-5" data-aos="fade-up">
+                <h4 class="fw-bold mb-4">Search Results</h4>
+                
+                @if($results->isEmpty())
+                    <div class="alert alert-warning rounded-3 shadow-sm text-center p-4">
+                        <i class="bi bi-exclamation-triangle fs-3 d-block mb-2 text-warning"></i>
+                        No completed reports found for the given details. If you gave your sample recently, please wait for the processing time.
+                    </div>
+                @else
+                    <div class="card border-0 shadow-sm rounded-4 overflow-hidden">
+                        <div class="card-header bg-primary text-white p-3">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <h6 class="mb-0 fw-bold"><i class="bi bi-person-circle me-2"></i> {{ $patient->name }}</h6>
+                                <span>{{ $patient->mobile }}</span>
+                            </div>
+                        </div>
+                        <div class="table-responsive">
+                            <table class="table table-hover align-middle mb-0">
+                                <thead class="table-light">
+                                    <tr>
+                                        <th class="ps-4">Date</th>
+                                        <th>Test Name</th>
+                                        <th>Invoice ID</th>
+                                        <th>Status</th>
+                                        <th class="text-end pe-4">Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach($results as $result)
+                                    <tr>
+                                        <td class="ps-4">{{ $result->created_at->format('d M, Y') }}</td>
+                                        <td class="fw-semibold">{{ $result->test->name }}</td>
+                                        <td><span class="badge bg-light text-dark border">{{ $result->diagnosticOrder->order_id }}</span></td>
+                                        <td>
+                                            <span class="badge bg-success-subtle text-success border border-success-subtle"><i class="bi bi-check-circle me-1"></i>Completed</span>
+                                        </td>
+                                        <td class="text-end pe-4">
+                                            <button class="btn btn-sm btn-outline-primary rounded-pill px-3" onclick="alert('PDF generation functionality will be integrated here.')">
+                                                <i class="bi bi-download me-1"></i> Download
+                                            </button>
+                                        </td>
+                                    </tr>
+                                    @endforeach
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                @endif
+            </div>
+            @endif
         </div>
     </div>
 </section>

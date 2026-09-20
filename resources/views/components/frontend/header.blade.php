@@ -114,10 +114,6 @@
                         <a class="dropdown-item" href="{{ url('/home-collection') }}">
                             <i class="bi bi-truck text-primary me-2"></i>Home Collection
                         </a>
-                        <div class="dropdown-divider"></div>
-                        <a class="dropdown-item" href="{{ url('/register') }}">
-                            <i class="bi bi-person-plus text-secondary me-2"></i>Register
-                        </a>
                     </div>
                 </li>
 
@@ -221,7 +217,6 @@
                         <a class="d-block text-muted py-1" href="{{ url('/appointment') }}">Book Appointment</a>
                         <a class="d-block text-muted py-1" href="{{ url('/reports') }}">Online Reports</a>
                         <a class="d-block text-muted py-1" href="{{ url('/home-collection') }}">Home Collection</a>
-                        <a class="d-block text-muted py-1" href="{{ url('/register') }}">Register</a>
                     </div>
                 </div>
             </div>

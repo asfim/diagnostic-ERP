@@ -9,36 +9,104 @@
      ============================================================ --}}
 <section class="hero-section">
     <div class="hero-bg">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-7 col-xl-6 text-white" data-aos="fade-right">
-                    <p class="text-white-50 fw-semibold text-uppercase mb-2" style="letter-spacing:.1em; font-size:.85rem;">
-                        Bangladesh's Trusted Diagnostic Network
-                    </p>
-                    <h1 class="display-4 fw-bold lh-sm mb-4">
-                        Advanced Diagnostic Care<br>
-                        <span class="text-white">You Can Trust</span>
+        <div class="container" style="position:relative; z-index:2;">
+            <div class="row align-items-center g-5">
+                <div class="col-lg-7" data-aos="fade-right" data-aos-duration="800">
+                    {{-- Badge --}}
+                    <div class="hero-badge mb-3">
+                        <i class="bi bi-check-circle-fill text-success"></i>
+                        Bangladesh's Most Trusted Diagnostic Network
+                    </div>
+
+                    {{-- Title --}}
+                    <h1 class="display-4 fw-bold text-white mb-3">
+                        Advanced Care &<br>
+                        <span class="hero-title-accent">Precision Diagnostics</span><br>
+                        You Can Trust
                     </h1>
-                    <p class="lead mb-5 text-white-50" style="max-width:520px;">
-                        Precision diagnostics, expert consultants &amp; compassionate care —
-                        available 24/7 for you and your family.
+
+                    <p class="text-white-50 mb-4" style="font-size:1.1rem; max-width:520px; line-height:1.8;">
+                        Expert consultants, state-of-the-art labs & compassionate care —
+                        available <strong class="text-white">24/7</strong> for you and your family.
                     </p>
 
                     {{-- Search Bar --}}
-                    <div class="hero-search mb-4" style="max-width:580px;">
-                        <i class="bi bi-search text-muted fs-5 me-2"></i>
-                        <input type="text" class="form-control" placeholder="Search tests, packages, doctors…">
-                        <button class="btn btn-primary fw-bold">Search</button>
+                    <div class="hero-search mb-4">
+                        <i class="bi bi-search text-muted fs-5 me-2 flex-shrink-0"></i>
+                        <input type="text" class="form-control" placeholder="Search tests, packages, doctors…" id="heroSearchInput">
+                        <button class="btn btn-primary fw-bold" onclick="window.location.href='{{ url('/tests') }}'">Search</button>
                     </div>
 
                     {{-- CTAs --}}
-                    <div class="d-flex flex-wrap gap-3">
-                        <a href="{{ url('/appointment') }}" class="btn btn-light text-primary fw-bold px-4 py-2 rounded-pill shadow-sm">
-                            <i class="bi bi-calendar-check me-2"></i>Book Appointment
+                    <div class="d-flex flex-wrap gap-3 mb-4">
+                        <a href="{{ url('/appointment') }}" class="btn btn-light text-primary fw-bold px-4 py-2 rounded-pill shadow">
+                            <i class="bi bi-calendar-check-fill me-2"></i>Book Appointment
                         </a>
                         <a href="{{ url('/packages') }}" class="btn btn-outline-light fw-bold px-4 py-2 rounded-pill">
                             <i class="bi bi-box-seam me-2"></i>View Packages
                         </a>
+                    </div>
+
+                    {{-- Stats Strip --}}
+                    <div class="hero-stats">
+                        <div class="hero-stat">
+                            <div class="stat-value">50+</div>
+                            <span class="stat-label">Expert Doctors</span>
+                        </div>
+                        <div class="hero-stat" style="border-left:1px solid rgba(255,255,255,.2); padding-left:2rem;">
+                            <div class="stat-value">500+</div>
+                            <span class="stat-label">Diagnostic Tests</span>
+                        </div>
+                        <div class="hero-stat" style="border-left:1px solid rgba(255,255,255,.2); padding-left:2rem;">
+                            <div class="stat-value">100k+</div>
+                            <span class="stat-label">Happy Patients</span>
+                        </div>
+                        <div class="hero-stat" style="border-left:1px solid rgba(255,255,255,.2); padding-left:2rem;">
+                            <div class="stat-value">24/7</div>
+                            <span class="stat-label">Open Always</span>
+                        </div>
+                    </div>
+                </div>
+
+                {{-- Right side visual card --}}
+                <div class="col-lg-5 d-none d-lg-block" data-aos="fade-left" data-aos-duration="1000" data-aos-delay="200">
+                    <div class="bg-white bg-opacity-10 rounded-4 p-4 border border-white border-opacity-25" style="backdrop-filter:blur(12px);">
+                        <h6 class="text-white fw-bold mb-3"><i class="bi bi-lightning-charge-fill text-warning me-2"></i>Quick Actions</h6>
+                        <div class="d-flex flex-column gap-3">
+                            <a href="{{ url('/appointment') }}" class="d-flex align-items-center gap-3 bg-white bg-opacity-10 rounded-3 p-3 text-white text-decoration-none" style="transition:all .3s; border:1px solid rgba(255,255,255,.15);" onmouseover="this.style.background='rgba(255,255,255,.2)'" onmouseout="this.style.background='rgba(255,255,255,.1)'">
+                                <div class="bg-primary rounded-circle d-flex align-items-center justify-content-center flex-shrink-0" style="width:44px;height:44px;">
+                                    <i class="bi bi-calendar-check fs-5"></i>
+                                </div>
+                                <div>
+                                    <div class="fw-bold" style="font-size:.95rem;">Book Appointment</div>
+                                    <div style="font-size:.78rem; opacity:.7;">Schedule with our specialists</div>
+                                </div>
+                                <i class="bi bi-chevron-right ms-auto opacity-50"></i>
+                            </a>
+                            <a href="{{ url('/reports') }}" class="d-flex align-items-center gap-3 bg-white bg-opacity-10 rounded-3 p-3 text-white text-decoration-none" style="transition:all .3s; border:1px solid rgba(255,255,255,.15);" onmouseover="this.style.background='rgba(255,255,255,.2)'" onmouseout="this.style.background='rgba(255,255,255,.1)'">
+                                <div class="bg-success rounded-circle d-flex align-items-center justify-content-center flex-shrink-0" style="width:44px;height:44px;">
+                                    <i class="bi bi-file-earmark-medical fs-5"></i>
+                                </div>
+                                <div>
+                                    <div class="fw-bold" style="font-size:.95rem;">Download Report</div>
+                                    <div style="font-size:.78rem; opacity:.7;">Access results securely online</div>
+                                </div>
+                                <i class="bi bi-chevron-right ms-auto opacity-50"></i>
+                            </a>
+                            <a href="{{ url('/home-collection') }}" class="d-flex align-items-center gap-3 bg-white bg-opacity-10 rounded-3 p-3 text-white text-decoration-none" style="transition:all .3s; border:1px solid rgba(255,255,255,.15);" onmouseover="this.style.background='rgba(255,255,255,.2)'" onmouseout="this.style.background='rgba(255,255,255,.1)'">
+                                <div class="bg-warning rounded-circle d-flex align-items-center justify-content-center flex-shrink-0" style="width:44px;height:44px;">
+                                    <i class="bi bi-truck fs-5 text-dark"></i>
+                                </div>
+                                <div>
+                                    <div class="fw-bold" style="font-size:.95rem;">Home Collection</div>
+                                    <div style="font-size:.78rem; opacity:.7;">Sample pickup at your doorstep</div>
+                                </div>
+                                <i class="bi bi-chevron-right ms-auto opacity-50"></i>
+                            </a>
+                        </div>
+                        <div class="mt-3 pt-3 border-top border-white border-opacity-15 text-center">
+                            <small class="text-white-50"><i class="bi bi-lock-fill me-1 text-success"></i>Your data is safe & encrypted</small>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -57,7 +125,7 @@
                             <i class="bi bi-calendar-check-fill"></i>
                         </div>
                         <h4 class="fw-bold">Book Appointment</h4>
-                        <p>Schedule a visit with our specialist doctors online — quick &amp; hassle-free.</p>
+                        <p>Schedule a visit with our specialist doctors online — quick & hassle-free.</p>
                         <a href="{{ url('/appointment') }}" class="text-primary">Book Now <i class="bi bi-arrow-right"></i></a>
                     </div>
                 </div>
@@ -77,8 +145,8 @@
                             <i class="bi bi-truck"></i>
                         </div>
                         <h4 class="fw-bold">Home Collection</h4>
-                        <p>Our phlebotomists come to your doorstep for sample collection — safe &amp; on time.</p>
-                        <a href="{{ url('/tests') }}" class="text-danger">Request Now <i class="bi bi-arrow-right"></i></a>
+                        <p>Our phlebotomists come to your doorstep for sample collection — safe & on time.</p>
+                        <a href="{{ url('/home-collection') }}" class="text-danger">Request Now <i class="bi bi-arrow-right"></i></a>
                     </div>
                 </div>
             </div>
@@ -168,30 +236,16 @@
             <p class="mt-2">Explore our most requested tests. We ensure precise and timely results.</p>
         </div>
 
-        <div class="row g-4">
-            @php
-            $tests = [
-                ['icon'=>'bi-droplet-fill','color'=>'primary','name'=>'Complete Blood Count','desc'=>'Checks overall health and detects a wide range of disorders.','price'=>'৳ 400'],
-                ['icon'=>'bi-heart-pulse-fill','color'=>'danger','name'=>'Lipid Profile','desc'=>'Measures the level of specific fats in your bloodstream.','price'=>'৳ 800'],
-                ['icon'=>'bi-activity','color'=>'info','name'=>'Liver Function Test','desc'=>'Evaluates how well your liver is functioning overall.','price'=>'৳ 1,200'],
-                ['icon'=>'bi-lungs-fill','color'=>'warning','name'=>'Kidney Function Test','desc'=>'Assesses the health and efficiency of your kidneys.','price'=>'৳ 900'],
-                ['icon'=>'bi-thermometer-half','color'=>'success','name'=>'Blood Sugar (HbA1c)','desc'=>'Measures average blood sugar over the last 3 months.','price'=>'৳ 600'],
-                ['icon'=>'bi-bug-fill','color'=>'secondary','name'=>'Thyroid Profile','desc'=>'Evaluates the function of your thyroid gland (T3, T4, TSH).','price'=>'৳ 1,000'],
-                ['icon'=>'bi-eyedropper-fill','color'=>'primary','name'=>'Urine Routine','desc'=>'Detects and measures chemicals in your urine sample.','price'=>'৳ 250'],
-                ['icon'=>'bi-capsule','color'=>'danger','name'=>'Vitamin D (25-OH)','desc'=>'Measures the level of Vitamin D in your blood.','price'=>'৳ 1,500'],
-            ];
-            @endphp
-
             @foreach($tests as $i => $test)
             <div class="col-lg-3 col-md-6" data-aos="fade-up" data-aos-delay="{{ ($i+1)*80 }}">
                 <div class="test-card d-flex flex-column">
-                    <div class="t-icon bg-{{ $test['color'] }} bg-opacity-10 text-{{ $test['color'] }} mx-auto">
-                        <i class="bi {{ $test['icon'] }}"></i>
+                    <div class="t-icon bg-primary bg-opacity-10 text-primary mx-auto">
+                        <i class="bi bi-activity"></i>
                     </div>
-                    <h5 class="fw-bold">{{ $test['name'] }}</h5>
-                    <p>{{ $test['desc'] }}</p>
+                    <h5 class="fw-bold">{{ $test->name }}</h5>
+                    <p class="text-truncate">{{ $test->description ?? 'Accurate and reliable diagnostic test.' }}</p>
                     <div class="d-flex justify-content-between align-items-center mt-auto pt-3 border-top">
-                        <span class="price">{{ $test['price'] }}</span>
+                        <span class="price">৳ {{ number_format($test->price, 0) }}</span>
                         <a href="{{ url('/appointment') }}" class="btn btn-sm btn-outline-primary rounded-pill px-3">Book</a>
                     </div>
                 </div>
@@ -217,83 +271,33 @@
         </div>
 
         <div class="row g-4">
-            {{-- Basic Package --}}
-            <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="100">
-                <div class="package-card">
-                    <div class="pkg-header bg-primary text-white">
-                        <div class="pkg-badge bg-danger">Save 20%</div>
+            @foreach($packages as $i => $pkg)
+            <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="{{ ($i+1)*100 }}">
+                <div class="package-card {{ $i === 1 ? 'featured' : '' }}">
+                    <div class="pkg-header {{ $i === 1 ? 'bg-success' : 'bg-primary' }} text-white">
+                        @if($pkg->discount_price)
+                        <div class="pkg-badge bg-warning text-dark">Save {{ number_format($pkg->price - $pkg->discount_price, 0) }} ৳</div>
+                        @endif
                         <i class="bi bi-shield-check fs-1 opacity-50"></i>
-                        <h4 class="fw-bold mt-2 mb-0">Basic Health Checkup</h4>
-                        <div class="pkg-price">৳ 3,500 <small>৳ 4,500</small></div>
-                        <p class="small mt-2 mb-0 opacity-75">5 Essential Tests Included</p>
+                        <h4 class="fw-bold mt-2 mb-0">{{ $pkg->name }}</h4>
+                        <div class="pkg-price">
+                            @if($pkg->discount_price)
+                            ৳ {{ number_format($pkg->discount_price, 0) }} <small>৳ {{ number_format($pkg->price, 0) }}</small>
+                            @else
+                            ৳ {{ number_format($pkg->price, 0) }}
+                            @endif
+                        </div>
                     </div>
                     <div class="pkg-body">
-                        <ul class="list-unstyled">
-                            <li><i class="bi bi-check-circle-fill"></i> Complete Blood Count (CBC)</li>
-                            <li><i class="bi bi-check-circle-fill"></i> Blood Sugar Fasting</li>
-                            <li><i class="bi bi-check-circle-fill"></i> Lipid Profile</li>
-                            <li><i class="bi bi-check-circle-fill"></i> Urine Routine</li>
-                            <li><i class="bi bi-check-circle-fill"></i> ECG</li>
-                        </ul>
+                        <p class="small text-muted">{{ $pkg->description }}</p>
                         <div class="d-grid gap-2 mt-3">
-                            <a href="#" class="btn btn-outline-primary rounded-pill">View Details</a>
-                            <a href="{{ url('/appointment') }}" class="btn btn-primary rounded-pill">Book Now</a>
+                            <a href="{{ url('/packages') }}" class="btn btn-outline-{{ $i === 1 ? 'success' : 'primary' }} rounded-pill">View Details</a>
+                            <a href="{{ url('/appointment') }}" class="btn btn-{{ $i === 1 ? 'success text-white' : 'primary' }} rounded-pill">Book Now</a>
                         </div>
                     </div>
                 </div>
             </div>
-
-            {{-- Executive Package (featured) --}}
-            <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="200">
-                <div class="package-card featured">
-                    <div class="pkg-header bg-success text-white">
-                        <div class="pkg-badge bg-warning text-dark">⭐ Popular</div>
-                        <i class="bi bi-star-fill fs-1 opacity-50"></i>
-                        <h4 class="fw-bold mt-2 mb-0">Executive Package</h4>
-                        <div class="pkg-price">৳ 7,500 <small>৳ 9,500</small></div>
-                        <p class="small mt-2 mb-0 opacity-75">12 Tests Included</p>
-                    </div>
-                    <div class="pkg-body">
-                        <ul class="list-unstyled">
-                            <li><i class="bi bi-check-circle-fill"></i> All Basic Tests</li>
-                            <li><i class="bi bi-check-circle-fill"></i> Liver Function Test</li>
-                            <li><i class="bi bi-check-circle-fill"></i> Kidney Function Test</li>
-                            <li><i class="bi bi-check-circle-fill"></i> Thyroid Profile (T3,T4,TSH)</li>
-                            <li><i class="bi bi-check-circle-fill"></i> Chest X-Ray + Consultation</li>
-                        </ul>
-                        <div class="d-grid gap-2 mt-3">
-                            <a href="#" class="btn btn-outline-success rounded-pill">View Details</a>
-                            <a href="{{ url('/appointment') }}" class="btn btn-success rounded-pill text-white">Book Now</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            {{-- Senior Care --}}
-            <div class="col-lg-4 col-md-6 mx-auto" data-aos="fade-up" data-aos-delay="300">
-                <div class="package-card">
-                    <div class="pkg-header bg-primary text-white">
-                        <div class="pkg-badge bg-danger">Save 15%</div>
-                        <i class="bi bi-person-heart fs-1 opacity-50"></i>
-                        <h4 class="fw-bold mt-2 mb-0">Senior Citizen Care</h4>
-                        <div class="pkg-price">৳ 5,500 <small>৳ 6,500</small></div>
-                        <p class="small mt-2 mb-0 opacity-75">8 Tests Included</p>
-                    </div>
-                    <div class="pkg-body">
-                        <ul class="list-unstyled">
-                            <li><i class="bi bi-check-circle-fill"></i> Basic &amp; Organ Function Tests</li>
-                            <li><i class="bi bi-check-circle-fill"></i> Calcium &amp; Vitamin D</li>
-                            <li><i class="bi bi-check-circle-fill"></i> HbA1c (Diabetes)</li>
-                            <li><i class="bi bi-check-circle-fill"></i> Prostate (PSA) / Pap Smear</li>
-                            <li><i class="bi bi-check-circle-fill"></i> Doctor Consultation</li>
-                        </ul>
-                        <div class="d-grid gap-2 mt-3">
-                            <a href="#" class="btn btn-outline-primary rounded-pill">View Details</a>
-                            <a href="{{ url('/appointment') }}" class="btn btn-primary rounded-pill">Book Now</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            @endforeach
         </div>
     </div>
 </section>
@@ -308,24 +312,12 @@
             <h2>Our Departments</h2>
         </div>
 
-        @php
-        $depts = [
-            ['icon'=>'bi-lungs','label'=>'Pathology'],
-            ['icon'=>'bi-broadcast','label'=>'Radiology'],
-            ['icon'=>'bi-heart-pulse','label'=>'Cardiology'],
-            ['icon'=>'bi-moisture','label'=>'Neurology'],
-            ['icon'=>'bi-gender-female','label'=>'Gynecology'],
-            ['icon'=>'bi-person-standing','label'=>'Orthopedics'],
-            ['icon'=>'bi-capsule','label'=>'Medicine'],
-            ['icon'=>'bi-emoji-smile','label'=>'Dental'],
-        ];
-        @endphp
         <div class="row g-4">
-            @foreach($depts as $i => $dept)
+            @foreach($departments as $i => $dept)
             <div class="col-lg-3 col-md-4 col-6" data-aos="zoom-in" data-aos-delay="{{ ($i+1)*60 }}">
-                <a href="{{ url('/departments') }}" class="dept-card">
-                    <i class="bi {{ $dept['icon'] }} dept-icon"></i>
-                    <h5>{{ $dept['label'] }}</h5>
+                <a href="{{ url('/departments/' . ($dept->slug ?? '')) }}" class="dept-card">
+                    <i class="bi {{ $dept->icon ?? 'bi-heart-pulse' }} dept-icon"></i>
+                    <h5>{{ $dept->name }}</h5>
                 </a>
             </div>
             @endforeach
@@ -346,27 +338,17 @@
             <a href="{{ url('/doctors') }}" class="btn btn-outline-primary rounded-pill">View All Doctors</a>
         </div>
 
-        @php
-        $doctors = [
-            ['name'=>'Dr. Fatema Khanam','specialty'=>'Chief Pathologist','degree'=>'MBBS, MD (Pathology)','exp'=>'15+ yrs','img'=>'https://images.unsplash.com/photo-1594824436998-058a23116fc7?auto=format&fit=crop&w=500&q=80'],
-            ['name'=>'Dr. Rafiqul Islam','specialty'=>'Senior Radiologist','degree'=>'MBBS, FCPS (Radiology)','exp'=>'12+ yrs','img'=>'https://images.unsplash.com/photo-1537368910025-700350fe46c7?auto=format&fit=crop&w=500&q=80'],
-            ['name'=>'Dr. Nasrin Akter','specialty'=>'Cardiologist','degree'=>'MBBS, MD (Cardiology)','exp'=>'10+ yrs','img'=>'https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?auto=format&fit=crop&w=500&q=80'],
-            ['name'=>'Dr. Anisur Rahman','specialty'=>'Neurologist','degree'=>'MBBS, PhD (Neurology)','exp'=>'18+ yrs','img'=>'https://images.unsplash.com/photo-1622253692010-333f2da6031d?auto=format&fit=crop&w=500&q=80'],
-        ];
-        @endphp
-
         <div class="row g-4">
             @foreach($doctors as $i => $doc)
             <div class="col-lg-3 col-md-6" data-aos="fade-up" data-aos-delay="{{ ($i+1)*100 }}">
                 <div class="doctor-card">
-                    <img src="{{ $doc['img'] }}" alt="{{ $doc['name'] }}">
+                    <img src="{{ $doc->image ? asset('storage/'.$doc->image) : 'https://images.unsplash.com/photo-1594824436998-058a23116fc7?auto=format&fit=crop&w=500&q=80' }}" alt="{{ $doc->name }}">
                     <div class="doc-body">
-                        <h5>{{ $doc['name'] }}</h5>
-                        <p class="specialty">{{ $doc['specialty'] }}</p>
-                        <p class="degree">{{ $doc['degree'] }}<br>{{ $doc['exp'] }} Experience</p>
+                        <h5>{{ $doc->name }}</h5>
+                        <p class="specialty text-primary fw-semibold">{{ $doc->department ? $doc->department->name : 'Specialist' }}</p>
+                        <p class="degree">{{ $doc->specialization }}<br>{{ $doc->experience_years }} Years Experience</p>
                         <div class="d-flex gap-2 justify-content-center">
-                            <a href="#" class="btn btn-sm btn-outline-primary rounded-pill px-3">Profile</a>
-                            <a href="{{ url('/appointment') }}" class="btn btn-sm btn-primary rounded-pill px-3">Book</a>
+                            <a href="{{ url('/appointment') }}" class="btn btn-sm btn-primary rounded-pill px-3">Book Appointment</a>
                         </div>
                     </div>
                 </div>

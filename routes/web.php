@@ -6,9 +6,7 @@ use App\Http\Controllers\AccountController;
 use App\Http\Controllers\ReportController;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', function () {
-    return view('frontend.home');
-});
+Route::get('/', [\App\Http\Controllers\Frontend\HomeController::class, 'index']);
 
 Route::get('/about', function () {
     return view('frontend.about');
@@ -46,8 +44,10 @@ Route::get('/pricing', function () {
     return view('frontend.pricing');
 });
 
-Route::get('/reports', function () {
-    return view('frontend.reports');
+Route::get('/reports', [\App\Http\Controllers\Frontend\ReportController::class, 'index']);
+Route::post('/reports/search', [\App\Http\Controllers\Frontend\ReportController::class, 'search'])->name('frontend.reports.search');
+Route::get('/reports/search', function () {
+    return redirect('/reports');
 });
 
 Route::get('/blog', function () {
