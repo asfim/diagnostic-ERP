@@ -69,11 +69,6 @@
                             <small class="text-muted">Used if background image is uploaded to darken the image.</small>
                         </div>
 
-                        <div class="form-check form-switch mb-4">
-                            <input class="form-check-input" type="checkbox" name="status" value="1" id="heroStatus" {{ (isset($hero) && $hero->status) ? 'checked' : '' }}>
-                            <label class="form-check-label" for="heroStatus">Show Hero Section</label>
-                        </div>
-
                         <button type="submit" class="btn btn-primary w-100 fw-bold"><i class="fas fa-save me-2"></i>Save Hero Section</button>
                     </form>
                 </div>

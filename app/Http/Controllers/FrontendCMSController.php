@@ -39,7 +39,7 @@ class FrontendCMSController extends Controller
         $hero->button_text = $request->button_text;
         $hero->button_link = $request->button_link;
         $hero->overlay_color = $request->overlay_color ?? 'rgba(11, 94, 215, 0.85)';
-        $hero->status = $request->has('status') ? 1 : 0;
+        $hero->status = 1;
 
         if ($request->hasFile('bg_image')) {
             if ($hero->bg_image && Storage::disk('public')->exists($hero->bg_image)) {
