@@ -50,6 +50,11 @@
             box-shadow: 4px 0 10px rgba(0, 0, 0, 0.1);
             transition: all 0.3s;
             overflow-y: auto;
+            scrollbar-gutter: stable;
+        }
+
+        .sidebar .collapsing {
+            transition: none !important;
         }
 
         .sidebar::-webkit-scrollbar {
@@ -85,7 +90,6 @@
             align-items: center;
             color: var(--sidebar-text);
             text-decoration: none;
-            transition: all 0.3s ease;
             font-weight: 500;
             font-size: 0.95rem;
             margin: 2px 15px;
@@ -102,7 +106,6 @@
         .sidebar a:hover {
             background: var(--sidebar-hover);
             color: #fff;
-            transform: translateX(3px);
         }
 
         .sidebar a.active {
@@ -132,12 +135,10 @@
 
         .sidebar .collapse a:hover {
             background: rgba(255, 255, 255, 0.05);
-            transform: none;
         }
 
         .sidebar .collapse a.text-info {
             color: var(--info) !important;
-            font-weight: 600;
             background: rgba(255, 255, 255, 0.05);
         }
 
@@ -387,17 +388,13 @@
             </a>
             <div class="collapse {{ request()->routeIs('reports.*') ? 'show' : '' }}" id="reportsMenu">
                 <a href="{{ route('reports.account') }}"
-                    class="{{ request()->routeIs('reports.account') ? 'text-info' : '' }}"><i
-                        class="fa-solid fa-angle-right"></i> Account Report</a>
+                    class="{{ request()->routeIs('reports.account') ? 'text-info' : '' }}">Account Report</a>
                 <a href="{{ route('reports.patient') }}"
-                    class="{{ request()->routeIs('reports.patient') ? 'text-info' : '' }}"><i
-                        class="fa-solid fa-angle-right"></i> Patient Report</a>
+                    class="{{ request()->routeIs('reports.patient') ? 'text-info' : '' }}">Patient Report</a>
                 <a href="{{ route('reports.doctor') }}"
-                    class="{{ request()->routeIs('reports.doctor') ? 'text-info' : '' }}"><i
-                        class="fa-solid fa-angle-right"></i> Doctor Report</a>
+                    class="{{ request()->routeIs('reports.doctor') ? 'text-info' : '' }}">Doctor Report</a>
                 <a href="{{ route('reports.labOrder') }}"
-                    class="{{ request()->routeIs('reports.labOrder') ? 'text-info' : '' }}"><i
-                        class="fa-solid fa-angle-right"></i> Lab Order Report</a>
+                    class="{{ request()->routeIs('reports.labOrder') ? 'text-info' : '' }}">Lab Order Report</a>
             </div>
         @endcan
 
