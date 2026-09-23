@@ -63,7 +63,20 @@ class FrontendCMSController extends Controller
             'button_link' => url('/about')
         ]);
 
-        return view('admin.cms.index', compact('hero', 'stats', 'quickActions', 'about'));
+        $whyChoose = HomeSetting::getSection('why_choose_section', [
+            'image' => null,
+            'label' => 'Why Choose Us',
+            'title' => 'The MediDiag Difference',
+            'description' => 'We merge medical expertise with advanced technology to deliver unparalleled diagnostic accuracy and patient care.',
+            'features' => [
+                ['icon'=>'bi-shield-check','color'=>'primary','title'=>'Accurate &amp; Reliable Reports','desc'=>'Rigorous quality control ensuring ISO-certified accuracy in every result.'],
+                ['icon'=>'bi-clock-history','color'=>'success','title'=>'Fast Report Delivery','desc'=>'Minimum waiting time with online report access within hours.'],
+                ['icon'=>'bi-cash-coin','color'=>'warning','title'=>'Affordable Pricing','desc'=>'Premium diagnostics at transparent, competitive rates. No hidden charges.'],
+                ['icon'=>'bi-house-door','color'=>'danger','title'=>'Home Sample Collection','desc'=>'We come to you — convenient, safe, and timely doorstep service.'],
+            ]
+        ]);
+
+        return view('admin.cms.index', compact('hero', 'stats', 'quickActions', 'about', 'whyChoose'));
     }
 
     public function updateHero(Request $request)
@@ -183,5 +196,48 @@ class FrontendCMSController extends Controller
         $setting->save();
 
         return redirect()->back()->with('success', 'About section updated successfully!');
+    }
+
+    public function updateWhyChoose(Request $request)
+    {
+        $request->validate([
+            'label' => 'required|string|max:50',
+            'title' => 'required|string|max:255',
+            'description' => 'required|string',
+            'features' => 'required|array|size:4',
+            'features.*.icon' => 'required|string|max:50',
+            'features.*.color' => 'required|string|max:50',
+            'features.*.title' => 'required|string|max:100',
+            'features.*.desc' => 'required|string|max:255',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:3072',
+        ]);
+
+        $setting = HomeSetting::firstOrNew(['key' => 'why_choose_section']);
+        $currentValue = $setting->value ?? [];
+
+        $newValue = [
+            'label' => $request->label,
+            'title' => $request->title,
+            'description' => $request->description,
+            'features' => $request->features,
+            'image' => $currentValue['image'] ?? null,
+        ];
+
+        if ($request->hasFile('image')) {
+            if (!empty($currentValue['image']) && Storage::disk('public')->exists($currentValue['image'])) {
+                Storage::disk('public')->delete($currentValue['image']);
+            }
+            $newValue['image'] = $request->file('image')->store('cms', 'public');
+        } elseif ($request->remove_image) {
+            if (!empty($currentValue['image']) && Storage::disk('public')->exists($currentValue['image'])) {
+                Storage::disk('public')->delete($currentValue['image']);
+            }
+            $newValue['image'] = null;
+        }
+
+        $setting->value = $newValue;
+        $setting->save();
+
+        return redirect()->back()->with('success', 'Why Choose Us section updated successfully!');
     }
 }

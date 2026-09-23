@@ -272,5 +272,92 @@
             </div>
         </div>
     </div>
+    {{-- Why Choose Us Section Form --}}
+    <div class="row g-4 mt-1">
+        <div class="col-12">
+            <div class="card card-premium mb-4">
+                <div class="card-header bg-white border-bottom-0 pt-4 pb-0">
+                    <h6 class="mb-0 fw-bold text-danger"><i class="fas fa-shield-alt me-2"></i>Why Choose Us Section</h6>
+                </div>
+                <div class="card-body">
+                    <form action="{{ route('cms.why_choose.update') }}" method="POST" enctype="multipart/form-data">
+                        @csrf
+                        @method('PUT')
+                        <div class="row">
+                            <div class="col-md-5">
+                                <div class="mb-3">
+                                    <label class="form-label fw-semibold">Label <span class="text-danger">*</span></label>
+                                    <input type="text" name="label" class="form-control" value="{{ old('label', $whyChoose['label'] ?? '') }}" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label fw-semibold">Title <span class="text-danger">*</span></label>
+                                    <input type="text" name="title" class="form-control" value="{{ old('title', $whyChoose['title'] ?? '') }}" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label fw-semibold">Description <span class="text-danger">*</span></label>
+                                    <textarea name="description" class="form-control" rows="4" required>{{ old('description', $whyChoose['description'] ?? '') }}</textarea>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label fw-semibold">Side Image (Optional)</label>
+                                    @if(isset($whyChoose['image']) && $whyChoose['image'])
+                                        <div class="mb-2">
+                                            <img src="{{ asset('storage/' . $whyChoose['image']) }}" alt="Why Choose Us Image" class="img-thumbnail" style="max-height: 100px;">
+                                            <div class="form-check mt-1">
+                                                <input class="form-check-input" type="checkbox" name="remove_image" value="1" id="removeWhyChooseImage">
+                                                <label class="form-check-label text-danger" for="removeWhyChooseImage"><small>Remove Image</small></label>
+                                            </div>
+                                        </div>
+                                    @endif
+                                    <input type="file" name="image" class="form-control" accept="image/*">
+                                </div>
+                            </div>
+                            <div class="col-md-7">
+                                <label class="form-label fw-semibold">Features (Exactly 4 Cards) <span class="text-danger">*</span></label>
+                                <div class="row g-3">
+                                    @for($i=0; $i<4; $i++)
+                                    <div class="col-md-6">
+                                        <div class="border rounded-3 p-3 bg-light-soft h-100">
+                                            <h6 class="fw-bold mb-3 small">Feature {{ $i + 1 }}</h6>
+                                            
+                                            <div class="mb-2">
+                                                <label class="form-label small fw-semibold">Title</label>
+                                                <input type="text" name="features[{{ $i }}][title]" class="form-control form-control-sm" value="{{ $whyChoose['features'][$i]['title'] ?? '' }}" required>
+                                            </div>
+                                            
+                                            <div class="mb-2">
+                                                <label class="form-label small fw-semibold">Description</label>
+                                                <textarea name="features[{{ $i }}][desc]" class="form-control form-control-sm" rows="2" required>{{ $whyChoose['features'][$i]['desc'] ?? '' }}</textarea>
+                                            </div>
+                                            
+                                            <div class="row g-2">
+                                                <div class="col-6">
+                                                    <label class="form-label small fw-semibold">Icon</label>
+                                                    <input type="text" name="features[{{ $i }}][icon]" class="form-control form-control-sm" value="{{ $whyChoose['features'][$i]['icon'] ?? '' }}" placeholder="e.g. bi-shield-check" required>
+                                                </div>
+                                                <div class="col-6">
+                                                    <label class="form-label small fw-semibold">Color</label>
+                                                    <select name="features[{{ $i }}][color]" class="form-select form-select-sm" required>
+                                                        <option value="primary" {{ ($whyChoose['features'][$i]['color'] ?? '') == 'primary' ? 'selected' : '' }}>Primary</option>
+                                                        <option value="success" {{ ($whyChoose['features'][$i]['color'] ?? '') == 'success' ? 'selected' : '' }}>Success</option>
+                                                        <option value="danger" {{ ($whyChoose['features'][$i]['color'] ?? '') == 'danger' ? 'selected' : '' }}>Danger</option>
+                                                        <option value="warning" {{ ($whyChoose['features'][$i]['color'] ?? '') == 'warning' ? 'selected' : '' }}>Warning</option>
+                                                        <option value="info" {{ ($whyChoose['features'][$i]['color'] ?? '') == 'info' ? 'selected' : '' }}>Info</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    @endfor
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mt-4">
+                            <button type="submit" class="btn btn-danger w-100 fw-bold"><i class="fas fa-save me-2"></i>Save Why Choose Us Section</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 @endsection

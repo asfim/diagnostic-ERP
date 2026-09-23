@@ -80,6 +80,19 @@ class HomeController extends Controller
             'button_link' => url('/about')
         ]);
 
-        return view('frontend.home', compact('tests', 'packages', 'departments', 'doctors', 'hero', 'stats', 'quickActions', 'about'));
+        $whyChoose = HomeSetting::getSection('why_choose_section', [
+            'image' => null,
+            'label' => 'Why Choose Us',
+            'title' => 'The MediDiag Difference',
+            'description' => 'We merge medical expertise with advanced technology to deliver unparalleled diagnostic accuracy and patient care.',
+            'features' => [
+                ['icon'=>'bi-shield-check','color'=>'primary','title'=>'Accurate &amp; Reliable Reports','desc'=>'Rigorous quality control ensuring ISO-certified accuracy in every result.'],
+                ['icon'=>'bi-clock-history','color'=>'success','title'=>'Fast Report Delivery','desc'=>'Minimum waiting time with online report access within hours.'],
+                ['icon'=>'bi-cash-coin','color'=>'warning','title'=>'Affordable Pricing','desc'=>'Premium diagnostics at transparent, competitive rates. No hidden charges.'],
+                ['icon'=>'bi-house-door','color'=>'danger','title'=>'Home Sample Collection','desc'=>'We come to you — convenient, safe, and timely doorstep service.'],
+            ]
+        ]);
+
+        return view('frontend.home', compact('tests', 'packages', 'departments', 'doctors', 'hero', 'stats', 'quickActions', 'about', 'whyChoose'));
     }
 }

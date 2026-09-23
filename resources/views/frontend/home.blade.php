@@ -342,36 +342,29 @@
     <div class="container">
         <div class="row align-items-center g-5">
             <div class="col-lg-6 order-lg-2" data-aos="fade-left">
-                <img src="https://images.unsplash.com/photo-1581594693702-fbdc51b2763b?auto=format&fit=crop&w=800&q=80"
+                <img src="{{ !empty($whyChoose['image']) ? asset('storage/' . $whyChoose['image']) : 'https://images.unsplash.com/photo-1581594693702-fbdc51b2763b?auto=format&fit=crop&w=800&q=80' }}"
                      alt="Laboratory" class="img-fluid rounded-4 shadow-lg w-100" style="object-fit:cover; max-height:440px;">
             </div>
             <div class="col-lg-6 order-lg-1" data-aos="fade-right">
                 <div class="section-header mb-4">
-                    <span class="label">Why Choose Us</span>
-                    <h2>The MediDiag Difference</h2>
-                    <p class="mt-2">We merge medical expertise with advanced technology to deliver unparalleled diagnostic accuracy and patient care.</p>
+                    <span class="label">{{ $whyChoose['label'] ?? 'Why Choose Us' }}</span>
+                    <h2>{{ $whyChoose['title'] ?? 'The MediDiag Difference' }}</h2>
+                    <p class="mt-2">{{ $whyChoose['description'] ?? '' }}</p>
                 </div>
 
-                @php
-                $features = [
-                    ['icon'=>'bi-shield-check','color'=>'primary','title'=>'Accurate &amp; Reliable Reports','desc'=>'Rigorous quality control ensuring ISO-certified accuracy in every result.'],
-                    ['icon'=>'bi-clock-history','color'=>'success','title'=>'Fast Report Delivery','desc'=>'Minimum waiting time with online report access within hours.'],
-                    ['icon'=>'bi-cash-coin','color'=>'warning','title'=>'Affordable Pricing','desc'=>'Premium diagnostics at transparent, competitive rates. No hidden charges.'],
-                    ['icon'=>'bi-house-door','color'=>'danger','title'=>'Home Sample Collection','desc'=>'We come to you — convenient, safe, and timely doorstep service.'],
-                ];
-                @endphp
-
-                @foreach($features as $f)
+                @if(!empty($whyChoose['features']) && is_array($whyChoose['features']))
+                @foreach($whyChoose['features'] as $f)
                 <div class="d-flex gap-3 mb-4">
-                    <div class="icon-box bg-{{ $f['color'] }} bg-opacity-10 text-{{ $f['color'] }} rounded-3 flex-shrink-0" style="width:54px;height:54px;">
-                        <i class="bi {{ $f['icon'] }} fs-4"></i>
+                    <div class="icon-box bg-{{ $f['color'] ?? 'primary' }} bg-opacity-10 text-{{ $f['color'] ?? 'primary' }} rounded-3 flex-shrink-0" style="width:54px;height:54px;">
+                        <i class="bi {{ $f['icon'] ?? 'bi-check-circle' }} fs-4"></i>
                     </div>
                     <div>
-                        <h5 class="fw-bold mb-1">{!! $f['title'] !!}</h5>
-                        <p class="text-muted mb-0 small">{{ $f['desc'] }}</p>
+                        <h5 class="fw-bold mb-1">{!! $f['title'] ?? '' !!}</h5>
+                        <p class="text-muted mb-0 small">{{ $f['desc'] ?? '' }}</p>
                     </div>
                 </div>
                 @endforeach
+                @endif
             </div>
         </div>
     </div>
