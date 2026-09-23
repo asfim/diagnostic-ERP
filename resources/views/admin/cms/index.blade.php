@@ -195,5 +195,82 @@
             </div>
         </div>
     </div>
+
+    {{-- About Section Form --}}
+    <div class="row g-4 mt-1">
+        <div class="col-12">
+            <div class="card card-premium">
+                <div class="card-header bg-white border-bottom-0 pt-4 pb-0">
+                    <h6 class="mb-0 fw-bold text-primary"><i class="fas fa-info-circle me-2"></i>About Section</h6>
+                </div>
+                <div class="card-body">
+                    <form action="{{ route('cms.about.update') }}" method="POST" enctype="multipart/form-data">
+                        @csrf
+                        @method('PUT')
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label class="form-label fw-semibold">Label <span class="text-danger">*</span></label>
+                                    <input type="text" name="label" class="form-control" value="{{ old('label', $about['label'] ?? '') }}" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label fw-semibold">Title <span class="text-danger">*</span></label>
+                                    <input type="text" name="title" class="form-control" value="{{ old('title', $about['title'] ?? '') }}" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label fw-semibold">Description <span class="text-danger">*</span></label>
+                                    <textarea name="description" class="form-control" rows="4" required>{{ old('description', $about['description'] ?? '') }}</textarea>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6 mb-3">
+                                        <label class="form-label fw-semibold">Button Text <span class="text-danger">*</span></label>
+                                        <input type="text" name="button_text" class="form-control" value="{{ old('button_text', $about['button_text'] ?? '') }}" required>
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <label class="form-label fw-semibold">Button Link <span class="text-danger">*</span></label>
+                                        <input type="text" name="button_link" class="form-control" value="{{ old('button_link', $about['button_link'] ?? '') }}" required>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="row">
+                                    <div class="col-md-6 mb-3">
+                                        <label class="form-label fw-semibold">Years Number <span class="text-danger">*</span></label>
+                                        <input type="text" name="years_number" class="form-control" value="{{ old('years_number', $about['years_number'] ?? '') }}" placeholder="e.g. 15+" required>
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <label class="form-label fw-semibold">Years Text <span class="text-danger">*</span></label>
+                                        <textarea name="years_text" class="form-control" rows="2" placeholder="e.g. Years of Excellence" required>{{ old('years_text', $about['years_text'] ?? '') }}</textarea>
+                                    </div>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label fw-semibold">Key Features (Up to 4) <span class="text-danger">*</span></label>
+                                    @for($i=0; $i<4; $i++)
+                                        <input type="text" name="features[]" class="form-control mb-2" value="{{ old('features.'.$i, $about['features'][$i] ?? '') }}" placeholder="Feature {{ $i+1 }}">
+                                    @endfor
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label fw-semibold">Side Image (Optional)</label>
+                                    @if(isset($about['image']) && $about['image'])
+                                        <div class="mb-2">
+                                            <img src="{{ asset('storage/' . $about['image']) }}" alt="About Image" class="img-thumbnail" style="max-height: 100px;">
+                                            <div class="form-check mt-1">
+                                                <input class="form-check-input" type="checkbox" name="remove_image" value="1" id="removeAboutImage">
+                                                <label class="form-check-label text-danger" for="removeAboutImage"><small>Remove Image</small></label>
+                                            </div>
+                                        </div>
+                                    @endif
+                                    <input type="file" name="image" class="form-control" accept="image/*">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mt-3">
+                            <button type="submit" class="btn btn-primary w-100 fw-bold"><i class="fas fa-save me-2"></i>Save About Section</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 @endsection

@@ -113,6 +113,7 @@ Route::middleware('auth')->group(function () {
     Route::put('/cms/hero', [\App\Http\Controllers\FrontendCMSController::class, 'updateHero'])->name('cms.hero.update');
     Route::put('/cms/stats', [\App\Http\Controllers\FrontendCMSController::class, 'updateStats'])->name('cms.stats.update');
     Route::put('/cms/quick-actions', [\App\Http\Controllers\FrontendCMSController::class, 'updateQuickActions'])->name('cms.quick_actions.update');
+    Route::put('/cms/about', [\App\Http\Controllers\FrontendCMSController::class, 'updateAbout'])->name('cms.about.update');
 });
 
 require __DIR__.'/auth.php';

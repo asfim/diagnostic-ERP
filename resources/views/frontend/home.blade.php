@@ -160,64 +160,52 @@
         <div class="row align-items-center g-5">
             <div class="col-lg-6" data-aos="fade-right">
                 <div class="position-relative">
-                    <img src="https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?auto=format&fit=crop&w=800&q=80"
-                         alt="MediDiag Center" class="img-fluid rounded-4 shadow-lg w-100" style="object-fit:cover; max-height:440px;">
+                    <img src="{{ !empty($about['image']) ? asset('storage/' . $about['image']) : 'https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?auto=format&fit=crop&w=800&q=80' }}"
+                         alt="{{ $about['title'] ?? 'About MediDiag' }}" class="img-fluid rounded-4 shadow-lg w-100" style="object-fit:cover; max-height:440px;">
                     <div class="position-absolute bottom-0 start-0 bg-primary text-white p-4 rounded-4 shadow-lg m-3">
                         <div class="d-flex align-items-center gap-3">
-                            <span class="display-6 fw-bold">15+</span>
-                            <span class="fw-semibold lh-sm">Years of<br>Excellence</span>
+                            <span class="display-6 fw-bold">{{ $about['years_number'] ?? '15+' }}</span>
+                            <span class="fw-semibold lh-sm">{!! nl2br(e($about['years_text'] ?? "Years of\nExcellence")) !!}</span>
                         </div>
                     </div>
                 </div>
             </div>
             <div class="col-lg-6" data-aos="fade-left">
                 <div class="section-header mb-4">
-                    <span class="label">About MediDiag</span>
-                    <h2>Leading the Way in Medical Diagnostics</h2>
-                    <p class="mt-3">We provide comprehensive diagnostic services with a commitment to accuracy, reliability, and patient comfort. Our state-of-the-art facility is equipped with the latest medical technology.</p>
+                    <span class="label">{{ $about['label'] ?? 'About MediDiag' }}</span>
+                    <h2>{{ $about['title'] ?? 'Leading the Way in Medical Diagnostics' }}</h2>
+                    <p class="mt-3">{{ $about['description'] ?? '' }}</p>
                 </div>
                 <div class="row g-3 mb-4">
-                    <div class="col-6">
-                        <div class="d-flex align-items-center gap-2">
-                            <i class="bi bi-check-circle-fill text-success fs-5"></i>
-                            <span class="fw-semibold">Advanced Equipment</span>
+                    @if(!empty($about['features']) && is_array($about['features']))
+                        @foreach($about['features'] as $feature)
+                        @if(!empty($feature))
+                        <div class="col-6">
+                            <div class="d-flex align-items-center gap-2">
+                                <i class="bi bi-check-circle-fill text-success fs-5"></i>
+                                <span class="fw-semibold">{{ $feature }}</span>
+                            </div>
                         </div>
-                    </div>
-                    <div class="col-6">
-                        <div class="d-flex align-items-center gap-2">
-                            <i class="bi bi-check-circle-fill text-success fs-5"></i>
-                            <span class="fw-semibold">Expert Pathologists</span>
-                        </div>
-                    </div>
-                    <div class="col-6">
-                        <div class="d-flex align-items-center gap-2">
-                            <i class="bi bi-check-circle-fill text-success fs-5"></i>
-                            <span class="fw-semibold">Accurate Reports</span>
-                        </div>
-                    </div>
-                    <div class="col-6">
-                        <div class="d-flex align-items-center gap-2">
-                            <i class="bi bi-check-circle-fill text-success fs-5"></i>
-                            <span class="fw-semibold">Fast Turnaround</span>
-                        </div>
-                    </div>
+                        @endif
+                        @endforeach
+                    @endif
                 </div>
                 {{-- Stats Row --}}
                 <div class="row g-3 mb-4 text-center">
                     <div class="col-4 py-3 bg-light-soft rounded-3">
-                        <h3 class="fw-bold text-primary mb-0">50+</h3>
+                        <h3 class="fw-bold text-primary mb-0">{{ $stats['doctors'] ?? '50+' }}</h3>
                         <small class="text-muted">Doctors</small>
                     </div>
                     <div class="col-4 py-3 bg-light-soft rounded-3">
-                        <h3 class="fw-bold text-primary mb-0">100k+</h3>
+                        <h3 class="fw-bold text-primary mb-0">{{ $stats['patients'] ?? '100k+' }}</h3>
                         <small class="text-muted">Patients</small>
                     </div>
                     <div class="col-4 py-3 bg-light-soft rounded-3">
-                        <h3 class="fw-bold text-primary mb-0">500+</h3>
+                        <h3 class="fw-bold text-primary mb-0">{{ $stats['tests'] ?? '500+' }}</h3>
                         <small class="text-muted">Tests</small>
                     </div>
                 </div>
-                <a href="{{ url('/about') }}" class="btn btn-primary rounded-pill px-4">Learn More <i class="bi bi-arrow-right ms-1"></i></a>
+                <a href="{{ $about['button_link'] ?? url('/about') }}" class="btn btn-primary rounded-pill px-4">{{ $about['button_text'] ?? 'Learn More' }} <i class="bi bi-arrow-right ms-1"></i></a>
             </div>
         </div>
     </div>

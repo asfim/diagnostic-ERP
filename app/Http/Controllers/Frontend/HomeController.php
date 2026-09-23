@@ -63,6 +63,23 @@ class HomeController extends Controller
             ]
         ]);
 
-        return view('frontend.home', compact('tests', 'packages', 'departments', 'doctors', 'hero', 'stats', 'quickActions'));
+        $about = HomeSetting::getSection('about_section', [
+            'image' => null,
+            'years_number' => '15+',
+            'years_text' => "Years of\nExcellence",
+            'label' => 'About MediDiag',
+            'title' => 'Leading the Way in Medical Diagnostics',
+            'description' => 'We provide comprehensive diagnostic services with a commitment to accuracy, reliability, and patient comfort. Our state-of-the-art facility is equipped with the latest medical technology.',
+            'features' => [
+                'Advanced Equipment',
+                'Expert Pathologists',
+                'Accurate Reports',
+                'Fast Turnaround'
+            ],
+            'button_text' => 'Learn More',
+            'button_link' => url('/about')
+        ]);
+
+        return view('frontend.home', compact('tests', 'packages', 'departments', 'doctors', 'hero', 'stats', 'quickActions', 'about'));
     }
 }

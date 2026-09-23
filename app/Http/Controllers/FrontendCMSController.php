@@ -46,7 +46,24 @@ class FrontendCMSController extends Controller
             ]
         ]);
 
-        return view('admin.cms.index', compact('hero', 'stats', 'quickActions'));
+        $about = HomeSetting::getSection('about_section', [
+            'image' => null,
+            'years_number' => '15+',
+            'years_text' => "Years of\nExcellence",
+            'label' => 'About MediDiag',
+            'title' => 'Leading the Way in Medical Diagnostics',
+            'description' => 'We provide comprehensive diagnostic services with a commitment to accuracy, reliability, and patient comfort. Our state-of-the-art facility is equipped with the latest medical technology.',
+            'features' => [
+                'Advanced Equipment',
+                'Expert Pathologists',
+                'Accurate Reports',
+                'Fast Turnaround'
+            ],
+            'button_text' => 'Learn More',
+            'button_link' => url('/about')
+        ]);
+
+        return view('admin.cms.index', compact('hero', 'stats', 'quickActions', 'about'));
     }
 
     public function updateHero(Request $request)
@@ -118,5 +135,53 @@ class FrontendCMSController extends Controller
         $setting->save();
 
         return redirect()->back()->with('success', 'Quick Actions section updated successfully!');
+    }
+
+    public function updateAbout(Request $request)
+    {
+        $request->validate([
+            'years_number' => 'required|string|max:20',
+            'years_text' => 'required|string|max:50',
+            'label' => 'required|string|max:50',
+            'title' => 'required|string|max:255',
+            'description' => 'required|string',
+            'features' => 'required|array',
+            'features.*' => 'nullable|string|max:100',
+            'button_text' => 'required|string|max:50',
+            'button_link' => 'required|string|max:255',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:3072',
+        ]);
+
+        $setting = HomeSetting::firstOrNew(['key' => 'about_section']);
+        $currentValue = $setting->value ?? [];
+
+        $newValue = [
+            'years_number' => $request->years_number,
+            'years_text' => $request->years_text,
+            'label' => $request->label,
+            'title' => $request->title,
+            'description' => $request->description,
+            'features' => array_filter($request->features),
+            'button_text' => $request->button_text,
+            'button_link' => $request->button_link,
+            'image' => $currentValue['image'] ?? null,
+        ];
+
+        if ($request->hasFile('image')) {
+            if (!empty($currentValue['image']) && Storage::disk('public')->exists($currentValue['image'])) {
+                Storage::disk('public')->delete($currentValue['image']);
+            }
+            $newValue['image'] = $request->file('image')->store('cms', 'public');
+        } elseif ($request->remove_image) {
+            if (!empty($currentValue['image']) && Storage::disk('public')->exists($currentValue['image'])) {
+                Storage::disk('public')->delete($currentValue['image']);
+            }
+            $newValue['image'] = null;
+        }
+
+        $setting->value = $newValue;
+        $setting->save();
+
+        return redirect()->back()->with('success', 'About section updated successfully!');
     }
 }
