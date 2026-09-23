@@ -24,8 +24,8 @@ class HomeController extends Controller
     public function index()
     {
         $departments  = Department::withCount('doctors', 'tests')->limit(8)->get();
-        $doctors      = Doctor::where('status', 'active')->limit(4)->get();
-        $tests        = Test::where('status', 'active')->limit(8)->get();
+        $doctors      = Doctor::where('status', 1)->limit(4)->get();
+        $tests        = Test::where('status', 1)->limit(8)->get();
         $packages     = TestPackage::where('status', 'active')->orderBy('sort_order')->limit(3)->get();
 
         $hero = Hero::first();

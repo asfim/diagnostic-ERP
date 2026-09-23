@@ -12,7 +12,7 @@ class TestController extends Controller
 {
     public function index(Request $request)
     {
-        $query = Test::with('department')->where('status', 'active');
+        $query = Test::with(['department', 'category'])->where('status', 1);
 
         if ($request->filled('department')) {
             $query->where('department_id', $request->department);

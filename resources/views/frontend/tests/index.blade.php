@@ -82,41 +82,158 @@
                     <a href="{{ url('/tests') }}" class="btn btn-primary rounded-pill px-4">Reset</a>
                 </div>
                 @else
+                <style>
+                    /* Premium Test Card Styles */
+                    .test-card-premium {
+                        background: #fff;
+                        border: 1px solid rgba(0,0,0,0.05);
+                        border-radius: 1.25rem;
+                        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+                        position: relative;
+                        overflow: hidden;
+                    }
+                    .test-card-premium::before {
+                        content: '';
+                        position: absolute;
+                        top: 0;
+                        left: 0;
+                        width: 100%;
+                        height: 4px;
+                        background: linear-gradient(90deg, var(--bs-primary), var(--bs-info));
+                        opacity: 0;
+                        transition: all 0.3s ease;
+                    }
+                    .test-card-premium:hover {
+                        transform: translateY(-8px);
+                        box-shadow: 0 15px 35px rgba(0,0,0,0.08);
+                        border-color: rgba(var(--bs-primary-rgb), 0.1);
+                    }
+                    .test-card-premium:hover::before {
+                        opacity: 1;
+                    }
+                    .test-card-premium .icon-container {
+                        width: 55px;
+                        height: 55px;
+                        background: linear-gradient(135deg, rgba(var(--bs-primary-rgb), 0.1) 0%, rgba(var(--bs-info-rgb), 0.1) 100%);
+                        border-radius: 12px;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        font-size: 1.5rem;
+                        color: var(--bs-primary);
+                        transition: all 0.3s ease;
+                    }
+                    .test-card-premium:hover .icon-container {
+                        background: linear-gradient(135deg, var(--bs-primary) 0%, var(--bs-info) 100%);
+                        color: white;
+                        transform: scale(1.05) rotate(5deg);
+                    }
+                    .test-badge-premium {
+                        background: rgba(var(--bs-primary-rgb), 0.08);
+                        color: var(--bs-primary);
+                        font-weight: 600;
+                        padding: 0.35em 0.8em;
+                        border-radius: 20px;
+                        font-size: 0.75rem;
+                        letter-spacing: 0.5px;
+                    }
+                    .test-meta-info {
+                        display: flex;
+                        align-items: center;
+                        gap: 15px;
+                        flex-wrap: wrap;
+                        font-size: 0.82rem;
+                        color: #6c757d;
+                        margin-top: 15px;
+                        padding-top: 15px;
+                        border-top: 1px dashed rgba(0,0,0,0.08);
+                    }
+                    .test-meta-info span {
+                        display: flex;
+                        align-items: center;
+                        gap: 5px;
+                    }
+                    .test-card-footer {
+                        background: #fafbfe;
+                        border-top: 1px solid rgba(0,0,0,0.03);
+                        padding: 1.25rem 1.5rem;
+                        display: flex;
+                        justify-content: space-between;
+                        align-items: center;
+                        border-radius: 0 0 1.25rem 1.25rem;
+                    }
+                    .test-price {
+                        font-size: 1.25rem;
+                        font-weight: 700;
+                        color: var(--bs-primary);
+                        display: flex;
+                        align-items: center;
+                        gap: 4px;
+                    }
+                    .test-price small {
+                        font-size: 0.75rem;
+                        color: #999;
+                        font-weight: normal;
+                    }
+                </style>
+
                 <div class="row g-4">
                     @foreach($tests as $test)
-                    <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="{{ ($loop->index % 3) * 80 }}">
-                        <div class="card border-0 shadow-sm rounded-4 h-100 overflow-hidden test-list-card">
-                            <div class="card-body p-4">
-                                <div class="d-flex align-items-start mb-3">
-                                    <div class="icon-box bg-primary bg-opacity-10 text-primary rounded-3 flex-shrink-0 me-3"
-                                         style="width:50px;height:50px;">
-                                        <i class="bi bi-droplet-fill fs-4"></i>
+                    <div class="col-lg-6 col-xl-6" data-aos="fade-up" data-aos-delay="{{ ($loop->index % 4) * 80 }}">
+                        <div class="test-card-premium h-100 d-flex flex-column">
+                            <div class="p-4 flex-grow-1">
+                                <div class="d-flex align-items-start gap-3">
+                                    <div class="icon-container flex-shrink-0 shadow-sm">
+                                        <i class="bi bi-heart-pulse-fill"></i>
                                     </div>
                                     <div class="flex-grow-1">
-                                        <span class="badge bg-primary bg-opacity-10 text-primary small mb-1">
-                                            {{ $test->test_code }}
-                                        </span>
-                                        <h6 class="fw-bold mb-0">{{ $test->name }}</h6>
+                                        <div class="d-flex justify-content-between align-items-start mb-2">
+                                            <span class="test-badge-premium">
+                                                <i class="bi bi-upc-scan me-1"></i> {{ $test->test_code }}
+                                            </span>
+                                            @if($test->department)
+                                            <span class="badge bg-light text-dark border border-secondary border-opacity-25 rounded-pill px-2 py-1" style="font-size: 0.7rem;">
+                                                {{ $test->department->name }}
+                                            </span>
+                                            @endif
+                                        </div>
+                                        <h5 class="fw-bold mb-1 text-dark" style="font-size: 1.1rem; line-height: 1.4;">
+                                            <a href="{{ url('/tests/'.$test->id) }}" class="text-decoration-none text-dark stretched-link">
+                                                {{ $test->name }}
+                                            </a>
+                                        </h5>
+                                        @if($test->description)
+                                        <p class="text-muted small mb-0 mt-2 text-truncate" style="max-width: 250px;">
+                                            {{ $test->description }}
+                                        </p>
+                                        @endif
                                     </div>
                                 </div>
 
-                                <div class="d-flex flex-wrap gap-2 mb-3 text-muted small">
-                                    @if($test->department)
-                                    <span><i class="bi bi-building text-primary me-1"></i>{{ $test->department->name }}</span>
-                                    @endif
+                                <div class="test-meta-info">
                                     @if($test->specimen_type)
-                                    <span><i class="bi bi-droplet text-danger me-1"></i>{{ $test->specimen_type }}</span>
+                                    <span title="Sample Type">
+                                        <i class="bi bi-droplet-fill text-danger opacity-75"></i> {{ $test->specimen_type }}
+                                    </span>
                                     @endif
                                     @if($test->turnaround_time)
-                                    <span><i class="bi bi-clock text-success me-1"></i>{{ $test->turnaround_time }}</span>
+                                    <span title="Report Time">
+                                        <i class="bi bi-clock-history text-success opacity-75"></i> {{ $test->turnaround_time }}
+                                    </span>
                                     @endif
+                                    <span title="Category">
+                                        <i class="bi bi-tags-fill text-info opacity-75"></i> {{ $test->category ? $test->category->name : 'General' }}
+                                    </span>
                                 </div>
                             </div>
-                            <div class="card-footer bg-white border-top px-4 py-3 d-flex justify-content-between align-items-center">
-                                <span class="fw-bold text-primary fs-5">৳ {{ number_format($test->price) }}</span>
+                            <div class="test-card-footer position-relative z-1">
+                                <div class="test-price">
+                                    <span>৳{{ number_format($test->price) }}</span>
+                                </div>
                                 <div class="d-flex gap-2">
-                                    <a href="{{ url('/tests/'.$test->id) }}" class="btn btn-sm btn-outline-primary rounded-pill px-3">Details</a>
-                                    <a href="{{ url('/appointment') }}?test={{ $test->id }}" class="btn btn-sm btn-primary rounded-pill px-3">Book</a>
+                                    <a href="{{ url('/appointment') }}?test={{ $test->id }}" class="btn btn-primary btn-sm rounded-pill px-3 shadow-sm d-flex align-items-center gap-1 fw-semibold position-relative z-3">
+                                        <i class="bi bi-calendar-check"></i> Book Now
+                                    </a>
                                 </div>
                             </div>
                         </div>

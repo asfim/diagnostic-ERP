@@ -24,4 +24,9 @@ class Test extends Model
     {
         return $this->hasMany(TestParameter::class)->orderBy('sort_order');
     }
+
+    public function category()
+    {
+        return $this->belongsTo(TestCategory::class, 'test_category_id');
+    }
 }

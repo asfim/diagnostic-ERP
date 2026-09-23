@@ -12,7 +12,7 @@ class DoctorController extends Controller
 {
     public function index(Request $request)
     {
-        $query = Doctor::with('department')->where('status', 'active');
+        $query = Doctor::with('department')->where('status', 1);
 
         if ($request->filled('department')) {
             $query->where('department_id', $request->department);

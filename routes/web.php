@@ -72,7 +72,7 @@ Route::middleware('auth')->group(function () {
     Route::resource('doctors', \App\Http\Controllers\DoctorController::class);
     Route::resource('appointments', \App\Http\Controllers\AppointmentController::class);
     Route::patch('appointments/{appointment}/status', [\App\Http\Controllers\AppointmentController::class, 'updateStatus'])->name('appointments.updateStatus');
-    Route::resource('tests', \App\Http\Controllers\TestController::class);
+    Route::resource('admin-tests', \App\Http\Controllers\TestController::class)->names('tests')->parameters(['admin-tests' => 'test']);
     Route::resource('invoices', \App\Http\Controllers\InvoiceController::class);
     Route::resource('diagnostic-orders', \App\Http\Controllers\DiagnosticOrderController::class);
     Route::patch('diagnostic-orders/{order}/status', [\App\Http\Controllers\DiagnosticOrderController::class, 'updateStatus'])->name('diagnostic-orders.updateStatus');

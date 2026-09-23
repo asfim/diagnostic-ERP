@@ -224,15 +224,18 @@
 
             @foreach($tests as $i => $test)
             <div class="col-lg-3 col-md-6" data-aos="fade-up" data-aos-delay="{{ ($i+1)*80 }}">
-                <div class="test-card d-flex flex-column">
+                <div class="test-card d-flex flex-column" style="cursor: pointer;" onclick="window.location.href='{{ url('/tests/'.$test->id) }}'">
                     <div class="t-icon bg-primary bg-opacity-10 text-primary mx-auto">
                         <i class="bi bi-activity"></i>
                     </div>
-                    <h5 class="fw-bold">{{ $test->name }}</h5>
+                    <h5 class="fw-bold"><a href="{{ url('/tests/'.$test->id) }}" class="text-dark text-decoration-none">{{ $test->name }}</a></h5>
                     <p class="text-truncate">{{ $test->description ?? 'Accurate and reliable diagnostic test.' }}</p>
                     <div class="d-flex justify-content-between align-items-center mt-auto pt-3 border-top">
                         <span class="price">৳ {{ number_format($test->price, 0) }}</span>
-                        <a href="{{ url('/appointment') }}" class="btn btn-sm btn-outline-primary rounded-pill px-3">Book</a>
+                        <div class="d-flex gap-2">
+                            <a href="{{ url('/tests/'.$test->id) }}" class="btn btn-sm btn-outline-secondary rounded-pill px-2">Details</a>
+                            <a href="{{ url('/appointment') }}?test={{ $test->id }}" class="btn btn-sm btn-outline-primary rounded-pill px-3">Book</a>
+                        </div>
                     </div>
                 </div>
             </div>
