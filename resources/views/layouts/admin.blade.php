@@ -38,16 +38,16 @@
 
         /* Sidebar Styling */
         .sidebar {
-            width: 260px;
+            width: 265px;
             height: 100vh;
             position: fixed;
             top: 0;
             left: 0;
-            background: var(--sidebar-bg);
-            color: var(--sidebar-text);
-            padding-top: 20px;
+            background: linear-gradient(180deg, #0f172a 0%, #1e293b 50%, #0f172a 100%);
+            color: #e2e8f0;
+            padding-top: 0;
             z-index: 1000;
-            box-shadow: 4px 0 10px rgba(0, 0, 0, 0.1);
+            box-shadow: 4px 0 20px rgba(0, 0, 0, 0.25);
             transition: all 0.3s;
             overflow-y: auto;
             scrollbar-gutter: stable;
@@ -58,92 +58,164 @@
         }
 
         .sidebar::-webkit-scrollbar {
-            width: 5px;
+            width: 4px;
         }
 
         .sidebar::-webkit-scrollbar-track {
-            background: var(--sidebar-bg);
+            background: transparent;
         }
 
         .sidebar::-webkit-scrollbar-thumb {
-            background: var(--sidebar-hover);
+            background: rgba(255, 255, 255, 0.15);
             border-radius: 10px;
         }
 
+        /* Brand / Logo */
         .sidebar .brand {
-            padding: 15px 20px 25px;
+            padding: 24px 20px 20px;
             text-align: center;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-            margin-bottom: 15px;
+            background: linear-gradient(135deg, rgba(78,115,223,0.25) 0%, rgba(37,99,235,0.1) 100%);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+            margin-bottom: 10px;
+            position: relative;
         }
-
+        .sidebar .brand::after {
+            content: '';
+            position: absolute;
+            bottom: 0; left: 20%; right: 20%;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(99,179,237,0.4), transparent);
+        }
+        .sidebar .brand .brand-icon {
+            width: 48px; height: 48px;
+            background: linear-gradient(135deg, #4e73df, #2563eb);
+            border-radius: 14px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 10px;
+            box-shadow: 0 4px 15px rgba(78,115,223,0.45);
+        }
         .sidebar .brand h4 {
             font-weight: 700;
             color: #fff;
-            letter-spacing: 1px;
+            letter-spacing: 0.5px;
             margin: 0;
+            font-size: 1rem;
+        }
+        .sidebar .brand p {
+            font-size: 0.7rem;
+            color: rgba(255,255,255,0.45);
+            margin: 0;
+            letter-spacing: 1px;
         }
 
+        /* Section Labels */
+        .sidebar .nav-label {
+            padding: 16px 20px 6px;
+            font-size: 0.62rem;
+            letter-spacing: 1.5px;
+            font-weight: 700;
+            color: rgba(255,255,255,0.3);
+            text-transform: uppercase;
+        }
+
+        /* Nav Links */
         .sidebar a {
-            padding: 12px 25px;
+            padding: 10px 16px;
             display: flex;
             align-items: center;
-            color: var(--sidebar-text);
+            color: rgba(226, 232, 240, 0.75);
             text-decoration: none;
             font-weight: 500;
-            font-size: 0.95rem;
-            margin: 2px 15px;
-            border-radius: 8px;
+            font-size: 0.875rem;
+            margin: 2px 12px;
+            border-radius: 10px;
+            transition: all 0.2s ease;
+            position: relative;
         }
 
-        .sidebar a i {
-            width: 24px;
-            font-size: 1.1rem;
-            opacity: 0.8;
+        .sidebar a .nav-icon {
+            width: 34px; height: 34px;
+            border-radius: 9px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.85rem;
             margin-right: 10px;
+            background: rgba(255,255,255,0.05);
+            transition: all 0.2s ease;
+            flex-shrink: 0;
         }
 
         .sidebar a:hover {
-            background: var(--sidebar-hover);
+            background: rgba(255, 255, 255, 0.07);
             color: #fff;
+        }
+
+        .sidebar a:hover .nav-icon {
+            background: rgba(78, 115, 223, 0.25);
+            color: #93c5fd;
         }
 
         .sidebar a.active {
-            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            background: linear-gradient(135deg, rgba(78,115,223,0.35) 0%, rgba(37,99,235,0.2) 100%);
             color: #fff;
-            box-shadow: 0 4px 10px rgba(78, 115, 223, 0.4);
+            border: 1px solid rgba(78,115,223,0.3);
         }
 
-        .sidebar a.active i {
-            opacity: 1;
+        .sidebar a.active .nav-icon {
+            background: linear-gradient(135deg, #4e73df, #2563eb);
+            color: #fff;
+            box-shadow: 0 3px 10px rgba(78,115,223,0.45);
         }
 
         /* Sidebar Dropdown */
         .sidebar .collapse {
             background: rgba(0, 0, 0, 0.15);
-            margin: 0 15px;
-            border-radius: 8px;
+            margin: 0 12px;
+            border-radius: 10px;
         }
 
         .sidebar .collapse a {
-            padding: 10px 15px 10px 45px;
-            margin: 2px 0;
-            font-size: 0.85rem;
+            padding: 8px 12px 8px 50px;
+            margin: 1px 0;
+            font-size: 0.82rem;
             font-weight: 400;
             border-radius: 0;
+            color: rgba(226, 232, 240, 0.6);
+        }
+
+        .sidebar .collapse a::before {
+            content: '';
+            width: 5px; height: 5px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.25);
+            display: inline-block;
+            margin-right: 10px;
+            margin-left: -15px;
+            flex-shrink: 0;
         }
 
         .sidebar .collapse a:hover {
             background: rgba(255, 255, 255, 0.05);
+            color: #fff;
+        }
+        .sidebar .collapse a:hover::before {
+            background: #4e73df;
         }
 
         .sidebar .collapse a.text-info {
-            color: var(--info) !important;
-            background: rgba(255, 255, 255, 0.05);
+            color: #93c5fd !important;
+            background: rgba(78,115,223,0.1);
+        }
+        .sidebar .collapse a.text-info::before {
+            background: #4e73df;
         }
 
         .dropdown-toggle::after {
             margin-left: auto;
+            opacity: 0.5;
         }
 
         /* Main Content */
@@ -465,86 +537,86 @@
     <!-- Sidebar -->
     <div class="sidebar">
         <div class="brand">
-            <h4><i class="fa-solid fa-hospital text-info me-2"></i> {{ config('app.name') }}</h4>
+            <div class="brand-icon">
+                <i class="fa-solid fa-hospital text-white fs-5"></i>
+            </div>
+            <h4>{{ config('app.name') }}</h4>
+            <p>DIAGNOSTIC ERP</p>
         </div>
 
-        <div class="px-3 mb-2 text-uppercase text-secondary small fw-bold"
-            style="font-size: 0.7rem; letter-spacing: 1px;">Core</div>
+        <div class="nav-label">Core</div>
 
         <a href="{{ route('dashboard') }}" class="{{ request()->routeIs('dashboard') ? 'active' : '' }}">
-            <i class="fa-solid fa-chart-pie"></i> Dashboard
+            <span class="nav-icon"><i class="fa-solid fa-chart-pie"></i></span> Dashboard
         </a>
 
-        <div class="px-3 mt-4 mb-2 text-uppercase text-secondary small fw-bold"
-            style="font-size: 0.7rem; letter-spacing: 1px;">Modules</div>
+        <div class="nav-label">Modules</div>
 
         @can('view patients')
             <a href="{{ route('patients.index') }}" class="{{ request()->routeIs('patients.*') ? 'active' : '' }}">
-                <i class="fa-solid fa-users"></i> Patients
+                <span class="nav-icon"><i class="fa-solid fa-users"></i></span> Patients
             </a>
         @endcan
 
         @can('view doctors')
             <a href="{{ route('doctors.index') }}" class="{{ request()->routeIs('doctors.*') ? 'active' : '' }}">
-                <i class="fa-solid fa-user-doctor"></i> Doctors
+                <span class="nav-icon"><i class="fa-solid fa-user-doctor"></i></span> Doctors
             </a>
         @endcan
 
         @can('view appointments')
             <a href="{{ route('appointments.index') }}" class="{{ request()->routeIs('appointments.*') ? 'active' : '' }}">
-                <i class="fa-solid fa-calendar-check"></i> Appointments
+                <span class="nav-icon"><i class="fa-solid fa-calendar-check"></i></span> Appointments
             </a>
         @endcan
 
         @can('view consultations')
             <a href="{{ route('consultations.index') }}"
                 class="{{ request()->routeIs('consultations.*') ? 'active' : '' }}">
-                <i class="fa-solid fa-stethoscope"></i> OPD Consultations
+                <span class="nav-icon"><i class="fa-solid fa-stethoscope"></i></span> OPD Consultations
             </a>
         @endcan
 
-        <div class="px-3 mt-4 mb-2 text-uppercase text-secondary small fw-bold"
-            style="font-size: 0.7rem; letter-spacing: 1px;">Laboratory</div>
+        <div class="nav-label">Laboratory</div>
 
         @can('view tests')
             <a href="{{ route('tests.index') }}" class="{{ request()->routeIs('tests.*') ? 'active' : '' }}">
-                <i class="fa-solid fa-microscope"></i> Master Tests
+                <span class="nav-icon"><i class="fa-solid fa-microscope"></i></span> Master Tests
             </a>
         @endcan
 
         @can('view lab orders')
             <a href="{{ route('diagnostic-orders.index') }}"
                 class="{{ request()->routeIs('diagnostic-orders.*') ? 'active' : '' }}">
-                <i class="fa-solid fa-vial-circle-check"></i> Lab Orders
+                <span class="nav-icon"><i class="fa-solid fa-vial-circle-check"></i></span> Lab Orders
             </a>
         @endcan
 
         @can('view lab results')
             <a href="{{ route('test-results.index') }}"
                 class="{{ request()->routeIs('test-results.*') ? 'active' : '' }}">
-                <i class="fa-solid fa-file-medical"></i> Lab Results
+                <span class="nav-icon"><i class="fa-solid fa-file-medical"></i></span> Lab Results
             </a>
         @endcan
 
-        <div class="px-3 mt-4 mb-2 text-uppercase text-secondary small fw-bold"
-            style="font-size: 0.7rem; letter-spacing: 1px;">Finance & Reports</div>
+        <div class="nav-label">Finance & Reports</div>
 
         @can('view billing')
             <a href="{{ route('invoices.index') }}" class="{{ request()->routeIs('invoices.*') ? 'active' : '' }}">
-                <i class="fa-solid fa-file-invoice-dollar"></i> Billing
+                <span class="nav-icon"><i class="fa-solid fa-file-invoice-dollar"></i></span> Billing
             </a>
         @endcan
 
         @can('view accounts')
             <a href="{{ route('accounts.index') }}" class="{{ request()->routeIs('accounts.*') ? 'active' : '' }}">
-                <i class="fa-solid fa-wallet"></i> Accounts
+                <span class="nav-icon"><i class="fa-solid fa-wallet"></i></span> Accounts
             </a>
         @endcan
 
         @can('view reports')
             <a class="dropdown-toggle" data-bs-toggle="collapse" href="#reportsMenu" role="button"
                 aria-expanded="{{ request()->routeIs('reports.*') ? 'true' : 'false' }}">
-                <i class="fa-solid fa-chart-line"></i> Reports
+                <span class="nav-icon"><i class="fa-solid fa-chart-line"></i></span> Reports
             </a>
             <div class="collapse {{ request()->routeIs('reports.*') ? 'show' : '' }}" id="reportsMenu">
                 <a href="{{ route('reports.account') }}"
@@ -558,24 +630,23 @@
             </div>
         @endcan
 
-        <div class="px-3 mt-4 mb-2 text-uppercase text-secondary small fw-bold"
-            style="font-size: 0.7rem; letter-spacing: 1px;">Administration</div>
+        <div class="nav-label">Administration</div>
 
         @can('view staff')
             <a href="{{ route('staff.index') }}" class="{{ request()->routeIs('staff.*') ? 'active' : '' }}">
-                <i class="fa-solid fa-user-tie"></i> Staff
+                <span class="nav-icon"><i class="fa-solid fa-user-tie"></i></span> Staff
             </a>
         @endcan
 
         @can('view settings')
             <a href="{{ route('roles.index') }}" class="{{ request()->routeIs('roles.*') ? 'active' : '' }}">
-                <i class="fa-solid fa-user-shield"></i> Roles & Permissions
+                <span class="nav-icon"><i class="fa-solid fa-user-shield"></i></span> Roles & Permissions
             </a>
             <a href="{{ route('cms.index') }}" class="{{ request()->routeIs('cms.*') ? 'active' : '' }}">
-                <i class="fa-solid fa-desktop"></i> Frontend CMS
+                <span class="nav-icon"><i class="fa-solid fa-desktop"></i></span> Frontend CMS
             </a>
             <a href="{{ route('settings.index') }}" class="{{ request()->routeIs('settings.*') ? 'active' : '' }}">
-                <i class="fa-solid fa-gear"></i> Settings
+                <span class="nav-icon"><i class="fa-solid fa-gear"></i></span> Settings
             </a>
         @endcan
 
