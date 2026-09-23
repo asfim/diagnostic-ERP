@@ -111,9 +111,6 @@
                         <a class="dropdown-item" href="{{ url('/reports') }}">
                             <i class="bi bi-file-medical text-primary me-2"></i>Online Reports
                         </a>
-                        <a class="dropdown-item" href="{{ url('/home-collection') }}">
-                            <i class="bi bi-truck text-primary me-2"></i>Home Collection
-                        </a>
                     </div>
                 </li>
 

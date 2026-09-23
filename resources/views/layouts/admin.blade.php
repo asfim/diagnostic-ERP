@@ -653,6 +653,9 @@
             <a href="{{ route('about-page.index') }}" class="{{ request()->routeIs('about-page.*') ? 'active' : '' }}">
                 <span class="nav-icon"><i class="fa-solid fa-circle-info"></i></span> About Page
             </a>
+            <a href="{{ route('branches.index') }}" class="{{ request()->routeIs('branches.*') ? 'active' : '' }}">
+                <span class="nav-icon"><i class="fa-solid fa-building"></i></span> Branches
+            </a>
             <a href="{{ route('testimonials.index') }}" class="{{ request()->routeIs('testimonials.*') ? 'active' : '' }}">
                 <span class="nav-icon"><i class="fa-solid fa-comments"></i></span> Testimonials
             </a>
@@ -661,6 +664,18 @@
             </a>
             <a href="{{ route('admin-packages.index') }}" class="{{ request()->routeIs('admin-packages.*') ? 'active' : '' }}">
                 <span class="nav-icon"><i class="fa-solid fa-box-open"></i></span> Packages
+            </a>
+            <a href="{{ route('home-collection-page.index') }}" class="{{ request()->routeIs('home-collection-page.*') ? 'active' : '' }}">
+                <span class="nav-icon"><i class="fa-solid fa-house-medical"></i></span> Home Collection Page
+            </a>
+            <a href="{{ route('home-collection-requests.index') }}" class="{{ request()->routeIs('home-collection-requests.*') ? 'active' : '' }}">
+                <span class="nav-icon"><i class="fa-solid fa-truck-medical"></i></span> Booking Requests
+            </a>
+            <a href="{{ route('pricing-page.index') }}" class="{{ request()->routeIs('pricing-page.*') ? 'active' : '' }}">
+                <span class="nav-icon"><i class="fa-solid fa-tags"></i></span> Pricing Page
+            </a>
+            <a href="{{ route('faqs.index') }}" class="{{ request()->routeIs('faqs.*') ? 'active' : '' }}">
+                <span class="nav-icon"><i class="fa-solid fa-circle-question"></i></span> FAQs
             </a>
             <a href="{{ route('settings.index') }}" class="{{ request()->routeIs('settings.*') ? 'active' : '' }}">
                 <span class="nav-icon"><i class="fa-solid fa-gear"></i></span> Settings

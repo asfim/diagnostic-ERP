@@ -36,13 +36,10 @@ Route::get('/api/doctors-by-department', [\App\Http\Controllers\Frontend\Appoint
 Route::get('/api/tests-by-department', [\App\Http\Controllers\Frontend\AppointmentController::class, 'getTestsByDepartment']);
 Route::get('/api/doctor-slots', [\App\Http\Controllers\Frontend\AppointmentController::class, 'getAvailableSlots']);
 
-Route::get('/home-collection', function () {
-    return view('frontend.home-collection');
-});
+Route::get('/home-collection', [\App\Http\Controllers\Frontend\HomeCollectionController::class, 'index'])->name('frontend.home-collection');
+Route::post('/home-collection', [\App\Http\Controllers\Frontend\HomeCollectionController::class, 'store'])->name('frontend.home-collection.store');
 
-Route::get('/pricing', function () {
-    return view('frontend.pricing');
-});
+Route::get('/pricing', [\App\Http\Controllers\Frontend\PricingController::class, 'index'])->name('frontend.pricing');
 
 Route::get('/reports', [\App\Http\Controllers\Frontend\ReportController::class, 'index']);
 Route::post('/reports/search', [\App\Http\Controllers\Frontend\ReportController::class, 'search'])->name('frontend.reports.search');
@@ -54,13 +51,9 @@ Route::get('/reports/{id}/download', [\App\Http\Controllers\Frontend\ReportContr
 Route::get('/blog', [\App\Http\Controllers\Frontend\BlogController::class, 'index'])->name('frontend.blog.index');
 Route::get('/blog/{blog}', [\App\Http\Controllers\Frontend\BlogController::class, 'show'])->whereNumber('blog')->name('frontend.blog.show');
 
-Route::get('/faq', function () {
-    return view('frontend.faq');
-});
+Route::get('/faq', [\App\Http\Controllers\Frontend\FaqController::class, 'index'])->name('frontend.faq');
 
-Route::get('/branches', function () {
-    return view('frontend.branches');
-});
+Route::get('/branches', [\App\Http\Controllers\Frontend\BranchController::class, 'index'])->name('frontend.branches');
 
 Route::get('/dashboard', [\App\Http\Controllers\DashboardController::class, 'index'])
     ->middleware(['auth', 'verified'])
@@ -85,7 +78,16 @@ Route::middleware('auth')->group(function () {
     Route::resource('test-results', \App\Http\Controllers\TestResultController::class);
     Route::resource('testimonials', \App\Http\Controllers\TestimonialController::class)->except(['show']);
     Route::resource('admin-packages', \App\Http\Controllers\PackageController::class)->except(['show']);
+    Route::resource('faqs', \App\Http\Controllers\FaqController::class)->except(['show']);
+    Route::get('/home-collection-page', [\App\Http\Controllers\HomeCollectionPageController::class, 'index'])->name('home-collection-page.index');
+    Route::put('/home-collection-page', [\App\Http\Controllers\HomeCollectionPageController::class, 'update'])->name('home-collection-page.update');
+    Route::get('/home-collection-requests', [\App\Http\Controllers\HomeCollectionRequestController::class, 'index'])->name('home-collection-requests.index');
+    Route::get('/home-collection-requests/{home_collection_request}', [\App\Http\Controllers\HomeCollectionRequestController::class, 'show'])->name('home-collection-requests.show');
+    Route::patch('/home-collection-requests/{home_collection_request}/status', [\App\Http\Controllers\HomeCollectionRequestController::class, 'updateStatus'])->name('home-collection-requests.status');
+    Route::get('/pricing-page', [\App\Http\Controllers\PricingPageController::class, 'index'])->name('pricing-page.index');
+    Route::put('/pricing-page', [\App\Http\Controllers\PricingPageController::class, 'update'])->name('pricing-page.update');
     Route::resource('blogs', \App\Http\Controllers\BlogController::class)->except(['show']);
+    Route::resource('admin-branches', \App\Http\Controllers\BranchController::class)->names('branches')->parameters(['admin-branches' => 'branch'])->except(['show', 'create', 'edit']);
 
     // Accounts
     Route::get('/accounts', [AccountController::class, 'index'])->name('accounts.index');
