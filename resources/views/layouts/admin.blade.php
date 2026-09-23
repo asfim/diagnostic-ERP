@@ -297,6 +297,137 @@
             color: #475569;
             margin-bottom: 0.4rem;
         }
+
+        /* --- Premium UI Classes --- */
+        .page-header-premium {
+            background: linear-gradient(135deg, #1e3a5f 0%, #2563eb 100%);
+            border-radius: 16px;
+            padding: 28px 32px;
+            margin-bottom: 28px;
+            color: white;
+            position: relative;
+            overflow: hidden;
+        }
+        .page-header-premium::before {
+            content: '';
+            position: absolute;
+            top: -40px; right: -40px;
+            width: 180px; height: 180px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.07);
+        }
+        .page-header-premium::after {
+            content: '';
+            position: absolute;
+            bottom: -60px; left: 30%;
+            width: 280px; height: 180px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.05);
+        }
+        .page-header-premium h4 { font-weight: 700; font-size: 1.5rem; margin-bottom: 4px; }
+        .page-header-premium p { opacity: 0.75; margin: 0; font-size: 0.9rem; }
+
+        .btn-premium-new {
+            background: rgba(255,255,255,0.15);
+            border: 1.5px solid rgba(255,255,255,0.35);
+            color: #fff;
+            backdrop-filter: blur(6px);
+            border-radius: 10px;
+            padding: 10px 22px;
+            font-weight: 600;
+            transition: all 0.2s ease;
+            position: relative;
+            z-index: 1;
+        }
+        .btn-premium-new:hover {
+            background: #fff;
+            color: #2563eb;
+            border-color: #fff;
+        }
+
+        .card-premium {
+            border: none;
+            border-radius: 16px;
+            box-shadow: 0 4px 24px rgba(0,0,0,0.07);
+            overflow: hidden;
+        }
+
+        .table-premium thead th {
+            background: #f8fafd;
+            color: #64748b;
+            font-size: 0.72rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.7px;
+            border-bottom: 2px solid #e9eef6;
+            padding: 14px 16px;
+            white-space: nowrap;
+        }
+        .table-premium tbody tr {
+            transition: background 0.15s ease;
+            border-bottom: 1px solid #f1f5f9;
+        }
+        .table-premium tbody tr:last-child { border-bottom: none; }
+        .table-premium tbody tr:hover { background: #f8fafd; }
+        .table-premium tbody td {
+            padding: 13px 16px;
+            vertical-align: middle;
+            font-size: 0.875rem;
+            color: #334155;
+        }
+
+        .id-badge {
+            font-family: 'Courier New', monospace;
+            font-weight: 700;
+            background: #eef2ff;
+            color: #4f46e5;
+            border-radius: 6px;
+            padding: 3px 10px;
+            font-size: 0.78rem;
+            letter-spacing: 0.3px;
+        }
+        
+        .status-pill {
+            border-radius: 20px;
+            padding: 4px 12px;
+            font-size: 0.74rem;
+            font-weight: 700;
+            letter-spacing: 0.3px;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+        }
+        .pill-success  { background: #dcfce7; color: #15803d; }
+        .pill-warning  { background: #fef9c3; color: #92400e; }
+        .pill-danger   { background: #fee2e2; color: #b91c1c; }
+        .pill-primary  { background: #dbeafe; color: #1d4ed8; }
+        .pill-secondary{ background: #f1f5f9; color: #475569; }
+
+        .action-btn {
+            width: 32px; height: 32px;
+            border-radius: 8px;
+            border: none;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8rem;
+            transition: all 0.18s ease;
+            cursor: pointer;
+        }
+        .action-btn:hover { transform: translateY(-1px); }
+        .action-btn-view  { background: #eff6ff; color: #2563eb; }
+        .action-btn-view:hover  { background: #2563eb; color: #fff; }
+        .action-btn-edit  { background: #fffbeb; color: #d97706; }
+        .action-btn-edit:hover  { background: #f59e0b; color: #fff; }
+        .action-btn-del   { background: #fff1f2; color: #e11d48; }
+        .action-btn-del:hover   { background: #e11d48; color: #fff; }
+
+        .empty-state {
+            padding: 60px 20px;
+            text-align: center;
+            color: #94a3b8;
+        }
+        .empty-state i { font-size: 3rem; margin-bottom: 16px; opacity: 0.4; display: block; }
     </style>
     @stack('styles')
 </head>

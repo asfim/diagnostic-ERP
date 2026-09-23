@@ -3,64 +3,88 @@
 @section('title', 'Lab Results Entry')
 
 @section('content')
-<div class="row mb-4">
-    <div class="col-md-6">
-        <h4>Lab Test Results</h4>
+
+{{-- Page Header --}}
+<div class="page-header-premium d-flex justify-content-between align-items-center">
+    <div>
+        <h4><i class="fa-solid fa-file-medical me-2"></i>Lab Test Results</h4>
+        <p>Manage and enter results for diagnostic lab orders</p>
     </div>
-    <div class="col-md-6 text-end">
-        <a href="{{ route('test-results.create') }}" class="btn btn-primary"><i class="fa-solid fa-plus"></i> Enter New Result</a>
-    </div>
+    <a href="{{ route('test-results.create') }}" class="btn btn-premium-new">
+        <i class="fa-solid fa-plus me-2"></i>Enter New Result
+    </a>
 </div>
 
-<div class="card">
-    <div class="card-body">
-        @if(session('success'))
-            <div class="alert alert-success">{{ session('success') }}</div>
-        @endif
-        
-        <table class="table table-bordered table-striped">
-            <thead class="table-dark">
+@if(session('success'))
+    <div class="alert alert-success alert-dismissible fade show border-0 shadow-sm rounded-3 mb-4" role="alert">
+        <i class="fa-solid fa-circle-check me-2"></i>{{ session('success') }}
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    </div>
+@endif
+
+<div class="card-premium card">
+    <div class="table-responsive">
+        <table class="table table-premium mb-0">
+            <thead>
                 <tr>
                     <th>Order ID</th>
                     <th>Patient Name</th>
                     <th>Test Name</th>
                     <th>Result Value</th>
                     <th>Status</th>
-                    <th>Actions</th>
+                    <th class="text-center">Actions</th>
                 </tr>
             </thead>
             <tbody>
                 @forelse($results as $result)
                 <tr>
-                    <td>{{ $result->diagnostic_order_id }}</td>
-                    <td>{{ $result->patient->name ?? 'N/A' }}</td>
-                    <td>{{ $result->test->name ?? 'N/A' }}</td>
-                    <td><strong>{{ $result->result_value }}</strong></td>
+                    <td><span class="id-badge">{{ $result->diagnosticOrder->order_id ?? $result->diagnostic_order_id }}</span></td>
+                    <td><span class="fw-semibold text-dark">{{ $result->patient->name ?? 'N/A' }}</span></td>
+                    <td><span class="text-muted fw-medium">{{ $result->test->name ?? 'N/A' }}</span></td>
+                    <td><strong class="text-dark">{{ Str::limit($result->result_value, 30) }}</strong></td>
                     <td>
                         @if($result->status == 'Completed')
-                            <span class="badge bg-success">Completed</span>
+                            <span class="status-pill pill-success"><i class="fa-solid fa-check-circle"></i> Completed</span>
                         @else
-                            <span class="badge bg-warning text-dark">{{ $result->status }}</span>
+                            <span class="status-pill pill-warning"><i class="fa-solid fa-clock"></i> {{ $result->status }}</span>
                         @endif
                     </td>
-                    <td class="d-flex gap-1">
-                        <a href="{{ route('test-results.show', $result->id) }}" class="btn btn-sm btn-primary" title="Print Report"><i class="fa-solid fa-print"></i> Report</a>
-                        <a href="{{ route('test-results.edit', $result->id) }}" class="btn btn-sm btn-warning" title="Edit"><i class="fa-solid fa-pen"></i></a>
-                        <form action="{{ route('test-results.destroy', $result->id) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this result?');">
-                            @csrf
-                            @method('DELETE')
-                            <button type="submit" class="btn btn-sm btn-danger" title="Delete"><i class="fa-solid fa-trash"></i></button>
-                        </form>
+                    <td>
+                        <div class="d-flex justify-content-center gap-2">
+                            <a href="{{ route('test-results.show', $result->id) }}" class="action-btn action-btn-view" title="Print Report">
+                                <i class="fa-solid fa-print"></i>
+                            </a>
+                            <a href="{{ route('test-results.edit', $result->id) }}" class="action-btn action-btn-edit" title="Edit Result">
+                                <i class="fa-solid fa-pen"></i>
+                            </a>
+                            <form action="{{ route('test-results.destroy', $result->id) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this result?');" class="d-inline">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="action-btn action-btn-del" title="Delete">
+                                    <i class="fa-solid fa-trash"></i>
+                                </button>
+                            </form>
+                        </div>
                     </td>
                 </tr>
                 @empty
                 <tr>
-                    <td colspan="6" class="text-center text-muted">No test results entered yet.</td>
+                    <td colspan="6">
+                        <div class="empty-state">
+                            <i class="fa-solid fa-file-waveform"></i>
+                            <strong>No test results entered yet</strong>
+                            <p class="mt-2 mb-0 small">Enter results for pending lab orders.</p>
+                        </div>
+                    </td>
                 </tr>
                 @endforelse
             </tbody>
         </table>
-        {{ $results->links() }}
     </div>
+    @if($results->hasPages())
+        <div class="px-4 py-3 border-top">
+            {{ $results->links() }}
+        </div>
+    @endif
 </div>
 @endsection

@@ -2,13 +2,17 @@
 @section('title', 'Frontend CMS (Home Page)')
 
 @section('content')
-<div class="container-fluid">
-    <div class="d-flex justify-content-between align-items-center mb-4">
-        <h4 class="mb-0 fw-bold"><i class="fas fa-desktop me-2"></i>Frontend CMS</h4>
+<div class="container-fluid px-0">
+    {{-- Page Header --}}
+    <div class="page-header-premium d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h4><i class="fas fa-desktop me-2"></i>Frontend CMS</h4>
+            <p>Manage the content of your public-facing landing page</p>
+        </div>
     </div>
 
     @if(session('success'))
-        <div class="alert alert-success alert-dismissible fade show" role="alert">
+        <div class="alert alert-success alert-dismissible fade show border-0 shadow-sm rounded-3 mb-4" role="alert">
             <i class="fas fa-check-circle me-2"></i>{{ session('success') }}
             <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
         </div>
@@ -17,9 +21,9 @@
     <div class="row g-4">
         {{-- Hero Section Form --}}
         <div class="col-lg-6">
-            <div class="card border-0 shadow-sm h-100">
-                <div class="card-header bg-white border-bottom py-3">
-                    <h6 class="mb-0 fw-bold"><i class="fas fa-image me-2 text-primary"></i>Hero Section (Top Banner)</h6>
+            <div class="card card-premium h-100">
+                <div class="card-header bg-white border-bottom-0 pt-4 pb-0">
+                    <h6 class="mb-0 fw-bold text-primary"><i class="fas fa-image me-2"></i>Hero Section (Top Banner)</h6>
                 </div>
                 <div class="card-body">
                     <form action="{{ route('cms.hero.update') }}" method="POST" enctype="multipart/form-data">
@@ -77,9 +81,9 @@
 
         {{-- Stats Section Form --}}
         <div class="col-lg-6">
-            <div class="card border-0 shadow-sm h-100">
-                <div class="card-header bg-white border-bottom py-3">
-                    <h6 class="mb-0 fw-bold"><i class="fas fa-chart-bar me-2 text-success"></i>Statistics Section (Array Data)</h6>
+            <div class="card card-premium h-100">
+                <div class="card-header bg-white border-bottom-0 pt-4 pb-0">
+                    <h6 class="mb-0 fw-bold text-success"><i class="fas fa-chart-bar me-2"></i>Statistics Section (Array Data)</h6>
                 </div>
                 <div class="card-body">
                     <form action="{{ route('cms.stats.update') }}" method="POST">
