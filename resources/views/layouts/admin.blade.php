@@ -510,6 +510,89 @@
         }
         .empty-state i { font-size: 3rem; margin-bottom: 16px; opacity: 0.4; display: block; }
         
+        /* --- Mobile Responsive Layout Styles --- */
+        .sidebar-backdrop {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100vw; height: 100vh;
+            background: rgba(15, 23, 42, 0.65);
+            backdrop-filter: blur(4px);
+            -webkit-backdrop-filter: blur(4px);
+            z-index: 1039;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+        }
+        .sidebar-backdrop.show {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        @media (max-width: 991.98px) {
+            .sidebar {
+                transform: translateX(-100%);
+                z-index: 1040;
+                width: 270px;
+                box-shadow: 10px 0 30px rgba(0, 0, 0, 0.4);
+                transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            }
+            .sidebar.show {
+                transform: translateX(0);
+            }
+            .main-content {
+                margin-left: 0 !important;
+                width: 100% !important;
+            }
+            .top-navbar {
+                padding: 12px 16px;
+            }
+            .content-body {
+                padding: 16px 12px;
+            }
+            .page-header-premium {
+                padding: 20px 20px;
+                flex-direction: column;
+                align-items: flex-start !important;
+                gap: 14px;
+            }
+            .page-header-premium .btn-premium-new {
+                width: 100%;
+                text-align: center;
+                justify-content: center;
+                display: flex;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .top-navbar .page-title {
+                font-size: 1.05rem;
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                max-width: 170px;
+            }
+            .card-header {
+                padding: 1rem;
+                flex-direction: column;
+                align-items: flex-start !important;
+                gap: 10px;
+            }
+            .card-header .btn, .card-header form, .card-header .d-flex {
+                width: 100%;
+            }
+            .table-premium th, .table-premium td {
+                padding: 10px 12px;
+            }
+            .action-btn {
+                width: 34px; height: 34px;
+            }
+        }
+
+        .table-responsive {
+            -webkit-overflow-scrolling: touch;
+            border-radius: 10px;
+        }
+
         @media print {
             .sidebar, .top-navbar, .page-header-premium, .d-print-none {
                 display: none !important;
@@ -686,6 +769,9 @@
             <a href="{{ route('settings.index') }}" class="{{ request()->routeIs('settings.*') ? 'active' : '' }}">
                 <span class="nav-icon"><i class="fa-solid fa-gear"></i></span> Settings
             </a>
+            <a href="{{ route('footer-settings.index') }}" class="{{ request()->routeIs('footer-settings.*') ? 'active' : '' }}">
+                <span class="nav-icon"><i class="fa-solid fa-window-maximize"></i></span> Footer Settings
+            </a>
         @endcan
 
         <div style="height: 50px;"></div> <!-- Bottom Padding -->
@@ -696,7 +782,12 @@
 
         <!-- Top Navbar -->
         <div class="top-navbar">
-            <h5 class="page-title">@yield('title', 'Dashboard')</h5>
+            <div class="d-flex align-items-center">
+                <button id="sidebarToggle" class="btn btn-light border-0 shadow-none me-2 d-lg-none p-2 rounded-3" type="button" aria-label="Toggle navigation">
+                    <i class="fa-solid fa-bars fs-4 text-primary"></i>
+                </button>
+                <h5 class="page-title mb-0">@yield('title', 'Dashboard')</h5>
+            </div>
 
             <div class="user-profile dropdown">
                 <div class="d-flex align-items-center" role="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -736,8 +827,45 @@
         </div>
     </div>
 
+    <!-- Sidebar Backdrop for Mobile -->
+    <div class="sidebar-backdrop" id="sidebarBackdrop"></div>
+
     <!-- Bootstrap 5.3 JS Bundle -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const sidebarToggle = document.getElementById('sidebarToggle');
+            const sidebar = document.querySelector('.sidebar');
+            const backdrop = document.getElementById('sidebarBackdrop');
+
+            function toggleSidebar() {
+                if (sidebar) sidebar.classList.toggle('show');
+                if (backdrop) backdrop.classList.toggle('show');
+            }
+
+            function closeSidebar() {
+                if (sidebar) sidebar.classList.remove('show');
+                if (backdrop) backdrop.classList.remove('show');
+            }
+
+            if (sidebarToggle) {
+                sidebarToggle.addEventListener('click', toggleSidebar);
+            }
+            if (backdrop) {
+                backdrop.addEventListener('click', closeSidebar);
+            }
+
+            if (sidebar) {
+                sidebar.querySelectorAll('a:not(.dropdown-toggle)').forEach(link => {
+                    link.addEventListener('click', function() {
+                        if (window.innerWidth < 992) {
+                            closeSidebar();
+                        }
+                    });
+                });
+            }
+        });
+    </script>
     @stack('scripts')
 </body>
 

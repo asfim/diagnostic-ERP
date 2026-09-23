@@ -30,17 +30,26 @@
         <!-- Logo -->
         <a class="navbar-brand d-flex align-items-center gap-2" href="{{ url('/') }}">
             @if(!empty($siteSettings['site_logo']))
-                <img src="{{ asset('storage/' . $siteSettings['site_logo']) }}" alt="{{ $siteSettings['site_name'] ?? 'MediDiag' }}" style="height: 65px;">
+                <img src="{{ asset('storage/' . $siteSettings['site_logo']) }}" alt="{{ $siteSettings['site_name'] ?? 'MediDiag' }}" class="site-logo-img">
             @else
-                <i class="bi bi-heart-pulse-fill text-secondary" style="font-size:2.5rem;"></i>
+                <i class="bi bi-heart-pulse-fill text-secondary" style="font-size:2.2rem;"></i>
+                <span class="fw-bold text-primary fs-4">{{ $siteSettings['site_name'] ?? 'MediDiag' }}</span>
             @endif
         </a>
 
-        <!-- Mobile Hamburger -->
-        <button class="navbar-toggler border-0 shadow-none p-1" type="button"
-                data-bs-toggle="offcanvas" data-bs-target="#mobileMenu">
-            <i class="bi bi-list" style="font-size:2rem; color:var(--primary);"></i>
-        </button>
+        <!-- Mobile Header Quick Actions & Hamburger -->
+        <div class="d-flex align-items-center gap-1 d-lg-none">
+            <button class="btn btn-link text-dark p-2 rounded-circle" data-bs-toggle="modal" data-bs-target="#searchModal" title="Search">
+                <i class="bi bi-search fs-5"></i>
+            </button>
+            <a href="{{ url('/appointment') }}" class="btn btn-secondary btn-sm rounded-pill px-3 py-1.5 fw-bold me-1 text-white d-none d-sm-inline-block">
+                Appoint
+            </a>
+            <button class="navbar-toggler border-0 shadow-none p-1 ms-1" type="button"
+                    data-bs-toggle="offcanvas" data-bs-target="#mobileMenu" aria-label="Toggle navigation">
+                <i class="bi bi-list" style="font-size:2.2rem; color:var(--primary);"></i>
+            </button>
+        </div>
 
         <!-- Desktop Menu -->
         <div class="collapse navbar-collapse" id="navbarNav">
@@ -159,14 +168,18 @@
      ================================================================ -->
 <div class="offcanvas offcanvas-start" tabindex="-1" id="mobileMenu">
     <div class="offcanvas-header border-bottom py-3">
-        <div class="d-flex align-items-center gap-2">
-            <i class="bi bi-heart-pulse-fill text-secondary fs-3"></i>
-            <div>
-                <h5 class="fw-bold text-primary mb-0">MediDiag</h5>
-                <small class="text-muted" style="font-size:.7rem; letter-spacing:.05em;">DIAGNOSTIC &amp; CLINIC</small>
-            </div>
-        </div>
-        <button type="button" class="btn-close" data-bs-dismiss="offcanvas"></button>
+        <a class="d-flex align-items-center gap-2 text-decoration-none" href="{{ url('/') }}">
+            @if(!empty($siteSettings['site_logo']))
+                <img src="{{ asset('storage/' . $siteSettings['site_logo']) }}" alt="{{ $siteSettings['site_name'] ?? 'MediDiag' }}" style="height: 40px; max-width: 180px; object-fit: contain;">
+            @else
+                <i class="bi bi-heart-pulse-fill text-secondary fs-3"></i>
+                <div>
+                    <h5 class="fw-bold text-primary mb-0">{{ $siteSettings['site_name'] ?? 'MediDiag' }}</h5>
+                    <small class="text-muted" style="font-size:.7rem; letter-spacing:.05em;">DIAGNOSTIC &amp; CLINIC</small>
+                </div>
+            @endif
+        </a>
+        <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
     </div>
     <div class="offcanvas-body px-0 py-0">
         <div class="accordion border-0" id="mobileAccordion">
