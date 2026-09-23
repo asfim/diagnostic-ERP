@@ -21,7 +21,7 @@ Route::get('/departments', [\App\Http\Controllers\Frontend\DepartmentController:
 Route::get('/departments/{slug}', [\App\Http\Controllers\Frontend\DepartmentController::class, 'show']);
 
 Route::get('/tests', [\App\Http\Controllers\Frontend\TestController::class, 'index']);
-Route::get('/tests/{id}', [\App\Http\Controllers\Frontend\TestController::class, 'show']);
+Route::get('/tests/{id}', [\App\Http\Controllers\Frontend\TestController::class, 'show'])->whereNumber('id');
 
 Route::get('/packages', [\App\Http\Controllers\Frontend\PackageController::class, 'index']);
 Route::get('/packages/{id}', [\App\Http\Controllers\Frontend\PackageController::class, 'show']);
