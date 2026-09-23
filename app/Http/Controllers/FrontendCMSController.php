@@ -18,8 +18,35 @@ class FrontendCMSController extends Controller
             'patients' => '100k+',
             'support' => '24/7'
         ]);
+        
+        $quickActions = HomeSetting::getSection('quick_actions', [
+            [
+                'icon' => 'bi-calendar-check-fill',
+                'color' => 'primary',
+                'title' => 'Book Appointment',
+                'description' => 'Schedule a visit with our specialist doctors online — quick & hassle-free.',
+                'button_text' => 'Book Now',
+                'link' => url('/appointment')
+            ],
+            [
+                'icon' => 'bi-file-medical-fill',
+                'color' => 'success',
+                'title' => 'Download Report',
+                'description' => 'Access your diagnostic reports securely online at any time, from anywhere.',
+                'button_text' => 'View Reports',
+                'link' => url('/reports')
+            ],
+            [
+                'icon' => 'bi-truck',
+                'color' => 'danger',
+                'title' => 'Home Collection',
+                'description' => 'Our phlebotomists come to your doorstep for sample collection — safe & on time.',
+                'button_text' => 'Request Now',
+                'link' => url('/home-collection')
+            ]
+        ]);
 
-        return view('admin.cms.index', compact('hero', 'stats'));
+        return view('admin.cms.index', compact('hero', 'stats', 'quickActions'));
     }
 
     public function updateHero(Request $request)
@@ -72,5 +99,24 @@ class FrontendCMSController extends Controller
         $setting->save();
 
         return redirect()->back()->with('success', 'Stats section updated successfully!');
+    }
+
+    public function updateQuickActions(Request $request)
+    {
+        $request->validate([
+            'quick_actions' => 'required|array|size:3',
+            'quick_actions.*.title' => 'required|string|max:100',
+            'quick_actions.*.description' => 'required|string|max:255',
+            'quick_actions.*.icon' => 'required|string|max:50',
+            'quick_actions.*.color' => 'required|string|max:50',
+            'quick_actions.*.button_text' => 'required|string|max:50',
+            'quick_actions.*.link' => 'required|string|max:255',
+        ]);
+
+        $setting = HomeSetting::firstOrNew(['key' => 'quick_actions']);
+        $setting->value = $request->input('quick_actions');
+        $setting->save();
+
+        return redirect()->back()->with('success', 'Quick Actions section updated successfully!');
     }
 }

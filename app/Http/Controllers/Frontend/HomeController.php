@@ -36,6 +36,33 @@ class HomeController extends Controller
             'support' => '24/7'
         ]);
 
-        return view('frontend.home', compact('tests', 'packages', 'departments', 'doctors', 'hero', 'stats'));
+        $quickActions = HomeSetting::getSection('quick_actions', [
+            [
+                'icon' => 'bi-calendar-check-fill',
+                'color' => 'primary',
+                'title' => 'Book Appointment',
+                'description' => 'Schedule a visit with our specialist doctors online — quick & hassle-free.',
+                'button_text' => 'Book Now',
+                'link' => url('/appointment')
+            ],
+            [
+                'icon' => 'bi-file-medical-fill',
+                'color' => 'success',
+                'title' => 'Download Report',
+                'description' => 'Access your diagnostic reports securely online at any time, from anywhere.',
+                'button_text' => 'View Reports',
+                'link' => url('/reports')
+            ],
+            [
+                'icon' => 'bi-truck',
+                'color' => 'danger',
+                'title' => 'Home Collection',
+                'description' => 'Our phlebotomists come to your doorstep for sample collection — safe & on time.',
+                'button_text' => 'Request Now',
+                'link' => url('/home-collection')
+            ]
+        ]);
+
+        return view('frontend.home', compact('tests', 'packages', 'departments', 'doctors', 'hero', 'stats', 'quickActions'));
     }
 }

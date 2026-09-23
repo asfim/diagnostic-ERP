@@ -135,36 +135,18 @@
     <div class="quick-actions">
         <div class="container">
             <div class="row g-4">
-                <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="100">
+                @foreach($quickActions as $index => $action)
+                <div class="col-lg-4 col-md-6 {{ $index == 2 ? 'mx-auto' : '' }}" data-aos="fade-up" data-aos-delay="{{ ($index + 1) * 100 }}">
                     <div class="quick-card">
-                        <div class="q-icon bg-primary bg-opacity-10 text-primary mx-auto">
-                            <i class="bi bi-calendar-check-fill"></i>
+                        <div class="q-icon bg-{{ $action['color'] ?? 'primary' }} bg-opacity-10 text-{{ $action['color'] ?? 'primary' }} mx-auto">
+                            <i class="bi {{ $action['icon'] ?? 'bi-star' }}"></i>
                         </div>
-                        <h4 class="fw-bold">Book Appointment</h4>
-                        <p>Schedule a visit with our specialist doctors online — quick & hassle-free.</p>
-                        <a href="{{ url('/appointment') }}" class="text-primary">Book Now <i class="bi bi-arrow-right"></i></a>
+                        <h4 class="fw-bold">{{ $action['title'] ?? '' }}</h4>
+                        <p>{{ $action['description'] ?? '' }}</p>
+                        <a href="{{ $action['link'] ?? '#' }}" class="text-{{ $action['color'] ?? 'primary' }}">{{ $action['button_text'] ?? 'View More' }} <i class="bi bi-arrow-right"></i></a>
                     </div>
                 </div>
-                <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="200">
-                    <div class="quick-card">
-                        <div class="q-icon bg-success bg-opacity-10 text-success mx-auto">
-                            <i class="bi bi-file-medical-fill"></i>
-                        </div>
-                        <h4 class="fw-bold">Download Report</h4>
-                        <p>Access your diagnostic reports securely online at any time, from anywhere.</p>
-                        <a href="{{ url('/reports') }}" class="text-success">View Reports <i class="bi bi-arrow-right"></i></a>
-                    </div>
-                </div>
-                <div class="col-lg-4 col-md-6 mx-auto" data-aos="fade-up" data-aos-delay="300">
-                    <div class="quick-card">
-                        <div class="q-icon bg-danger bg-opacity-10 text-danger mx-auto">
-                            <i class="bi bi-truck"></i>
-                        </div>
-                        <h4 class="fw-bold">Home Collection</h4>
-                        <p>Our phlebotomists come to your doorstep for sample collection — safe & on time.</p>
-                        <a href="{{ url('/home-collection') }}" class="text-danger">Request Now <i class="bi bi-arrow-right"></i></a>
-                    </div>
-                </div>
+                @endforeach
             </div>
         </div>
     </div>

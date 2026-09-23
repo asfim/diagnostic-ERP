@@ -129,5 +129,71 @@
             </div>
         </div>
     </div>
+    <div class="row g-4 mt-1">
+        {{-- Quick Actions Section Form --}}
+        <div class="col-12">
+            <div class="card card-premium">
+                <div class="card-header bg-white border-bottom-0 pt-4 pb-0">
+                    <h6 class="mb-0 fw-bold text-info"><i class="fas fa-bolt me-2"></i>Quick Actions (Features Cards)</h6>
+                </div>
+                <div class="card-body">
+                    <form action="{{ route('cms.quick_actions.update') }}" method="POST">
+                        @csrf
+                        @method('PUT')
+                        <div class="row g-4">
+                            @foreach($quickActions as $index => $action)
+                            <div class="col-md-4">
+                                <div class="border rounded-3 p-3 bg-light-soft">
+                                    <h6 class="fw-bold mb-3">Card {{ $index + 1 }}</h6>
+                                    
+                                    <div class="mb-2">
+                                        <label class="form-label small fw-semibold">Title</label>
+                                        <input type="text" name="quick_actions[{{ $index }}][title]" class="form-control form-control-sm" value="{{ $action['title'] ?? '' }}" required>
+                                    </div>
+                                    
+                                    <div class="mb-2">
+                                        <label class="form-label small fw-semibold">Description</label>
+                                        <textarea name="quick_actions[{{ $index }}][description]" class="form-control form-control-sm" rows="2" required>{{ $action['description'] ?? '' }}</textarea>
+                                    </div>
+                                    
+                                    <div class="row g-2 mb-2">
+                                        <div class="col-6">
+                                            <label class="form-label small fw-semibold">Icon (Bootstrap)</label>
+                                            <input type="text" name="quick_actions[{{ $index }}][icon]" class="form-control form-control-sm" value="{{ $action['icon'] ?? '' }}" placeholder="e.g. bi-star" required>
+                                        </div>
+                                        <div class="col-6">
+                                            <label class="form-label small fw-semibold">Color Theme</label>
+                                            <select name="quick_actions[{{ $index }}][color]" class="form-select form-select-sm" required>
+                                                <option value="primary" {{ ($action['color'] ?? '') == 'primary' ? 'selected' : '' }}>Primary (Blue)</option>
+                                                <option value="success" {{ ($action['color'] ?? '') == 'success' ? 'selected' : '' }}>Success (Green)</option>
+                                                <option value="danger" {{ ($action['color'] ?? '') == 'danger' ? 'selected' : '' }}>Danger (Red)</option>
+                                                <option value="warning" {{ ($action['color'] ?? '') == 'warning' ? 'selected' : '' }}>Warning (Yellow)</option>
+                                                <option value="info" {{ ($action['color'] ?? '') == 'info' ? 'selected' : '' }}>Info (Light Blue)</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="row g-2">
+                                        <div class="col-6">
+                                            <label class="form-label small fw-semibold">Button Text</label>
+                                            <input type="text" name="quick_actions[{{ $index }}][button_text]" class="form-control form-control-sm" value="{{ $action['button_text'] ?? '' }}" required>
+                                        </div>
+                                        <div class="col-6">
+                                            <label class="form-label small fw-semibold">Link (URL)</label>
+                                            <input type="text" name="quick_actions[{{ $index }}][link]" class="form-control form-control-sm" value="{{ $action['link'] ?? '' }}" required>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            @endforeach
+                        </div>
+                        <div class="mt-4">
+                            <button type="submit" class="btn btn-info text-white w-100 fw-bold"><i class="fas fa-save me-2"></i>Save Quick Actions</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 @endsection
