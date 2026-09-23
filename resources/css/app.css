@@ -609,6 +609,16 @@ body {
 }
 .testimonial-card .avatar h6 { font-size: .9rem; font-weight: 700; margin-bottom: 2px; }
 .testimonial-card .avatar small { font-size: .78rem; color: var(--text-muted); }
+.testimonial-marquee { overflow: hidden; margin: 0 -12px; }
+.testimonial-track { display: flex; width: max-content; animation: testimonials-scroll 32s linear infinite; }
+.testimonial-marquee:hover .testimonial-track { animation-play-state: paused; }
+.testimonial-slide { width: min(380px, 85vw); padding: 0 12px; }
+.testimonial-avatar-fallback {
+    width: 50px; height: 50px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center;
+    background: var(--primary); color: #fff; font-weight: 700; border: 2px solid var(--primary);
+}
+@keyframes testimonials-scroll { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+@media (prefers-reduced-motion: reduce) { .testimonial-track { animation: none; } }
 
 /* ======================
    How It Works

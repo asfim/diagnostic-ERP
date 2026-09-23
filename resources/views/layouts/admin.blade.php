@@ -650,6 +650,9 @@
             <a href="{{ route('cms.index') }}" class="{{ request()->routeIs('cms.*') ? 'active' : '' }}">
                 <span class="nav-icon"><i class="fa-solid fa-desktop"></i></span> Frontend CMS
             </a>
+            <a href="{{ route('testimonials.index') }}" class="{{ request()->routeIs('testimonials.*') ? 'active' : '' }}">
+                <span class="nav-icon"><i class="fa-solid fa-comments"></i></span> Testimonials
+            </a>
             <a href="{{ route('settings.index') }}" class="{{ request()->routeIs('settings.*') ? 'active' : '' }}">
                 <span class="nav-icon"><i class="fa-solid fa-gear"></i></span> Settings
             </a>

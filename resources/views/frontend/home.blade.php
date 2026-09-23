@@ -414,34 +414,36 @@
             <h2 style="color:#fff;">What Our Patients Say</h2>
         </div>
 
-        <div class="row g-4 justify-content-center">
-            @php
-            $reviews = [
-                ['name'=>'Tasnim Alam','loc'=>'Dhaka','img'=>'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?auto=format&fit=crop&w=100&q=80','review'=>'"The service was incredibly fast and professional. I booked online, gave my sample, and got the report by email — no second visit needed!"'],
-                ['name'=>'Imran Hossain','loc'=>'Mirpur, Dhaka','img'=>'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=100&q=80','review'=>'"Their home collection service is a lifesaver for my elderly parents. The phlebotomist was gentle and arrived exactly on time. Highly recommended!"'],
-                ['name'=>'Ruma Begum','loc'=>'Sylhet','img'=>'https://images.unsplash.com/photo-1607746882042-944635dfe10e?auto=format&fit=crop&w=100&q=80','review'=>'"The executive health package gives excellent value for money. Reports were thorough, and the doctor consultation was very helpful."'],
-            ];
-            @endphp
-
-            @foreach($reviews as $i => $r)
-            <div class="col-lg-4 col-md-6" data-aos="{{ $i === 0 ? 'fade-right' : ($i === 2 ? 'fade-left' : 'fade-up') }}" data-aos-delay="{{ $i*100 }}">
+        @if($testimonials->isNotEmpty())
+        <div class="testimonial-marquee" aria-label="Patient reviews">
+            <div class="testimonial-track">
+                @foreach($testimonials->concat($testimonials) as $testimonial)
+            <div class="testimonial-slide">
                 <div class="testimonial-card">
                     <i class="bi bi-quote quote-icon"></i>
                     <div class="stars mb-2">
-                        <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i>
+                        @for($star = 1; $star <= 5; $star++)
+                            <i class="bi {{ $star <= $testimonial->rating ? 'bi-star-fill' : 'bi-star' }}"></i>
+                        @endfor
                     </div>
-                    <p>{{ $r['review'] }}</p>
+                    <p>&ldquo;{{ $testimonial->review }}&rdquo;</p>
                     <div class="avatar d-flex align-items-center gap-3">
-                        <img src="{{ $r['img'] }}" alt="{{ $r['name'] }}">
+                        @if($testimonial->photo)
+                            <img src="{{ asset('storage/' . $testimonial->photo) }}" alt="{{ $testimonial->name }}">
+                        @else
+                            <span class="testimonial-avatar-fallback">{{ strtoupper(substr($testimonial->name, 0, 1)) }}</span>
+                        @endif
                         <div>
-                            <h6 class="mb-0">{{ $r['name'] }}</h6>
-                            <small>{{ $r['loc'] }}</small>
+                            <h6 class="mb-0">{{ $testimonial->name }}</h6>
+                            <small>{{ $testimonial->location }}</small>
                         </div>
                     </div>
                 </div>
             </div>
-            @endforeach
+                @endforeach
+            </div>
         </div>
+        @endif
     </div>
 </section>
 

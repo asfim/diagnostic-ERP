@@ -86,6 +86,7 @@ Route::middleware('auth')->group(function () {
     Route::post('visits/{visit}/prescription', [\App\Http\Controllers\PrescriptionController::class, 'save'])->name('prescriptions.save');
 
     Route::resource('test-results', \App\Http\Controllers\TestResultController::class);
+    Route::resource('testimonials', \App\Http\Controllers\TestimonialController::class)->except(['show']);
 
     // Accounts
     Route::get('/accounts', [AccountController::class, 'index'])->name('accounts.index');
