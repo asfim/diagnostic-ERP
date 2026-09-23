@@ -509,27 +509,57 @@
 
 @push('styles')
 <style>
-/* Premium Test Card Styles for Homepage */
+/* Premium Card Styles for Homepage */
+.quick-card {
+    background: #ffffff !important;
+    border: 1px solid #e2e8f0 !important;
+    border-radius: 1.25rem !important;
+    box-shadow: 0 10px 30px rgba(15, 23, 42, 0.08) !important;
+    padding: 2.25rem 1.75rem !important;
+    text-align: center !important;
+    transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1) !important;
+    height: 100% !important;
+    position: relative !important;
+    overflow: hidden !important;
+}
+.quick-card:hover {
+    transform: translateY(-8px) !important;
+    box-shadow: 0 20px 45px rgba(37, 99, 235, 0.18) !important;
+    border-color: #2563eb !important;
+}
+.quick-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, #2563eb, #06b6d4);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+.quick-card:hover::before {
+    opacity: 1;
+}
+
 .test-card-premium {
-    background: #fff;
-    border: 1px solid rgba(0,0,0,0.1);
-    border-radius: 1.25rem;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    position: relative;
-    overflow: hidden;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.04);
+    background: #ffffff !important;
+    border: 1px solid #e2e8f0 !important;
+    border-radius: 1.25rem !important;
+    transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1) !important;
+    position: relative !important;
+    overflow: hidden !important;
+    box-shadow: 0 10px 30px rgba(15, 23, 42, 0.06) !important;
 }
 .test-card-premium:hover {
-    transform: translateY(-8px);
-    box-shadow: 0 15px 35px rgba(0,0,0,0.08);
-    border-color: rgba(var(--bs-primary-rgb), 0.15);
+    transform: translateY(-8px) !important;
+    box-shadow: 0 22px 45px rgba(37, 99, 235, 0.16) !important;
+    border-color: #2563eb !important;
 }
 .test-card-premium::before {
     content: '';
     position: absolute;
     top: 0; left: 0; right: 0;
     height: 4px;
-    background: linear-gradient(90deg, var(--bs-primary), #00b4d8);
+    background: linear-gradient(90deg, #2563eb, #00b4d8);
     opacity: 0;
     transition: opacity 0.3s ease;
 }
@@ -537,30 +567,29 @@
     opacity: 1;
 }
 
-/* Premium Department Card Styles */
 .dept-card-premium {
-    background: #ffffff;
-    border-radius: 1.5rem;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
-    border: 1px solid rgba(0, 0, 0, 0.03);
-    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
-    position: relative;
-    overflow: hidden;
+    background: #ffffff !important;
+    border-radius: 1.25rem !important;
+    box-shadow: 0 10px 30px rgba(15, 23, 42, 0.06) !important;
+    border: 1px solid #e2e8f0 !important;
+    transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1) !important;
+    position: relative !important;
+    overflow: hidden !important;
 }
 .dept-card-premium:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.08);
-    border-color: rgba(var(--bs-primary-rgb), 0.2);
+    transform: translateY(-8px) !important;
+    box-shadow: 0 20px 40px rgba(37, 99, 235, 0.15) !important;
+    border-color: #2563eb !important;
 }
 .dept-card-premium::before {
     content: '';
     position: absolute;
     bottom: 0; left: 0; right: 0;
-    height: 3px;
-    background: var(--bs-primary);
+    height: 4px;
+    background: linear-gradient(90deg, #2563eb, #3b82f6);
     transform: scaleX(0);
     transform-origin: center;
-    transition: transform 0.3s ease;
+    transition: transform 0.35s ease;
 }
 .dept-card-premium:hover::before {
     transform: scaleX(1);
@@ -569,7 +598,7 @@
     width: 64px;
     height: 64px;
     border-radius: 50%;
-    background: rgba(var(--bs-primary-rgb), 0.08);
+    background: rgba(37, 99, 235, 0.08);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -577,28 +606,27 @@
     transition: all 0.3s ease;
 }
 .dept-card-premium:hover .dept-icon-wrapper {
-    background: var(--bs-primary);
+    background: #2563eb;
     color: #ffffff !important;
 }
 .dept-card-premium:hover .dept-icon-wrapper i {
     color: #ffffff !important;
 }
 
-/* Premium Doctor Card Styles */
 .doctor-card-premium {
-    background: #ffffff;
-    border-radius: 1.25rem;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
-    border: 1px solid rgba(0, 0, 0, 0.03);
-    transition: all 0.3s ease;
-    overflow: hidden;
-    display: flex;
-    flex-direction: column;
+    background: #ffffff !important;
+    border-radius: 1.25rem !important;
+    box-shadow: 0 10px 30px rgba(15, 23, 42, 0.06) !important;
+    border: 1px solid #e2e8f0 !important;
+    transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1) !important;
+    overflow: hidden !important;
+    display: flex !important;
+    flex-direction: column !important;
 }
 .doctor-card-premium:hover {
-    transform: translateY(-8px);
-    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.08);
-    border-color: rgba(var(--bs-primary-rgb), 0.15);
+    transform: translateY(-8px) !important;
+    box-shadow: 0 22px 45px rgba(37, 99, 235, 0.16) !important;
+    border-color: #2563eb !important;
 }
 .doc-img-wrapper {
     position: relative;
@@ -619,6 +647,34 @@
     flex-grow: 1;
     display: flex;
     flex-direction: column;
+}
+
+.blog-card {
+    background: #ffffff !important;
+    border-radius: 1.25rem !important;
+    box-shadow: 0 10px 30px rgba(15, 23, 42, 0.06) !important;
+    border: 1px solid #e2e8f0 !important;
+    transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1) !important;
+    overflow: hidden !important;
+    height: 100% !important;
+}
+.blog-card:hover {
+    transform: translateY(-8px) !important;
+    box-shadow: 0 22px 45px rgba(37, 99, 235, 0.16) !important;
+    border-color: #2563eb !important;
+}
+
+.testimonial-card {
+    background: #ffffff !important;
+    border-radius: 1.25rem !important;
+    box-shadow: 0 12px 35px rgba(0, 0, 0, 0.1) !important;
+    border: 1px solid #e2e8f0 !important;
+    transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1) !important;
+}
+.testimonial-card:hover {
+    transform: translateY(-5px) !important;
+    box-shadow: 0 20px 45px rgba(0, 0, 0, 0.18) !important;
+    border-color: #2563eb !important;
 }
 </style>
 @endpush

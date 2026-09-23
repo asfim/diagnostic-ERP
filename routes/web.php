@@ -10,9 +10,8 @@ Route::get('/', [\App\Http\Controllers\Frontend\HomeController::class, 'index'])
 
 Route::get('/about', [\App\Http\Controllers\Frontend\HomeController::class, 'about'])->name('frontend.about');
 
-Route::get('/contact', function () {
-    return view('frontend.contact');
-});
+Route::get('/contact', [\App\Http\Controllers\Frontend\ContactController::class, 'index'])->name('frontend.contact');
+Route::post('/contact', [\App\Http\Controllers\Frontend\ContactController::class, 'store'])->name('frontend.contact.store');
 
 // Frontend Services
 Route::get('/departments', [\App\Http\Controllers\Frontend\DepartmentController::class, 'index']);
@@ -86,6 +85,11 @@ Route::middleware('auth')->group(function () {
     Route::patch('/home-collection-requests/{home_collection_request}/status', [\App\Http\Controllers\HomeCollectionRequestController::class, 'updateStatus'])->name('home-collection-requests.status');
     Route::get('/pricing-page', [\App\Http\Controllers\PricingPageController::class, 'index'])->name('pricing-page.index');
     Route::put('/pricing-page', [\App\Http\Controllers\PricingPageController::class, 'update'])->name('pricing-page.update');
+    Route::get('/contact-page', [\App\Http\Controllers\ContactPageController::class, 'index'])->name('contact-page.index');
+    Route::put('/contact-page', [\App\Http\Controllers\ContactPageController::class, 'update'])->name('contact-page.update');
+    Route::get('/contact-messages', [\App\Http\Controllers\ContactMessageController::class, 'index'])->name('contact-messages.index');
+    Route::get('/contact-messages/{contact_message}', [\App\Http\Controllers\ContactMessageController::class, 'show'])->name('contact-messages.show');
+    Route::delete('/contact-messages/{contact_message}', [\App\Http\Controllers\ContactMessageController::class, 'destroy'])->name('contact-messages.destroy');
     Route::resource('blogs', \App\Http\Controllers\BlogController::class)->except(['show']);
     Route::resource('admin-branches', \App\Http\Controllers\BranchController::class)->names('branches')->parameters(['admin-branches' => 'branch'])->except(['show', 'create', 'edit']);
 

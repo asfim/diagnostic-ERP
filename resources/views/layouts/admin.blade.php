@@ -677,6 +677,12 @@
             <a href="{{ route('faqs.index') }}" class="{{ request()->routeIs('faqs.*') ? 'active' : '' }}">
                 <span class="nav-icon"><i class="fa-solid fa-circle-question"></i></span> FAQs
             </a>
+            <a href="{{ route('contact-page.index') }}" class="{{ request()->routeIs('contact-page.*') ? 'active' : '' }}">
+                <span class="nav-icon"><i class="fa-solid fa-address-card"></i></span> Contact Page
+            </a>
+            <a href="{{ route('contact-messages.index') }}" class="{{ request()->routeIs('contact-messages.*') ? 'active' : '' }}">
+                <span class="nav-icon"><i class="fa-solid fa-inbox"></i></span> Contact Messages
+            </a>
             <a href="{{ route('settings.index') }}" class="{{ request()->routeIs('settings.*') ? 'active' : '' }}">
                 <span class="nav-icon"><i class="fa-solid fa-gear"></i></span> Settings
             </a>
