@@ -13,7 +13,7 @@
             <div class="row g-3">
                 <div class="col-md-6">
                     <label class="form-label">Select Patient <span class="text-danger">*</span></label>
-                    <select name="patient_id" class="form-select" required>
+                    <select name="patient_id" class="form-select select2-patient" required>
                         <option value="">-- Select Patient --</option>
                         @foreach($patients as $patient)
                             <option value="{{ $patient->id }}">{{ $patient->patient_id }} - {{ $patient->name }}</option>
@@ -201,3 +201,23 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 </script>
 @endsection
+
+@push('styles')
+<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/select2-bootstrap-5-theme@1.3.0/dist/select2-bootstrap-5-theme.min.css" />
+@endpush
+
+@push('scripts')
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+<script>
+    $(document).ready(function() {
+        $('.select2-patient').select2({
+            theme: 'bootstrap-5',
+            placeholder: "-- Select Patient --",
+            allowClear: true,
+            width: '100%'
+        });
+    });
+</script>
+@endpush

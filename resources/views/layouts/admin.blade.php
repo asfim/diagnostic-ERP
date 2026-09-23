@@ -298,6 +298,7 @@
             margin-bottom: 0.4rem;
         }
     </style>
+    @stack('styles')
 </head>
 
 <body>

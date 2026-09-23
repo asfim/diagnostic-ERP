@@ -16,7 +16,7 @@ class DiagnosticOrderController extends Controller
 
     public function create()
     {
-        $patients = Patient::all();
+        $patients = Patient::latest()->get();
         $tests = \App\Models\Test::where('status', true)->get();
         return view('diagnostic_orders.create', compact('patients', 'tests'));
     }
