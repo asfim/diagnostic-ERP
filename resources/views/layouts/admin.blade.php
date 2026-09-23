@@ -686,6 +686,9 @@
             <a href="{{ route('settings.index') }}" class="{{ request()->routeIs('settings.*') ? 'active' : '' }}">
                 <span class="nav-icon"><i class="fa-solid fa-gear"></i></span> Settings
             </a>
+            <a href="{{ route('footer-settings.index') }}" class="{{ request()->routeIs('footer-settings.*') ? 'active' : '' }}">
+                <span class="nav-icon"><i class="fa-solid fa-window-maximize"></i></span> Footer Settings
+            </a>
         @endcan
 
         <div style="height: 50px;"></div> <!-- Bottom Padding -->

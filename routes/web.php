@@ -85,6 +85,8 @@ Route::middleware('auth')->group(function () {
     Route::patch('/home-collection-requests/{home_collection_request}/status', [\App\Http\Controllers\HomeCollectionRequestController::class, 'updateStatus'])->name('home-collection-requests.status');
     Route::get('/pricing-page', [\App\Http\Controllers\PricingPageController::class, 'index'])->name('pricing-page.index');
     Route::put('/pricing-page', [\App\Http\Controllers\PricingPageController::class, 'update'])->name('pricing-page.update');
+    Route::get('/footer-settings', [\App\Http\Controllers\FooterSettingController::class, 'index'])->name('footer-settings.index');
+    Route::put('/footer-settings', [\App\Http\Controllers\FooterSettingController::class, 'update'])->name('footer-settings.update');
     Route::get('/contact-page', [\App\Http\Controllers\ContactPageController::class, 'index'])->name('contact-page.index');
     Route::put('/contact-page', [\App\Http\Controllers\ContactPageController::class, 'update'])->name('contact-page.update');
     Route::get('/contact-messages', [\App\Http\Controllers\ContactMessageController::class, 'index'])->name('contact-messages.index');
