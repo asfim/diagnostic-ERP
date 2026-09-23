@@ -40,12 +40,36 @@
                                 <select name="department_id" id="departmentSelect" class="form-select rounded-pill border-primary" required>
                                     <option value="">— Choose Department —</option>
                                     @foreach($departments as $dept)
-                                    <option value="{{ $dept->id }}">{{ $dept->name }}</option>
+                                    <option value="{{ $dept->id }}" {{ (isset($selectedTest) && $selectedTest->department_id == $dept->id) ? 'selected' : '' }}>
+                                        {{ $dept->name }}
+                                    </option>
                                     @endforeach
                                 </select>
+                                @if(isset($selectedTest))
+                                <div class="mt-2 text-success small fw-semibold">
+                                    <i class="bi bi-check-circle me-1"></i> Department auto-selected for: {{ $selectedTest->name }}
+                                </div>
+                                <input type="hidden" name="notes" value="Booking for Test: {{ $selectedTest->name }} ({{ $selectedTest->test_code }})">
+                                @endif
                             </div>
 
                             <div class="mb-4">
+                                <label class="form-label fw-semibold">Service Type <span class="text-danger">*</span></label>
+                                <div class="row g-3">
+                                    @foreach(['consultation' => ['icon'=>'bi-person-check','label'=>'Consultation'], 'followup' => ['icon'=>'bi-arrow-repeat','label'=>'Follow Up'], 'diagnostic' => ['icon'=>'bi-clipboard2-pulse','label'=>'Diagnostic']] as $val => $opt)
+                                    <div class="col-md-4">
+                                        <input type="radio" class="btn-check" name="appointment_type" id="type_{{ $val }}" value="{{ $val }}" 
+                                            {{ (isset($selectedTest) && $val == 'diagnostic') ? 'checked' : (!isset($selectedTest) && $loop->first ? 'checked' : '') }}>
+                                        <label class="btn btn-outline-primary w-100 rounded-3 py-3 d-flex flex-column align-items-center gap-2" for="type_{{ $val }}">
+                                            <i class="bi {{ $opt['icon'] }} fs-3"></i>
+                                            <span class="fw-semibold">{{ $opt['label'] }}</span>
+                                        </label>
+                                    </div>
+                                    @endforeach
+                                </div>
+                            </div>
+
+                            <div class="mb-4" id="doctorSelectionDiv">
                                 <label class="form-label fw-semibold">Doctor <span class="text-danger">*</span></label>
                                 <select name="doctor_id" id="doctorSelect" class="form-select rounded-pill border-primary" required>
                                     <option value="">— Select Department First —</option>
@@ -58,21 +82,6 @@
                                     </option>
                                     @endforeach
                                 </select>
-                            </div>
-
-                            <div class="mb-4">
-                                <label class="form-label fw-semibold">Service Type <span class="text-danger">*</span></label>
-                                <div class="row g-3">
-                                    @foreach(['consultation' => ['icon'=>'bi-person-check','label'=>'Consultation'], 'followup' => ['icon'=>'bi-arrow-repeat','label'=>'Follow Up'], 'diagnostic' => ['icon'=>'bi-clipboard2-pulse','label'=>'Diagnostic']] as $val => $opt)
-                                    <div class="col-md-4">
-                                        <input type="radio" class="btn-check" name="appointment_type" id="type_{{ $val }}" value="{{ $val }}" {{ $loop->first ? 'checked' : '' }}>
-                                        <label class="btn btn-outline-primary w-100 rounded-3 py-3 d-flex flex-column align-items-center gap-2" for="type_{{ $val }}">
-                                            <i class="bi {{ $opt['icon'] }} fs-3"></i>
-                                            <span class="fw-semibold">{{ $opt['label'] }}</span>
-                                        </label>
-                                    </div>
-                                    @endforeach
-                                </div>
                             </div>
 
                             <button type="button" class="btn btn-primary rounded-pill px-5 py-2 fw-bold next-step" data-next="2">
@@ -283,6 +292,39 @@ document.getElementById('departmentSelect').addEventListener('change', function(
             });
         });
 });
+
+// Toggle Doctor visibility based on Service Type
+function toggleDoctorVisibility() {
+    const isDiagnostic = document.querySelector('input[name="appointment_type"]:checked').value === 'diagnostic';
+    const doctorDiv = document.getElementById('doctorSelectionDiv');
+    const doctorSelect = document.getElementById('doctorSelect');
+    
+    if (isDiagnostic) {
+        doctorDiv.style.display = 'none';
+        doctorSelect.removeAttribute('required');
+        doctorSelect.value = ''; // clear selection
+    } else {
+        doctorDiv.style.display = 'block';
+        doctorSelect.setAttribute('required', 'required');
+    }
+}
+
+document.querySelectorAll('input[name="appointment_type"]').forEach(radio => {
+    radio.addEventListener('change', toggleDoctorVisibility);
+});
+
+// Run once on load
+toggleDoctorVisibility();
+
+@if(isset($selectedTest))
+    // Auto-trigger department change if pre-selected
+    document.addEventListener('DOMContentLoaded', function() {
+        const deptSelect = document.getElementById('departmentSelect');
+        if (deptSelect.value) {
+            deptSelect.dispatchEvent(new Event('change'));
+        }
+    });
+@endif
 </script>
 @endpush
 

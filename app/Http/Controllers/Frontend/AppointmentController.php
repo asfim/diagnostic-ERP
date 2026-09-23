@@ -15,14 +15,16 @@ use Illuminate\Support\Str;
 
 class AppointmentController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
         $departments = Department::get();
-        $doctors     = Doctor::where('status', 'active')->get();
-        $tests       = Test::where('status', 'active')->get();
+        $doctors     = Doctor::where('status', 1)->get();
+        $tests       = Test::where('status', 1)->get();
         $packages    = TestPackage::where('status', 'active')->get();
 
-        return view('frontend.appointment', compact('departments', 'doctors', 'tests', 'packages'));
+        $selectedTest = $request->query('test') ? Test::find($request->query('test')) : null;
+
+        return view('frontend.appointment', compact('departments', 'doctors', 'tests', 'packages', 'selectedTest'));
     }
 
     public function getDoctorsByDepartment(Request $request)
@@ -45,10 +47,10 @@ class AppointmentController extends Controller
         $request->validate([
             'patient_name'  => 'required|string|max:255',
             'mobile'        => 'required|string|max:20',
-            'doctor_id'     => 'required|exists:doctors,id',
+            'appointment_type' => 'required|in:consultation,followup,diagnostic',
+            'doctor_id'     => 'required_if:appointment_type,consultation,followup|nullable|exists:doctors,id',
             'date'          => 'required|date|after_or_equal:today',
             'time'          => 'required|string',
-            'appointment_type' => 'required|in:consultation,followup,diagnostic',
         ]);
 
         // Find or create patient
@@ -65,7 +67,7 @@ class AppointmentController extends Controller
             ]
         );
 
-        $doctor = Doctor::findOrFail($request->doctor_id);
+        $doctor = $request->doctor_id ? Doctor::findOrFail($request->doctor_id) : null;
 
         $appointment = Appointment::create([
             'appointment_id'   => 'APT-' . strtoupper(Str::random(8)),
@@ -75,7 +77,7 @@ class AppointmentController extends Controller
             'time'             => $request->time,
             'token'            => rand(100, 999),
             'appointment_type' => $request->appointment_type,
-            'consultation_fee' => $doctor->consultation_fee,
+            'consultation_fee' => $doctor ? $doctor->consultation_fee : 0,
             'status'           => 'scheduled',
             'notes'            => $request->notes,
         ]);

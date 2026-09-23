@@ -537,11 +537,16 @@
     <!-- Sidebar -->
     <div class="sidebar">
         <div class="brand">
-            <div class="brand-icon">
-                <i class="fa-solid fa-hospital text-white fs-5"></i>
-            </div>
-            <h4>{{ config('app.name') }}</h4>
-            <p>DIAGNOSTIC ERP</p>
+            @php
+                $adminLogo = \App\Models\Setting::get('site_logo');
+            @endphp
+            @if($adminLogo)
+                <img src="{{ asset('storage/' . $adminLogo) }}" alt="{{ config('app.name') }}" style="max-height: 60px; max-width: 100%; padding-top: 10px;">
+            @else
+                <div class="brand-icon">
+                    <i class="fa-solid fa-hospital text-white fs-5"></i>
+                </div>
+            @endif
         </div>
 
         <div class="nav-label">Core</div>

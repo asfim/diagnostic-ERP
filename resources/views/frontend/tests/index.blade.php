@@ -86,11 +86,12 @@
                     /* Premium Test Card Styles */
                     .test-card-premium {
                         background: #fff;
-                        border: 1px solid rgba(0,0,0,0.05);
+                        border: 1px solid rgba(0,0,0,0.1);
                         border-radius: 1.25rem;
                         transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
                         position: relative;
                         overflow: hidden;
+                        box-shadow: 0 4px 15px rgba(0,0,0,0.04);
                     }
                     .test-card-premium::before {
                         content: '';
@@ -136,6 +137,7 @@
                         border-radius: 20px;
                         font-size: 0.75rem;
                         letter-spacing: 0.5px;
+                        border: 1px solid rgba(var(--bs-primary-rgb), 0.15);
                     }
                     .test-meta-info {
                         display: flex;
@@ -154,8 +156,8 @@
                         gap: 5px;
                     }
                     .test-card-footer {
-                        background: #fafbfe;
-                        border-top: 1px solid rgba(0,0,0,0.03);
+                        background: #fdfdfe;
+                        border-top: 1px solid rgba(0,0,0,0.06);
                         padding: 1.25rem 1.5rem;
                         display: flex;
                         justify-content: space-between;

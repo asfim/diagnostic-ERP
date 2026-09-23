@@ -46,6 +46,12 @@
                                 @error('site_phone') <div class="invalid-feedback">{{ $message }}</div> @enderror
                             </div>
                             <div class="col-md-6">
+                                <label class="form-label fw-semibold">WhatsApp Number</label>
+                                <input type="text" name="site_whatsapp" class="form-control @error('site_whatsapp') is-invalid @enderror"
+                                       value="{{ old('site_whatsapp', $settings['site_whatsapp']) }}" placeholder="8801711000000">
+                                @error('site_whatsapp') <div class="invalid-feedback">{{ $message }}</div> @enderror
+                            </div>
+                            <div class="col-md-6">
                                 <label class="form-label fw-semibold">Email</label>
                                 <input type="email" name="site_email" class="form-control @error('site_email') is-invalid @enderror"
                                        value="{{ old('site_email', $settings['site_email']) }}" placeholder="info@example.com">

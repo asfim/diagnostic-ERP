@@ -73,13 +73,18 @@
                         @endif
                     </div>
                     <div class="d-grid gap-3">
+                        @php
+                            $waNumber = \App\Models\Setting::get('site_whatsapp', '8801711000000');
+                            $waMessage = urlencode("Hello, I would like to book the package: {$package->name}");
+                            $phone = \App\Models\Setting::get('site_phone', '+8801711000000');
+                        @endphp
                         <a href="{{ url('/appointment') }}?package={{ $package->id }}" class="btn btn-primary btn-lg rounded-pill fw-bold">
                             <i class="bi bi-calendar-check me-2"></i>Book Package
                         </a>
-                        <a href="https://wa.me/8801711000000" class="btn btn-success btn-lg rounded-pill fw-bold" target="_blank">
-                            <i class="bi bi-whatsapp me-2"></i>WhatsApp
+                        <a href="https://wa.me/{{ preg_replace('/[^0-9]/', '', $waNumber) }}?text={{ $waMessage }}" class="btn btn-success btn-lg rounded-pill fw-bold" target="_blank">
+                            <i class="bi bi-whatsapp me-2"></i>WhatsApp Booking
                         </a>
-                        <a href="tel:+8801711000000" class="btn btn-outline-primary btn-lg rounded-pill">
+                        <a href="tel:{{ preg_replace('/[^0-9+]/', '', $phone) }}" class="btn btn-outline-primary btn-lg rounded-pill fw-bold">
                             <i class="bi bi-telephone me-2"></i>Call to Book
                         </a>
                     </div>

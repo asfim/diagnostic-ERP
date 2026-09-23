@@ -30,14 +30,10 @@
         <!-- Logo -->
         <a class="navbar-brand d-flex align-items-center gap-2" href="{{ url('/') }}">
             @if(!empty($siteSettings['site_logo']))
-                <img src="{{ asset('storage/' . $siteSettings['site_logo']) }}" alt="{{ $siteSettings['site_name'] ?? 'MediDiag' }}" style="height: 45px;">
+                <img src="{{ asset('storage/' . $siteSettings['site_logo']) }}" alt="{{ $siteSettings['site_name'] ?? 'MediDiag' }}" style="height: 65px;">
             @else
-                <i class="bi bi-heart-pulse-fill text-secondary" style="font-size:2rem;"></i>
+                <i class="bi bi-heart-pulse-fill text-secondary" style="font-size:2.5rem;"></i>
             @endif
-            <div>
-                {{ $siteSettings['site_name'] ?? 'MediDiag' }}
-                <small>{{ $siteSettings['site_tagline'] ?? 'Diagnostic & Clinic' }}</small>
-            </div>
         </a>
 
         <!-- Mobile Hamburger -->

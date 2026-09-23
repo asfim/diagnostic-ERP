@@ -18,6 +18,7 @@ class SettingController extends Controller
             'site_address' => Setting::get('site_address', ''),
             'site_logo'    => Setting::get('site_logo', ''),
             'site_favicon' => Setting::get('site_favicon', ''),
+            'site_whatsapp'=> Setting::get('site_whatsapp', ''),
         ];
 
         return view('settings.index', compact('settings'));
@@ -33,10 +34,11 @@ class SettingController extends Controller
             'site_address' => 'nullable|string|max:300',
             'site_logo'    => 'nullable|image|mimes:png,jpg,jpeg,svg,webp|max:2048',
             'site_favicon' => 'nullable|image|mimes:png,jpg,ico,svg|max:512',
+            'site_whatsapp'=> 'nullable|string|max:50',
         ]);
 
         // Text settings
-        foreach (['site_name', 'site_tagline', 'site_phone', 'site_email', 'site_address'] as $key) {
+        foreach (['site_name', 'site_tagline', 'site_phone', 'site_whatsapp', 'site_email', 'site_address'] as $key) {
             Setting::set($key, $request->input($key, ''));
         }
 

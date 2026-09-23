@@ -222,24 +222,28 @@
             <p class="mt-2">Explore our most requested tests. We ensure precise and timely results.</p>
         </div>
 
-            @foreach($tests as $i => $test)
-            <div class="col-lg-3 col-md-6" data-aos="fade-up" data-aos-delay="{{ ($i+1)*80 }}">
-                <div class="test-card d-flex flex-column" style="cursor: pointer;" onclick="window.location.href='{{ url('/tests/'.$test->id) }}'">
-                    <div class="t-icon bg-primary bg-opacity-10 text-primary mx-auto">
-                        <i class="bi bi-activity"></i>
+            <div class="row g-4 justify-content-center">
+            @foreach($tests->take(3) as $i => $test)
+            <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="{{ ($i+1)*80 }}">
+                <div class="test-card-premium h-100 d-flex flex-column" style="cursor: pointer;" onclick="window.location.href='{{ url('/tests/'.$test->id) }}'">
+                    <div class="t-icon bg-primary bg-opacity-10 text-primary mx-auto mb-3" style="width: 50px; height: 50px; border-radius: 50%; display: flex; align-items: center; justify-content: center;">
+                        <i class="bi bi-activity fs-4"></i>
                     </div>
-                    <h5 class="fw-bold"><a href="{{ url('/tests/'.$test->id) }}" class="text-dark text-decoration-none">{{ $test->name }}</a></h5>
-                    <p class="text-truncate">{{ $test->description ?? 'Accurate and reliable diagnostic test.' }}</p>
-                    <div class="d-flex justify-content-between align-items-center mt-auto pt-3 border-top">
-                        <span class="price">৳ {{ number_format($test->price, 0) }}</span>
+                    <div class="test-card-body p-4 text-center flex-grow-1">
+                        <h5 class="fw-bold"><a href="{{ url('/tests/'.$test->id) }}" class="text-dark text-decoration-none">{{ $test->name }}</a></h5>
+                        <p class="text-muted text-truncate mb-0">{{ $test->description ?? 'Accurate and reliable diagnostic test.' }}</p>
+                    </div>
+                    <div class="test-card-footer bg-light-soft border-top p-3 d-flex justify-content-between align-items-center">
+                        <span class="price fw-bold text-primary fs-5">৳ {{ number_format($test->price, 0) }}</span>
                         <div class="d-flex gap-2">
-                            <a href="{{ url('/tests/'.$test->id) }}" class="btn btn-sm btn-outline-secondary rounded-pill px-2">Details</a>
-                            <a href="{{ url('/appointment') }}?test={{ $test->id }}" class="btn btn-sm btn-outline-primary rounded-pill px-3">Book</a>
+                            <a href="{{ url('/tests/'.$test->id) }}" class="btn btn-sm btn-outline-secondary rounded-pill px-3">Details</a>
+                            <a href="{{ url('/appointment') }}?test={{ $test->id }}" class="btn btn-sm btn-primary rounded-pill px-4">Book</a>
                         </div>
                     </div>
                 </div>
             </div>
             @endforeach
+            </div>
         </div>
 
         <div class="text-center mt-5" data-aos="fade-up">
@@ -514,7 +518,10 @@
 </section>
 
 {{-- WhatsApp Floating Button --}}
-<a href="https://wa.me/8801711000000" class="btn-whatsapp" title="Chat on WhatsApp" target="_blank">
+@php
+    $waNumber = \App\Models\Setting::get('site_whatsapp', '8801711000000');
+@endphp
+<a href="https://wa.me/{{ preg_replace('/[^0-9]/', '', $waNumber) }}" class="btn-whatsapp" title="Chat on WhatsApp" target="_blank">
     <i class="bi bi-whatsapp"></i>
 </a>
 
@@ -527,5 +534,37 @@
         <i class="bi bi-file-medical me-1"></i> Reports
     </a>
 </div>
+
+@push('styles')
+<style>
+/* Premium Test Card Styles for Homepage */
+.test-card-premium {
+    background: #fff;
+    border: 1px solid rgba(0,0,0,0.1);
+    border-radius: 1.25rem;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.04);
+}
+.test-card-premium:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 15px 35px rgba(0,0,0,0.08);
+    border-color: rgba(var(--bs-primary-rgb), 0.15);
+}
+.test-card-premium::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, var(--bs-primary), #00b4d8);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+.test-card-premium:hover::before {
+    opacity: 1;
+}
+</style>
+@endpush
 
 @endsection
