@@ -60,9 +60,9 @@
                                 <th>Paid (৳)</th>
                             </tr>
                         </thead>
-                        <tbody>
-                            @forelse($invoices as $inv)
-                            <tr>
+                        <tbody id="invoice-table-body">
+                            @forelse($invoices as $index => $inv)
+                            <tr class="invoice-row" style="{{ $index >= 10 ? 'display: none;' : '' }}">
                                 <td><span class="id-badge">{{ $inv->invoice_no }}</span></td>
                                 <td><span class="text-muted">{{ date('d M Y', strtotime($inv->created_at)) }}</span></td>
                                 <td><strong class="text-success">৳ {{ number_format($inv->paid, 2) }}</strong></td>
@@ -75,6 +75,13 @@
                         </tbody>
                     </table>
                 </div>
+                @if($invoices->count() > 10)
+                <div class="text-center mt-3 d-print-none" id="invoice-load-more-container">
+                    <button id="invoice-load-more-btn" class="btn btn-sm btn-outline-primary px-3 py-1" style="border-radius: 8px; font-weight: 600;">
+                        <i class="fa-solid fa-spinner me-1"></i>Load More
+                    </button>
+                </div>
+                @endif
             </div>
             <div class="col-md-6">
                 <h6 class="fw-bold mb-3"><i class="fa-solid fa-vial me-2 text-muted"></i>Lab Orders Income</h6>
@@ -87,9 +94,9 @@
                                 <th>Paid (৳)</th>
                             </tr>
                         </thead>
-                        <tbody>
-                            @forelse($labOrders as $ord)
-                            <tr>
+                        <tbody id="lab-order-table-body">
+                            @forelse($labOrders as $index => $ord)
+                            <tr class="lab-order-row" style="{{ $index >= 10 ? 'display: none;' : '' }}">
                                 <td><span class="id-badge">{{ $ord->order_id }}</span></td>
                                 <td><span class="text-muted">{{ date('d M Y', strtotime($ord->created_at)) }}</span></td>
                                 <td><strong class="text-success">৳ {{ number_format($ord->paid_amount, 2) }}</strong></td>
@@ -102,8 +109,59 @@
                         </tbody>
                     </table>
                 </div>
+                @if($labOrders->count() > 10)
+                <div class="text-center mt-3 d-print-none" id="lab-load-more-container">
+                    <button id="lab-load-more-btn" class="btn btn-sm btn-outline-primary px-3 py-1" style="border-radius: 8px; font-weight: 600;">
+                        <i class="fa-solid fa-spinner me-1"></i>Load More
+                    </button>
+                </div>
+                @endif
             </div>
         </div>
     </div>
 </div>
 @endsection
+
+@push('scripts')
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Invoices Load More
+        let invVisible = 10;
+        const invTotal = {{ $invoices->count() }};
+        const invBtn = document.getElementById('invoice-load-more-btn');
+        const invRows = document.querySelectorAll('.invoice-row');
+
+        if (invBtn) {
+            invBtn.addEventListener('click', function() {
+                let limit = invVisible + 10;
+                for (let i = invVisible; i < limit && i < invTotal; i++) {
+                    if (invRows[i]) invRows[i].style.display = 'table-row';
+                }
+                invVisible += 10;
+                if (invVisible >= invTotal) {
+                    document.getElementById('invoice-load-more-container').style.display = 'none';
+                }
+            });
+        }
+
+        // Lab Orders Load More
+        let labVisible = 10;
+        const labTotal = {{ $labOrders->count() }};
+        const labBtn = document.getElementById('lab-load-more-btn');
+        const labRows = document.querySelectorAll('.lab-order-row');
+
+        if (labBtn) {
+            labBtn.addEventListener('click', function() {
+                let limit = labVisible + 10;
+                for (let i = labVisible; i < limit && i < labTotal; i++) {
+                    if (labRows[i]) labRows[i].style.display = 'table-row';
+                }
+                labVisible += 10;
+                if (labVisible >= labTotal) {
+                    document.getElementById('lab-load-more-container').style.display = 'none';
+                }
+            });
+        }
+    });
+</script>
+@endpush
