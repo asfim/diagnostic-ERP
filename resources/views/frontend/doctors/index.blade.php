@@ -65,9 +65,11 @@
                         <p class="degree small text-muted mb-3">{{ $doc->specialization }}</p>
                         
                         <div class="d-flex justify-content-center gap-3 mb-3 border-top pt-3 opacity-75">
+                            @if(!empty($doc->experience_years) && $doc->experience_years > 0)
                             <div class="text-muted small" title="Experience">
-                                <i class="bi bi-briefcase-fill text-primary"></i> {{ $doc->experience_years ?? 0 }} Yrs
+                                <i class="bi bi-briefcase-fill text-primary"></i> {{ $doc->experience_years }} Yrs
                             </div>
+                            @endif
                             <div class="text-muted small" title="Fee">
                                 <i class="bi bi-cash-coin text-success"></i> ৳{{ $doc->consultation_fee ?? 0 }}
                             </div>

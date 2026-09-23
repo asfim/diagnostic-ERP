@@ -316,9 +316,11 @@
                         <p class="degree small text-muted mb-3">{{ $doc->specialization }}</p>
                         
                         <div class="d-flex justify-content-center gap-3 mb-3 border-top pt-3 opacity-75">
+                            @if(!empty($doc->experience_years) && $doc->experience_years > 0)
                             <div class="text-muted small" title="Experience">
-                                <i class="bi bi-briefcase-fill text-primary"></i> {{ $doc->experience_years ?? 0 }} Yrs
+                                <i class="bi bi-briefcase-fill text-primary"></i> {{ $doc->experience_years }} Yrs
                             </div>
+                            @endif
                             <div class="text-muted small" title="Fee">
                                 <i class="bi bi-cash-coin text-success"></i> ৳{{ $doc->consultation_fee ?? 0 }}
                             </div>
@@ -376,8 +378,8 @@
 <section class="section-padding bg-white">
     <div class="container text-center">
         <div class="section-header centered mb-5" data-aos="fade-up">
-            <span class="label">Process</span>
-            <h2>How It Works</h2>
+            <span class="label">{{ $howItWorks['label'] ?? 'Process' }}</span>
+            <h2>{{ $howItWorks['title'] ?? 'How It Works' }}</h2>
         </div>
 
         <div class="row g-4 position-relative">
@@ -386,16 +388,8 @@
                 <div class="border-top border-2 border-primary" style="margin: 0 10%; opacity:.2;"></div>
             </div>
 
-            @php
-            $steps = [
-                ['n'=>'1','icon'=>'bi-search','title'=>'Choose Service','desc'=>'Browse our tests, packages, or select a doctor for consultation.'],
-                ['n'=>'2','icon'=>'bi-calendar-check','title'=>'Book Appointment','desc'=>'Pick a convenient date and time slot online or via phone.'],
-                ['n'=>'3','icon'=>'bi-hospital','title'=>'Visit or Home','desc'=>'Visit our center, or we collect the sample from your home.'],
-                ['n'=>'4','icon'=>'bi-file-earmark-check','title'=>'Get Report Online','desc'=>'Download your verified report securely from our portal.'],
-            ];
-            @endphp
-
-            @foreach($steps as $i => $step)
+            @if(!empty($howItWorks['steps']) && is_array($howItWorks['steps']))
+            @foreach($howItWorks['steps'] as $i => $step)
             <div class="col-lg-3 col-md-6 position-relative" style="z-index:2;" data-aos="fade-up" data-aos-delay="{{ ($i+1)*100 }}">
                 <div class="step-circle mx-auto">{{ $step['n'] }}</div>
                 <div class="icon-box bg-primary bg-opacity-10 text-primary rounded-circle mx-auto mb-3" style="width:56px;height:56px;">
@@ -405,6 +399,7 @@
                 <p class="text-muted small mb-0">{{ $step['desc'] }}</p>
             </div>
             @endforeach
+            @endif
         </div>
     </div>
 </section>

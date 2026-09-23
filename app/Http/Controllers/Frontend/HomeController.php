@@ -93,6 +93,17 @@ class HomeController extends Controller
             ]
         ]);
 
-        return view('frontend.home', compact('tests', 'packages', 'departments', 'doctors', 'hero', 'stats', 'quickActions', 'about', 'whyChoose'));
+        $howItWorks = HomeSetting::getSection('how_it_works_section', [
+            'label' => 'Process',
+            'title' => 'How It Works',
+            'steps' => [
+                ['n'=>'1','icon'=>'bi-search','title'=>'Choose Service','desc'=>'Browse our tests, packages, or select a doctor for consultation.'],
+                ['n'=>'2','icon'=>'bi-calendar-check','title'=>'Book Appointment','desc'=>'Pick a convenient date and time slot online or via phone.'],
+                ['n'=>'3','icon'=>'bi-hospital','title'=>'Visit or Home','desc'=>'Visit our center, or we collect the sample from your home.'],
+                ['n'=>'4','icon'=>'bi-file-earmark-check','title'=>'Get Report Online','desc'=>'Download your verified report securely from our portal.'],
+            ]
+        ]);
+
+        return view('frontend.home', compact('tests', 'packages', 'departments', 'doctors', 'hero', 'stats', 'quickActions', 'about', 'whyChoose', 'howItWorks'));
     }
 }

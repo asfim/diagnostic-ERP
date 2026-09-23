@@ -76,7 +76,18 @@ class FrontendCMSController extends Controller
             ]
         ]);
 
-        return view('admin.cms.index', compact('hero', 'stats', 'quickActions', 'about', 'whyChoose'));
+        $howItWorks = HomeSetting::getSection('how_it_works_section', [
+            'label' => 'Process',
+            'title' => 'How It Works',
+            'steps' => [
+                ['n'=>'1','icon'=>'bi-search','title'=>'Choose Service','desc'=>'Browse our tests, packages, or select a doctor for consultation.'],
+                ['n'=>'2','icon'=>'bi-calendar-check','title'=>'Book Appointment','desc'=>'Pick a convenient date and time slot online or via phone.'],
+                ['n'=>'3','icon'=>'bi-hospital','title'=>'Visit or Home','desc'=>'Visit our center, or we collect the sample from your home.'],
+                ['n'=>'4','icon'=>'bi-file-earmark-check','title'=>'Get Report Online','desc'=>'Download your verified report securely from our portal.'],
+            ]
+        ]);
+
+        return view('admin.cms.index', compact('hero', 'stats', 'quickActions', 'about', 'whyChoose', 'howItWorks'));
     }
 
     public function updateHero(Request $request)
@@ -239,5 +250,28 @@ class FrontendCMSController extends Controller
         $setting->save();
 
         return redirect()->back()->with('success', 'Why Choose Us section updated successfully!');
+    }
+
+    public function updateHowItWorks(Request $request)
+    {
+        $request->validate([
+            'label' => 'required|string|max:50',
+            'title' => 'required|string|max:255',
+            'steps' => 'required|array|size:4',
+            'steps.*.n' => 'required|string|max:10',
+            'steps.*.icon' => 'required|string|max:50',
+            'steps.*.title' => 'required|string|max:100',
+            'steps.*.desc' => 'required|string|max:255',
+        ]);
+
+        $setting = HomeSetting::firstOrNew(['key' => 'how_it_works_section']);
+        $setting->value = [
+            'label' => $request->label,
+            'title' => $request->title,
+            'steps' => $request->steps,
+        ];
+        $setting->save();
+
+        return redirect()->back()->with('success', 'How It Works section updated successfully!');
     }
 }

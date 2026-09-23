@@ -359,5 +359,69 @@
             </div>
         </div>
     </div>
+    {{-- How It Works Section Form --}}
+    <div class="row g-4 mt-1">
+        <div class="col-12">
+            <div class="card card-premium mb-4">
+                <div class="card-header bg-white border-bottom-0 pt-4 pb-0">
+                    <h6 class="mb-0 fw-bold text-warning"><i class="fas fa-cogs me-2"></i>How It Works (Process) Section</h6>
+                </div>
+                <div class="card-body">
+                    <form action="{{ route('cms.how_it_works.update') }}" method="POST">
+                        @csrf
+                        @method('PUT')
+                        <div class="row">
+                            <div class="col-md-3">
+                                <div class="mb-3">
+                                    <label class="form-label fw-semibold">Label <span class="text-danger">*</span></label>
+                                    <input type="text" name="label" class="form-control" value="{{ old('label', $howItWorks['label'] ?? '') }}" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label fw-semibold">Title <span class="text-danger">*</span></label>
+                                    <input type="text" name="title" class="form-control" value="{{ old('title', $howItWorks['title'] ?? '') }}" required>
+                                </div>
+                            </div>
+                            <div class="col-md-9">
+                                <label class="form-label fw-semibold">Steps (Exactly 4 Steps) <span class="text-danger">*</span></label>
+                                <div class="row g-3">
+                                    @for($i=0; $i<4; $i++)
+                                    <div class="col-md-6">
+                                        <div class="border rounded-3 p-3 bg-light-soft h-100">
+                                            <h6 class="fw-bold mb-3 small">Step {{ $i + 1 }}</h6>
+                                            
+                                            <div class="row g-2 mb-2">
+                                                <div class="col-3">
+                                                    <label class="form-label small fw-semibold">Number</label>
+                                                    <input type="text" name="steps[{{ $i }}][n]" class="form-control form-control-sm" value="{{ $howItWorks['steps'][$i]['n'] ?? ($i+1) }}" required>
+                                                </div>
+                                                <div class="col-9">
+                                                    <label class="form-label small fw-semibold">Icon</label>
+                                                    <input type="text" name="steps[{{ $i }}][icon]" class="form-control form-control-sm" value="{{ $howItWorks['steps'][$i]['icon'] ?? '' }}" placeholder="e.g. bi-search" required>
+                                                </div>
+                                            </div>
+
+                                            <div class="mb-2">
+                                                <label class="form-label small fw-semibold">Title</label>
+                                                <input type="text" name="steps[{{ $i }}][title]" class="form-control form-control-sm" value="{{ $howItWorks['steps'][$i]['title'] ?? '' }}" required>
+                                            </div>
+                                            
+                                            <div class="mb-2">
+                                                <label class="form-label small fw-semibold">Description</label>
+                                                <textarea name="steps[{{ $i }}][desc]" class="form-control form-control-sm" rows="2" required>{{ $howItWorks['steps'][$i]['desc'] ?? '' }}</textarea>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    @endfor
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mt-4">
+                            <button type="submit" class="btn btn-warning w-100 fw-bold"><i class="fas fa-save me-2"></i>Save How It Works Section</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 @endsection
