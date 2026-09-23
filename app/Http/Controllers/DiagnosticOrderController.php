@@ -84,7 +84,9 @@ class DiagnosticOrderController extends Controller
     {
         $order = DiagnosticOrder::findOrFail($id);
         $patients = Patient::all();
-        return view('diagnostic_orders.edit', compact('order', 'patients'));
+        $tests = \App\Models\Test::where('status', true)->get();
+        $selectedTestIds = $order->items->pluck('test_id')->toArray();
+        return view('diagnostic_orders.edit', compact('order', 'patients', 'tests', 'selectedTestIds'));
     }
 
     public function update(Request $request, $id)
@@ -94,23 +96,47 @@ class DiagnosticOrderController extends Controller
             'order_status' => 'required|string',
             'paid_amount' => 'required|numeric|min:0',
             'discount' => 'nullable|numeric|min:0',
+            'tests' => 'required|array|min:1',
+            'tests.*' => 'exists:tests,id',
         ]);
         
         $discount = $data['discount'] ?? 0;
-        $due_amount = $order->total_amount - $discount - $data['paid_amount'];
         
-        $data['due_amount'] = $due_amount;
-        $data['discount'] = $discount;
+        // Calculate new total based on tests
+        $selectedTests = \App\Models\Test::whereIn('id', $data['tests'])->get();
+        $total_amount = $selectedTests->sum('price');
+        
+        $due_amount = $total_amount - $discount - $data['paid_amount'];
+        
+        $updateData = [
+            'order_status' => $data['order_status'],
+            'total_amount' => $total_amount,
+            'due_amount' => $due_amount,
+            'discount' => $discount,
+            'paid_amount' => $data['paid_amount'],
+        ];
         
         if ($due_amount <= 0) {
-            $data['payment_status'] = 'Paid';
+            $updateData['payment_status'] = 'Paid';
         } elseif ($data['paid_amount'] > 0) {
-            $data['payment_status'] = 'Partial';
+            $updateData['payment_status'] = 'Partial';
         } else {
-            $data['payment_status'] = 'Unpaid';
+            $updateData['payment_status'] = 'Unpaid';
         }
         
-        $order->update($data);
+        $order->update($updateData);
+
+        // Recreate items
+        \App\Models\DiagnosticOrderItem::where('diagnostic_order_id', $order->id)->delete();
+        foreach ($selectedTests as $test) {
+            \App\Models\DiagnosticOrderItem::create([
+                'diagnostic_order_id' => $order->id,
+                'test_id' => $test->id,
+                'price' => $test->price,
+                'status' => 'Pending'
+            ]);
+        }
+        
         return redirect()->route('diagnostic-orders.index')->with('success', 'Order updated successfully!');
     }
 
