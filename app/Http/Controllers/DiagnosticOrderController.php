@@ -146,4 +146,17 @@ class DiagnosticOrderController extends Controller
         $order->delete();
         return redirect()->route('diagnostic-orders.index')->with('success', 'Order deleted.');
     }
+
+    public function updateStatus(Request $request, $id)
+    {
+        $request->validate([
+            'order_status' => 'required|string|in:Pending,Delivered,Completed,Cancelled'
+        ]);
+
+        $order = DiagnosticOrder::findOrFail($id);
+        $order->order_status = $request->order_status;
+        $order->save();
+
+        return response()->json(['success' => true, 'message' => 'Status updated successfully.']);
+    }
 }

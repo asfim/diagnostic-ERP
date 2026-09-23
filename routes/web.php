@@ -75,6 +75,7 @@ Route::middleware('auth')->group(function () {
     Route::resource('tests', \App\Http\Controllers\TestController::class);
     Route::resource('invoices', \App\Http\Controllers\InvoiceController::class);
     Route::resource('diagnostic-orders', \App\Http\Controllers\DiagnosticOrderController::class);
+    Route::patch('diagnostic-orders/{order}/status', [\App\Http\Controllers\DiagnosticOrderController::class, 'updateStatus'])->name('diagnostic-orders.updateStatus');
 
     // Consultations & Prescriptions
     Route::resource('consultations', \App\Http\Controllers\ConsultationController::class);

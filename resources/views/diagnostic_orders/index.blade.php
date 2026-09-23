@@ -72,13 +72,12 @@
                         @endif
                     </td>
                     <td>
-                        @if($order->order_status == 'Completed')
-                            <span class="status-pill pill-primary"><i class="fa-solid fa-flask-vial"></i> Completed</span>
-                        @elseif($order->order_status == 'Cancelled')
-                            <span class="status-pill pill-danger"><i class="fa-solid fa-ban"></i> Cancelled</span>
-                        @else
-                            <span class="status-pill pill-secondary"><i class="fa-solid fa-clock"></i> {{ $order->order_status }}</span>
-                        @endif
+                        <select class="form-select form-select-sm status-dropdown shadow-sm {{ $order->order_status == 'Pending' ? 'bg-warning text-dark' : ($order->order_status == 'Completed' ? 'bg-success text-white' : ($order->order_status == 'Delivered' ? 'bg-info text-white' : 'bg-secondary text-white')) }}" data-id="{{ $order->id }}">
+                            <option value="Pending" {{ $order->order_status == 'Pending' ? 'selected' : '' }}>Pending</option>
+                            <option value="Completed" {{ $order->order_status == 'Completed' ? 'selected' : '' }}>Completed</option>
+                            <option value="Delivered" {{ $order->order_status == 'Delivered' ? 'selected' : '' }}>Delivered</option>
+                            <option value="Cancelled" {{ $order->order_status == 'Cancelled' ? 'selected' : '' }}>Cancelled</option>
+                        </select>
                     </td>
                     <td>
                         <div class="d-flex justify-content-center gap-2">
@@ -118,5 +117,43 @@
         </div>
     @endif
 </div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const dropdowns = document.querySelectorAll('.status-dropdown');
+    dropdowns.forEach(dropdown => {
+        dropdown.addEventListener('change', function() {
+            const orderId = this.dataset.id;
+            const newStatus = this.value;
+            const selectElement = this;
+
+            fetch(`/diagnostic-orders/${orderId}/status`, {
+                method: 'PATCH',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                },
+                body: JSON.stringify({ order_status: newStatus })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    selectElement.className = 'form-select form-select-sm status-dropdown shadow-sm';
+                    if (newStatus === 'Pending') selectElement.classList.add('bg-warning', 'text-dark');
+                    else if (newStatus === 'Completed') selectElement.classList.add('bg-success', 'text-white');
+                    else if (newStatus === 'Delivered') selectElement.classList.add('bg-info', 'text-white');
+                    else selectElement.classList.add('bg-secondary', 'text-white');
+                } else {
+                    alert('Failed to update status.');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('An error occurred while updating status.');
+            });
+        });
+    });
+});
+</script>
 
 @endsection

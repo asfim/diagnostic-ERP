@@ -90,7 +90,15 @@ class TestResultController extends Controller
     public function destroy($id)
     {
         $result = TestResult::findOrFail($id);
+        $orderId = $result->diagnostic_order_id;
         $result->delete();
+        
+        // Check if there are any other results for this order
+        $remainingResults = TestResult::where('diagnostic_order_id', $orderId)->count();
+        if ($remainingResults === 0) {
+             DiagnosticOrder::where('id', $orderId)->update(['order_status' => 'Pending']);
+        }
+        
         return redirect()->route('test-results.index')->with('success', 'Result deleted.');
     }
 }
