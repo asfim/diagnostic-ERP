@@ -30,12 +30,11 @@ class DiagnosticOrderController extends Controller
             'paid_amount' => 'required|numeric|min:0',
             'tests' => 'required|array|min:1',
             'tests.*' => 'exists:tests,id',
-            'prices' => 'required|array|min:1',
-            'prices.*' => 'numeric|min:0',
         ]);
         
-        // Calculate total from the submitted test prices (extra safety to avoid tampering if needed, but we'll trust the client side form structure for now and sum it)
-        $total_amount = array_sum($data['prices']);
+        // Fetch the selected tests from DB to get their prices securely
+        $selectedTests = \App\Models\Test::whereIn('id', $data['tests'])->get();
+        $total_amount = $selectedTests->sum('price');
         $due_amount = $total_amount - ($data['discount'] ?? 0) - $data['paid_amount'];
         
         $orderData = [
@@ -62,11 +61,11 @@ class DiagnosticOrderController extends Controller
         $order = DiagnosticOrder::create($orderData);
 
         // Insert items
-        foreach ($data['tests'] as $index => $testId) {
+        foreach ($selectedTests as $test) {
             \App\Models\DiagnosticOrderItem::create([
                 'diagnostic_order_id' => $order->id,
-                'test_id' => $testId,
-                'price' => $data['prices'][$index],
+                'test_id' => $test->id,
+                'price' => $test->price,
                 'status' => 'Pending'
             ]);
         }
@@ -77,7 +76,8 @@ class DiagnosticOrderController extends Controller
     public function show($id)
     {
         $order = DiagnosticOrder::findOrFail($id);
-        return view('diagnostic_orders.show', compact('order'));
+        $settings = \App\Models\Setting::pluck('value', 'key');
+        return view('diagnostic_orders.show', compact('order', 'settings'));
     }
 
     public function edit($id)
@@ -92,7 +92,23 @@ class DiagnosticOrderController extends Controller
         $order = DiagnosticOrder::findOrFail($id);
         $data = $request->validate([
             'order_status' => 'required|string',
+            'paid_amount' => 'required|numeric|min:0',
+            'discount' => 'nullable|numeric|min:0',
         ]);
+        
+        $discount = $data['discount'] ?? 0;
+        $due_amount = $order->total_amount - $discount - $data['paid_amount'];
+        
+        $data['due_amount'] = $due_amount;
+        $data['discount'] = $discount;
+        
+        if ($due_amount <= 0) {
+            $data['payment_status'] = 'Paid';
+        } elseif ($data['paid_amount'] > 0) {
+            $data['payment_status'] = 'Partial';
+        } else {
+            $data['payment_status'] = 'Unpaid';
+        }
         
         $order->update($data);
         return redirect()->route('diagnostic-orders.index')->with('success', 'Order updated successfully!');

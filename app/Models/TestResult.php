@@ -28,4 +28,9 @@ class TestResult extends Model
     {
         return $this->belongsTo(DiagnosticOrder::class);
     }
+
+    public function values()
+    {
+        return $this->hasMany(TestResultValue::class);
+    }
 }

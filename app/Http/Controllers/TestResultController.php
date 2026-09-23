@@ -17,8 +17,8 @@ class TestResultController extends Controller
 
     public function create()
     {
-        $orders = DiagnosticOrder::where('order_status', 'Pending')->get();
-        $tests = Test::all();
+        $orders = DiagnosticOrder::with('items.test')->where('order_status', 'Pending')->get();
+        $tests = Test::with('parameters')->get();
         return view('test_results.create', compact('orders', 'tests'));
     }
 
@@ -27,23 +27,45 @@ class TestResultController extends Controller
         $data = $request->validate([
             'diagnostic_order_id' => 'required|exists:diagnostic_orders,id',
             'test_id' => 'required|exists:tests,id',
-            'result_value' => 'required|string',
             'remarks' => 'nullable|string',
+            'result_value' => 'nullable|string',
+            'parameters' => 'nullable|array',
+            'parameters.*.id' => 'required|exists:test_parameters,id',
+            'parameters.*.value' => 'required|string',
         ]);
         
         $order = DiagnosticOrder::findOrFail($data['diagnostic_order_id']);
-        $data['patient_id'] = $order->patient_id;
-        $data['status'] = 'Completed';
         
-        TestResult::create($data);
+        $result = TestResult::create([
+            'diagnostic_order_id' => $data['diagnostic_order_id'],
+            'test_id' => $data['test_id'],
+            'patient_id' => $order->patient_id,
+            'remarks' => $data['remarks'] ?? null,
+            'status' => 'Completed',
+            'result_value' => $data['result_value'] ?? 'Detailed Report'
+        ]);
+
+        if (!empty($data['parameters'])) {
+            foreach ($data['parameters'] as $param) {
+                \App\Models\TestResultValue::create([
+                    'test_result_id' => $result->id,
+                    'test_parameter_id' => $param['id'],
+                    'value' => $param['value'],
+                ]);
+            }
+        }
+        
+        // Update Order Status to Completed
+        $order->update(['order_status' => 'Completed']);
 
         return redirect()->route('test-results.index')->with('success', 'Lab result recorded successfully!');
     }
 
     public function show($id)
     {
-        $result = TestResult::findOrFail($id);
-        return view('test_results.show', compact('result'));
+        $result = TestResult::with(['test', 'patient', 'diagnosticOrder', 'values.parameter'])->findOrFail($id);
+        $settings = \App\Models\Setting::pluck('value', 'key');
+        return view('test_results.show', compact('result', 'settings'));
     }
 
     public function edit($id)

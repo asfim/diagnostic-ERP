@@ -19,4 +19,9 @@ class Test extends Model
     {
         return $this->belongsTo(Department::class);
     }
+
+    public function parameters()
+    {
+        return $this->hasMany(TestParameter::class)->orderBy('sort_order');
+    }
 }

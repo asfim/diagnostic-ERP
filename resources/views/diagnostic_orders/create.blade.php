@@ -29,39 +29,15 @@
 
                 <!-- Dynamic Test Selection -->
                 <div class="col-md-12">
-                    <h6 class="mb-3">Select Tests</h6>
-                    <div class="row g-2 align-items-end mb-3">
-                        <div class="col-md-8">
-                            <label class="form-label">Test Name</label>
-                            <select id="testSelect" class="form-select">
-                                <option value="" data-price="0">-- Select Test --</option>
-                                @foreach($tests as $test)
-                                    <option value="{{ $test->id }}" data-name="{{ $test->name }}" data-price="{{ $test->price }}">{{ $test->name }} ({{ $test->test_code }}) - ৳{{ $test->price }}</option>
-                                @endforeach
-                            </select>
-                        </div>
-                        <div class="col-md-4">
-                            <button type="button" class="btn btn-success w-100" id="addTestBtn"><i class="fa-solid fa-plus"></i> Add Test</button>
-                        </div>
-                    </div>
-                    
-                    <table class="table table-bordered table-sm" id="testsTable">
-                        <thead class="table-light">
-                            <tr>
-                                <th>Test Name</th>
-                                <th width="20%">Price (৳)</th>
-                                <th width="10%">Action</th>
-                            </tr>
-                        </thead>
-                        <tbody id="testList">
-                            <tr id="emptyRow">
-                                <td colspan="3" class="text-center text-muted">No tests added yet.</td>
-                            </tr>
-                        </tbody>
-                    </table>
+                    <label class="form-label">Select Tests <span class="text-danger">*</span></label>
+                    <select name="tests[]" id="testSelect" class="form-select select2-tests" multiple required>
+                        @foreach($tests as $test)
+                            <option value="{{ $test->id }}" data-price="{{ $test->price }}">{{ $test->name }} ({{ $test->test_code }}) - ৳{{ number_format($test->price, 2) }}</option>
+                        @endforeach
+                    </select>
                 </div>
 
-                <hr class="mt-2">
+                <hr class="mt-4">
                 
                 <div class="col-md-4">
                     <label class="form-label">Total Amount (৳) <span class="text-danger">*</span></label>
@@ -92,95 +68,27 @@
 
 <script>
 document.addEventListener('DOMContentLoaded', function() {
-    const testSelect = document.getElementById('testSelect');
-    const addTestBtn = document.getElementById('addTestBtn');
-    const testList = document.getElementById('testList');
-    const emptyRow = document.getElementById('emptyRow');
-    
+    const testSelect = $('#testSelect');
     const totalAmountInput = document.getElementById('totalAmount');
     const discountInput = document.getElementById('discountInput');
     const paidInput = document.getElementById('paidInput');
     const dueAmountDisplay = document.getElementById('dueAmount');
-    const submitBtn = document.getElementById('submitBtn');
-    
-    let tests = [];
 
-    // Add Test
-    addTestBtn.addEventListener('click', function() {
-        const selectedOption = testSelect.options[testSelect.selectedIndex];
-        const testId = selectedOption.value;
+    // Calculate sum when selection changes
+    testSelect.on('change', function() {
+        let sum = 0;
+        const selectedOptions = $(this).find('option:selected');
+        selectedOptions.each(function() {
+            sum += parseFloat($(this).data('price')) || 0;
+        });
         
-        if (!testId) {
-            alert('Please select a test first.');
-            return;
-        }
-        
-        // Prevent duplicate
-        if (tests.find(t => t.id === testId)) {
-            alert('This test is already added.');
-            return;
-        }
-
-        const testName = selectedOption.getAttribute('data-name');
-        const testPrice = parseFloat(selectedOption.getAttribute('data-price') || 0);
-
-        tests.push({ id: testId, name: testName, price: testPrice });
-        
-        // Clear selection
-        testSelect.value = "";
-        
-        renderTests();
-    });
-
-    // Remove Test (Event Delegation)
-    testList.addEventListener('click', function(e) {
-        if (e.target.closest('.remove-btn')) {
-            const index = e.target.closest('.remove-btn').getAttribute('data-index');
-            tests.splice(index, 1);
-            renderTests();
-        }
+        totalAmountInput.value = sum.toFixed(2);
+        calculateTotal();
     });
 
     // Calculate Due automatically when discount or paid amount changes
     discountInput.addEventListener('input', calculateTotal);
     paidInput.addEventListener('input', calculateTotal);
-
-    function renderTests() {
-        testList.innerHTML = '';
-        
-        if (tests.length === 0) {
-            testList.appendChild(emptyRow);
-            emptyRow.style.display = 'table-row';
-            totalAmountInput.value = '0.00';
-            calculateTotal();
-            return;
-        }
-        
-        emptyRow.style.display = 'none';
-        
-        let sum = 0;
-        tests.forEach((t, index) => {
-            sum += t.price;
-            const tr = document.createElement('tr');
-            tr.innerHTML = `
-                <td>
-                    ${t.name}
-                    <input type="hidden" name="tests[]" value="${t.id}">
-                </td>
-                <td>
-                    ${t.price.toFixed(2)}
-                    <input type="hidden" name="prices[]" value="${t.price}">
-                </td>
-                <td>
-                    <button type="button" class="btn btn-sm btn-danger remove-btn" data-index="${index}"><i class="fa-solid fa-times"></i></button>
-                </td>
-            `;
-            testList.appendChild(tr);
-        });
-        
-        totalAmountInput.value = sum.toFixed(2);
-        calculateTotal();
-    }
 
     function calculateTotal() {
         const total = parseFloat(totalAmountInput.value) || 0;
@@ -190,14 +98,6 @@ document.addEventListener('DOMContentLoaded', function() {
         const due = total - discount - paid;
         dueAmountDisplay.textContent = due.toFixed(2);
     }
-    
-    // Validate on submit
-    document.getElementById('orderForm').addEventListener('submit', function(e) {
-        if (tests.length === 0) {
-            e.preventDefault();
-            alert('Please add at least one test to the order.');
-        }
-    });
 });
 </script>
 @endsection
@@ -215,6 +115,13 @@ document.addEventListener('DOMContentLoaded', function() {
         $('.select2-patient').select2({
             theme: 'bootstrap-5',
             placeholder: "-- Select Patient --",
+            allowClear: true,
+            width: '100%'
+        });
+        
+        $('.select2-tests').select2({
+            theme: 'bootstrap-5',
+            placeholder: "-- Select Tests --",
             allowClear: true,
             width: '100%'
         });
