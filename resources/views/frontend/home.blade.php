@@ -460,34 +460,32 @@
             <a href="{{ url('/blog') }}" class="btn btn-outline-primary rounded-pill">Read All Articles</a>
         </div>
 
-        @php
-        $blogs = [
-            ['img'=>'https://images.unsplash.com/photo-1505751172876-fa1923c5c528?auto=format&fit=crop&w=600&q=80','cat'=>'Health Tips','date'=>'Oct 15, 2023','title'=>'Importance of Regular Health Checkups','desc'=>'Discover why routine health screenings are vital for early detection and prevention of chronic diseases.'],
-            ['img'=>'https://images.unsplash.com/photo-1584362917165-526a968579e8?auto=format&fit=crop&w=600&q=80','cat'=>'Diet & Nutrition','date'=>'Oct 10, 2023','title'=>'Best Foods for a Healthy Heart','desc'=>'Learn about the superfoods that can help lower cholesterol and improve your cardiovascular health.'],
-            ['img'=>'https://images.unsplash.com/photo-1579154204601-01588f351e67?auto=format&fit=crop&w=600&q=80','cat'=>'Medical Tech','date'=>'Oct 05, 2023','title'=>'How MRI Scans Changed Diagnostics','desc'=>'An in-depth look at how magnetic resonance imaging provides unparalleled insights into the human body.'],
-        ];
-        @endphp
-
+        @if($blogs->isNotEmpty())
         <div class="row g-4">
             @foreach($blogs as $i => $blog)
             <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="{{ ($i+1)*100 }}">
                 <div class="blog-card">
                     <div class="overflow-hidden">
-                        <img src="{{ $blog['img'] }}" alt="{{ $blog['title'] }}">
+                        @if($blog->image)
+                            <img src="{{ asset('storage/' . $blog->image) }}" alt="{{ $blog->title }}">
+                        @else
+                            <div class="d-flex align-items-center justify-content-center bg-primary bg-opacity-10 text-primary" style="height:210px;"><i class="bi bi-newspaper fs-1"></i></div>
+                        @endif
                     </div>
                     <div class="blog-body">
                         <div class="blog-meta d-flex gap-3">
-                            <span><i class="bi bi-tag-fill"></i> {{ $blog['cat'] }}</span>
-                            <span><i class="bi bi-calendar3"></i> {{ $blog['date'] }}</span>
+                            <span><i class="bi bi-tag-fill"></i> {{ $blog->category }}</span>
+                            <span><i class="bi bi-calendar3"></i> {{ $blog->published_at?->format('M d, Y') }}</span>
                         </div>
-                        <h5 class="fw-bold mb-2"><a href="#">{{ $blog['title'] }}</a></h5>
-                        <p class="mb-3">{{ $blog['desc'] }}</p>
-                        <a href="#" class="text-primary fw-bold text-decoration-none">Read More <i class="bi bi-arrow-right"></i></a>
+                        <h5 class="fw-bold mb-2"><a href="{{ route('frontend.blog.show', $blog) }}">{{ $blog->title }}</a></h5>
+                        <p class="mb-3">{{ $blog->excerpt }}</p>
+                        <a href="{{ route('frontend.blog.show', $blog) }}" class="text-primary fw-bold text-decoration-none">Read More <i class="bi bi-arrow-right"></i></a>
                     </div>
                 </div>
             </div>
             @endforeach
         </div>
+        @endif
     </div>
 </section>
 

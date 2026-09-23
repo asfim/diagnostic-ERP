@@ -14,6 +14,7 @@ use App\Models\DoctorSchedule;
 use App\Models\Hero;
 use App\Models\HomeSetting;
 use App\Models\Testimonial;
+use App\Models\Blog;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 
@@ -29,6 +30,7 @@ class HomeController extends Controller
         $tests        = Test::where('status', 1)->limit(8)->get();
         $packages     = TestPackage::where('status', 'active')->orderBy('sort_order')->limit(3)->get();
         $testimonials = Testimonial::where('status', true)->latest()->get();
+        $blogs        = Blog::where('status', true)->latest('published_at')->latest()->limit(3)->get();
 
         $hero = Hero::first();
         $stats = HomeSetting::getSection('stats_section', [
@@ -106,6 +108,6 @@ class HomeController extends Controller
             ]
         ]);
 
-        return view('frontend.home', compact('tests', 'packages', 'departments', 'doctors', 'hero', 'stats', 'quickActions', 'about', 'whyChoose', 'howItWorks', 'testimonials'));
+        return view('frontend.home', compact('tests', 'packages', 'departments', 'doctors', 'hero', 'stats', 'quickActions', 'about', 'whyChoose', 'howItWorks', 'testimonials', 'blogs'));
     }
 }

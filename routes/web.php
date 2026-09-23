@@ -53,9 +53,8 @@ Route::get('/reports/search', function () {
 });
 Route::get('/reports/{id}/download', [\App\Http\Controllers\Frontend\ReportController::class, 'download'])->name('frontend.reports.download');
 
-Route::get('/blog', function () {
-    return view('frontend.blog');
-});
+Route::get('/blog', [\App\Http\Controllers\Frontend\BlogController::class, 'index'])->name('frontend.blog.index');
+Route::get('/blog/{blog}', [\App\Http\Controllers\Frontend\BlogController::class, 'show'])->whereNumber('blog')->name('frontend.blog.show');
 
 Route::get('/faq', function () {
     return view('frontend.faq');
@@ -87,6 +86,7 @@ Route::middleware('auth')->group(function () {
 
     Route::resource('test-results', \App\Http\Controllers\TestResultController::class);
     Route::resource('testimonials', \App\Http\Controllers\TestimonialController::class)->except(['show']);
+    Route::resource('blogs', \App\Http\Controllers\BlogController::class)->except(['show']);
 
     // Accounts
     Route::get('/accounts', [AccountController::class, 'index'])->name('accounts.index');

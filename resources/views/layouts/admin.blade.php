@@ -653,6 +653,9 @@
             <a href="{{ route('testimonials.index') }}" class="{{ request()->routeIs('testimonials.*') ? 'active' : '' }}">
                 <span class="nav-icon"><i class="fa-solid fa-comments"></i></span> Testimonials
             </a>
+            <a href="{{ route('blogs.index') }}" class="{{ request()->routeIs('blogs.*') ? 'active' : '' }}">
+                <span class="nav-icon"><i class="fa-solid fa-newspaper"></i></span> Blogs
+            </a>
             <a href="{{ route('settings.index') }}" class="{{ request()->routeIs('settings.*') ? 'active' : '' }}">
                 <span class="nav-icon"><i class="fa-solid fa-gear"></i></span> Settings
             </a>

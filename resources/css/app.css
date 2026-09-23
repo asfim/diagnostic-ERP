@@ -582,6 +582,32 @@ body {
 .blog-card h5 a { color: var(--dark-medium); text-decoration: none; transition: color .25s; }
 .blog-card h5 a:hover { color: var(--primary); }
 .blog-card p { font-size: .875rem; color: var(--text-muted); }
+.blog-details summary {
+    color: var(--primary);
+    cursor: pointer;
+    display: inline-block;
+    list-style: none;
+    transition: color .2s ease;
+}
+.blog-details summary::-webkit-details-marker { display: none; }
+.blog-details summary:focus { outline: none; }
+.blog-details summary:hover { color: var(--primary-dark); }
+.blog-details[open] summary .bi-arrow-right { transform: rotate(90deg); }
+.blog-details summary .bi-arrow-right { display: inline-block; transition: transform .2s ease; }
+.blog-content { white-space: pre-line; }
+.blog-detail-header { max-width: 820px; text-align: center; }
+.blog-detail-title { color: var(--dark-medium); font-size: clamp(2rem, 4vw, 3.4rem); line-height: 1.12; margin-bottom: 1.25rem; }
+.blog-detail-excerpt { color: var(--text-muted); font-size: 1.12rem; line-height: 1.75; margin-bottom: 0; }
+.blog-detail-media { margin: 2.5rem 0 2.75rem; }
+.blog-detail-image { display: block; width: 100%; aspect-ratio: 16 / 8; object-fit: cover; border-radius: 18px; box-shadow: 0 18px 50px rgba(32, 55, 75, .14); }
+.blog-detail-meta { color: var(--text-muted); font-size: .9rem; }
+.blog-detail-meta i { color: var(--secondary); margin-right: 4px; }
+.blog-detail-content { max-width: 760px; margin: 0 auto; color: #46515c; font-size: 1.06rem; line-height: 2; white-space: pre-line; }
+@media (max-width: 575.98px) {
+    .blog-detail-media { margin: 2rem 0; }
+    .blog-detail-image { aspect-ratio: 4 / 3; border-radius: 12px; }
+    .blog-detail-excerpt { font-size: 1rem; }
+}
 
 /* ======================
    Testimonial Cards
