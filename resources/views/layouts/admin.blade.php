@@ -437,6 +437,25 @@
             color: #94a3b8;
         }
         .empty-state i { font-size: 3rem; margin-bottom: 16px; opacity: 0.4; display: block; }
+        
+        @media print {
+            .sidebar, .top-navbar, .page-header-premium, .d-print-none {
+                display: none !important;
+            }
+            .main-content {
+                margin-left: 0 !important;
+            }
+            .content-body {
+                padding: 0 !important;
+            }
+            .card, .card-premium {
+                box-shadow: none !important;
+                border: none !important;
+            }
+            body {
+                background: #fff !important;
+            }
+        }
     </style>
     @stack('styles')
 </head>
