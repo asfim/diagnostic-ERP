@@ -23,6 +23,44 @@ use Illuminate\Support\Str;
 // =====================================================================
 class HomeController extends Controller
 {
+    public function about()
+    {
+        $aboutDefaults = [
+            'image' => null,
+            'years_number' => '15+',
+            'years_text' => "Years of\nExcellence",
+            'label' => 'About MediDiag',
+            'title' => 'Leading the Way in Medical Diagnostics',
+            'description' => 'We provide comprehensive diagnostic services with a commitment to accuracy, reliability, and patient comfort.',
+            'quote' => 'Precision in every result, compassion in every interaction.',
+            'features' => ['Advanced Equipment', 'Expert Pathologists', 'Accurate Reports', 'Fast Turnaround'],
+            'button_text' => 'Learn More',
+            'button_link' => url('/about'),
+            'mission_title' => 'Our Mission',
+            'mission_text' => 'To deliver precise, timely, and affordable diagnostic services to all segments of society while maintaining the highest ethical standards.',
+            'vision_title' => 'Our Vision',
+            'vision_text' => 'To become the leading and most trusted healthcare diagnostic brand in South Asia.',
+            'values' => [
+                ['title' => 'Integrity', 'description' => 'We uphold the highest moral standards in our practices.', 'icon' => 'bi-shield-check', 'color' => 'primary'],
+                ['title' => 'Compassion', 'description' => 'We treat every patient with empathy and respect.', 'icon' => 'bi-heart', 'color' => 'danger'],
+                ['title' => 'Excellence', 'description' => 'We continuously strive for clinical and service excellence.', 'icon' => 'bi-award', 'color' => 'secondary'],
+                ['title' => 'Innovation', 'description' => 'Embracing new technologies for better diagnostics.', 'icon' => 'bi-lightbulb', 'color' => 'warning'],
+            ],
+            'infrastructure_title' => 'World-Class Infrastructure',
+            'infrastructure_text' => 'Our laboratories are equipped with fully automated analyzers, ensuring zero manual error and fastest report delivery.',
+            'infrastructure_points' => ['ISO 9001:2015 Certified Laboratories', 'Fully Automated Pathology Workflow', '3 Tesla MRI & 128 Slice CT Scan', 'Internal & External Quality Control'],
+            'infrastructure_image' => null,
+        ];
+        $about = array_replace_recursive($aboutDefaults, HomeSetting::getSection('about_page_section', HomeSetting::getSection('about_section', [])));
+        $stats = HomeSetting::getSection('stats_section', [
+            'doctors' => '50+',
+            'tests' => '500+',
+            'patients' => '100k+',
+        ]);
+
+        return view('frontend.about', compact('about', 'stats'));
+    }
+
     public function index()
     {
         $departments  = Department::withCount('doctors', 'tests')->limit(8)->get();

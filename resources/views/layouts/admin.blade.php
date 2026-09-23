@@ -650,11 +650,17 @@
             <a href="{{ route('cms.index') }}" class="{{ request()->routeIs('cms.*') ? 'active' : '' }}">
                 <span class="nav-icon"><i class="fa-solid fa-desktop"></i></span> Frontend CMS
             </a>
+            <a href="{{ route('about-page.index') }}" class="{{ request()->routeIs('about-page.*') ? 'active' : '' }}">
+                <span class="nav-icon"><i class="fa-solid fa-circle-info"></i></span> About Page
+            </a>
             <a href="{{ route('testimonials.index') }}" class="{{ request()->routeIs('testimonials.*') ? 'active' : '' }}">
                 <span class="nav-icon"><i class="fa-solid fa-comments"></i></span> Testimonials
             </a>
             <a href="{{ route('blogs.index') }}" class="{{ request()->routeIs('blogs.*') ? 'active' : '' }}">
                 <span class="nav-icon"><i class="fa-solid fa-newspaper"></i></span> Blogs
+            </a>
+            <a href="{{ route('admin-packages.index') }}" class="{{ request()->routeIs('admin-packages.*') ? 'active' : '' }}">
+                <span class="nav-icon"><i class="fa-solid fa-box-open"></i></span> Packages
             </a>
             <a href="{{ route('settings.index') }}" class="{{ request()->routeIs('settings.*') ? 'active' : '' }}">
                 <span class="nav-icon"><i class="fa-solid fa-gear"></i></span> Settings

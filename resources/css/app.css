@@ -497,13 +497,38 @@ body {
     border: 1px solid rgba(0,0,0,.06);
     transition: transform .35s ease, box-shadow .35s ease;
     height: 100%;
+    background: #fff;
+    display: flex;
+    flex-direction: column;
 }
 .package-card:hover { transform: translateY(-6px); box-shadow: var(--shadow-md); }
 .package-card.featured { border: 2px solid var(--primary); box-shadow: 0 8px 40px rgba(11,94,215,.15); }
 .package-card .pkg-header {
-    padding: 1.75rem 1.5rem;
+    padding: 1.25rem 1.5rem 1.6rem;
     text-align: center;
     position: relative;
+    background-image: linear-gradient(145deg, rgba(255,255,255,.08), transparent 55%);
+}
+.package-card .pkg-cover {
+    display: block;
+    width: calc(100% + 3rem);
+    height: 150px;
+    margin: -1.25rem -1.5rem 1rem;
+    object-fit: cover;
+    opacity: .96;
+}
+.package-card .pkg-icon {
+    width: 58px;
+    height: 58px;
+    margin: .1rem auto .25rem;
+    border: 1px solid rgba(255,255,255,.3);
+    border-radius: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.8rem;
+    color: rgba(255,255,255,.85);
+    background: rgba(255,255,255,.12);
 }
 .package-card .pkg-badge {
     position: absolute; top: 0; right: 0;
@@ -513,9 +538,12 @@ body {
 }
 .package-card .pkg-price { font-size: 2.2rem; font-weight: 800; line-height: 1; margin-top: .75rem; }
 .package-card .pkg-price small { font-size: .85rem; font-weight: 400; opacity: .65; text-decoration: line-through; }
-.package-card .pkg-body { padding: 1.5rem; background: #fff; }
+.package-card .pkg-body { padding: 1.5rem; background: #fff; display: flex; flex-direction: column; flex: 1; }
+.package-card .pkg-description { min-height: 42px; line-height: 1.5; }
+.package-card .pkg-body ul { min-height: 142px; margin-bottom: 0; }
 .package-card .pkg-body ul li { font-size: .9rem; margin-bottom: .65rem; }
 .package-card .pkg-body ul li .bi { color: var(--secondary); margin-right: .5rem; }
+.package-card .pkg-body .d-grid { margin-top: auto !important; }
 
 /* ======================
    Doctor Cards

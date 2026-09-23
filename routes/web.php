@@ -8,9 +8,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', [\App\Http\Controllers\Frontend\HomeController::class, 'index']);
 
-Route::get('/about', function () {
-    return view('frontend.about');
-});
+Route::get('/about', [\App\Http\Controllers\Frontend\HomeController::class, 'about'])->name('frontend.about');
 
 Route::get('/contact', function () {
     return view('frontend.contact');
@@ -86,6 +84,7 @@ Route::middleware('auth')->group(function () {
 
     Route::resource('test-results', \App\Http\Controllers\TestResultController::class);
     Route::resource('testimonials', \App\Http\Controllers\TestimonialController::class)->except(['show']);
+    Route::resource('admin-packages', \App\Http\Controllers\PackageController::class)->except(['show']);
     Route::resource('blogs', \App\Http\Controllers\BlogController::class)->except(['show']);
 
     // Accounts
@@ -119,6 +118,8 @@ Route::middleware('auth')->group(function () {
     Route::put('/cms/about', [\App\Http\Controllers\FrontendCMSController::class, 'updateAbout'])->name('cms.about.update');
     Route::put('/cms/why-choose', [\App\Http\Controllers\FrontendCMSController::class, 'updateWhyChoose'])->name('cms.why_choose.update');
     Route::put('/cms/how-it-works', [\App\Http\Controllers\FrontendCMSController::class, 'updateHowItWorks'])->name('cms.how_it_works.update');
+    Route::get('/about-page', [\App\Http\Controllers\AboutPageController::class, 'index'])->name('about-page.index');
+    Route::put('/about-page', [\App\Http\Controllers\AboutPageController::class, 'update'])->name('about-page.update');
 });
 
 require __DIR__.'/auth.php';

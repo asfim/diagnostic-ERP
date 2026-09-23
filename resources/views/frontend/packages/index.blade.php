@@ -24,18 +24,22 @@
             @php
                 $discounted = $pkg->discount_price ?? $pkg->price;
                 $savings = $pkg->price - $discounted;
-                $pct = $savings > 0 ? round(($savings / $pkg->price) * 100) : 0;
+                $pct = $savings > 0 && $pkg->price > 0 ? round(($savings / $pkg->price) * 100) : 0;
                 $featured = $i === 1; // middle card is featured
             @endphp
             <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="{{ ($i+1)*100 }}">
                 <div class="package-card {{ $featured ? 'featured' : '' }}">
                     <div class="pkg-header {{ $featured ? 'bg-success' : 'bg-primary' }} text-white">
+                        @if($pkg->image)
+                            <img src="{{ asset('storage/' . $pkg->image) }}" alt="{{ $pkg->name }}" class="pkg-cover">
+                        @else
+                            <div class="pkg-icon"><i class="bi bi-shield-check"></i></div>
+                        @endif
                         @if($featured)
                             <div class="pkg-badge bg-warning text-dark">⭐ Popular</div>
                         @elseif($pct > 0)
                             <div class="pkg-badge bg-danger">Save {{ $pct }}%</div>
                         @endif
-                        <i class="bi bi-shield-check fs-1 opacity-50 d-block mt-1"></i>
                         <h4 class="fw-bold mt-2 mb-0">{{ $pkg->name }}</h4>
                         <div class="pkg-price">
                             ৳ {{ number_format($discounted) }}
@@ -49,7 +53,7 @@
                     </div>
                     <div class="pkg-body">
                         @if($pkg->description)
-                        <p class="text-muted text-center small mb-3">{{ Str::limit($pkg->description, 80) }}</p>
+                        <p class="pkg-description text-muted text-center small mb-3">{{ Str::limit($pkg->description, 100) }}</p>
                         @endif
                         <ul class="list-unstyled">
                             @foreach($pkg->tests->take(5) as $test)
