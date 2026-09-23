@@ -28,6 +28,7 @@
             <thead>
                 <tr>
                     <th>Doctor ID</th>
+                    <th>Photo</th>
                     <th>Name</th>
                     <th>Specialization</th>
                     <th>Mobile</th>
@@ -40,6 +41,15 @@
                 @forelse($doctors as $doctor)
                 <tr>
                     <td><span class="id-badge">{{ $doctor->doctor_id }}</span></td>
+                    <td>
+                        @if($doctor->photo)
+                            <img src="{{ asset('storage/'.$doctor->photo) }}" alt="Photo" class="rounded-circle" style="width:40px; height:40px; object-fit:cover;">
+                        @else
+                            <div class="bg-secondary rounded-circle d-flex align-items-center justify-content-center text-white" style="width:40px; height:40px;">
+                                <i class="fa-solid fa-user"></i>
+                            </div>
+                        @endif
+                    </td>
                     <td><span class="fw-semibold text-dark">{{ $doctor->name }}</span></td>
                     <td><span class="text-muted">{{ $doctor->specialization }}</span></td>
                     <td>{{ $doctor->mobile }}</td>
@@ -68,7 +78,7 @@
                 </tr>
                 @empty
                 <tr>
-                    <td colspan="7">
+                    <td colspan="8">
                         <div class="empty-state">
                             <i class="fa-solid fa-stethoscope"></i>
                             <strong>No doctors found</strong>

@@ -9,7 +9,12 @@
         <span class="badge bg-secondary">{{ $doctor->doctor_id }}</span>
     </div>
     <div class="card-body">
-        <form action="{{ route('doctors.update', $doctor->id) }}" method="POST">
+        @if($errors->any())
+            <div class="alert alert-danger">
+                <ul class="mb-0">@foreach($errors->all() as $e)<li>{{ $e }}</li>@endforeach</ul>
+            </div>
+        @endif
+        <form action="{{ route('doctors.update', $doctor->id) }}" method="POST" enctype="multipart/form-data">
             @csrf
             @method('PUT')
             <div class="row g-3">
@@ -39,6 +44,18 @@
                         <option value="1" {{ $doctor->status ? 'selected' : '' }}>Active</option>
                         <option value="0" {{ !$doctor->status ? 'selected' : '' }}>Inactive</option>
                     </select>
+                </div>
+                <div class="col-md-12">
+                    <label class="form-label">Profile Photo (Leave blank to keep current)</label>
+                    <input type="file" name="photo" class="form-control @error('photo') is-invalid @enderror" accept="image/*">
+                    @error('photo')
+                        <div class="invalid-feedback">{{ $message }}</div>
+                    @enderror
+                    @if($doctor->photo)
+                        <div class="mt-2">
+                            <img src="{{ asset('storage/'.$doctor->photo) }}" alt="Current Photo" width="80" class="rounded">
+                        </div>
+                    @endif
                 </div>
             </div>
             <div class="mt-4 text-end">

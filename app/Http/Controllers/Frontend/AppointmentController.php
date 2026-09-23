@@ -23,8 +23,9 @@ class AppointmentController extends Controller
         $packages    = TestPackage::where('status', 'active')->get();
 
         $selectedTest = $request->query('test') ? Test::find($request->query('test')) : null;
+        $selectedDoctor = $request->query('doctor') ? Doctor::find($request->query('doctor')) : null;
 
-        return view('frontend.appointment', compact('departments', 'doctors', 'tests', 'packages', 'selectedTest'));
+        return view('frontend.appointment', compact('departments', 'doctors', 'tests', 'packages', 'selectedTest', 'selectedDoctor'));
     }
 
     public function getDoctorsByDepartment(Request $request)

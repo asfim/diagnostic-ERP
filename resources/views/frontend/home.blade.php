@@ -252,48 +252,6 @@
     </div>
 </section>
 
-{{-- ============================================================
-     HEALTH PACKAGES
-     ============================================================ --}}
-<section class="section-padding bg-white">
-    <div class="container">
-        <div class="section-header centered mb-5" data-aos="fade-up">
-            <span class="label">Preventive Care</span>
-            <h2>Comprehensive Health Packages</h2>
-            <p class="mt-2">Preventive health checkups tailored to your age, gender, and lifestyle.</p>
-        </div>
-
-        <div class="row g-4">
-            @foreach($packages as $i => $pkg)
-            <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="{{ ($i+1)*100 }}">
-                <div class="package-card {{ $i === 1 ? 'featured' : '' }}">
-                    <div class="pkg-header {{ $i === 1 ? 'bg-success' : 'bg-primary' }} text-white">
-                        @if($pkg->discount_price)
-                        <div class="pkg-badge bg-warning text-dark">Save {{ number_format($pkg->price - $pkg->discount_price, 0) }} ৳</div>
-                        @endif
-                        <i class="bi bi-shield-check fs-1 opacity-50"></i>
-                        <h4 class="fw-bold mt-2 mb-0">{{ $pkg->name }}</h4>
-                        <div class="pkg-price">
-                            @if($pkg->discount_price)
-                            ৳ {{ number_format($pkg->discount_price, 0) }} <small>৳ {{ number_format($pkg->price, 0) }}</small>
-                            @else
-                            ৳ {{ number_format($pkg->price, 0) }}
-                            @endif
-                        </div>
-                    </div>
-                    <div class="pkg-body">
-                        <p class="small text-muted">{{ $pkg->description }}</p>
-                        <div class="d-grid gap-2 mt-3">
-                            <a href="{{ url('/packages') }}" class="btn btn-outline-{{ $i === 1 ? 'success' : 'primary' }} rounded-pill">View Details</a>
-                            <a href="{{ url('/appointment') }}" class="btn btn-{{ $i === 1 ? 'success text-white' : 'primary' }} rounded-pill">Book Now</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            @endforeach
-        </div>
-    </div>
-</section>
 
 {{-- ============================================================
      DEPARTMENTS
@@ -307,10 +265,22 @@
 
         <div class="row g-4">
             @foreach($departments as $i => $dept)
-            <div class="col-lg-3 col-md-4 col-6" data-aos="zoom-in" data-aos-delay="{{ ($i+1)*60 }}">
-                <a href="{{ url('/departments/' . ($dept->slug ?? '')) }}" class="dept-card">
-                    <i class="bi {{ $dept->icon ?? 'bi-heart-pulse' }} dept-icon"></i>
-                    <h5>{{ $dept->name }}</h5>
+            <div class="col-lg-3 col-md-4 col-sm-6" data-aos="zoom-in" data-aos-delay="{{ ($i+1)*60 }}">
+                <a href="{{ url('/departments/' . ($dept->slug ?? '')) }}" class="text-decoration-none">
+                    <div class="dept-card-premium h-100 p-4 text-center">
+                        <div class="dept-icon-wrapper mx-auto mb-3">
+                            <i class="bi {{ $dept->icon ?? 'bi-heart-pulse' }} text-primary"></i>
+                        </div>
+                        <h5 class="fw-bold text-dark mb-2">{{ $dept->name }}</h5>
+                        <div class="d-flex justify-content-center gap-3 mt-3 opacity-75">
+                            <div class="text-muted small">
+                                <i class="bi bi-person-fill text-primary"></i> {{ $dept->doctors_count }} Doctors
+                            </div>
+                            <div class="text-muted small">
+                                <i class="bi bi-clipboard2-pulse text-success"></i> {{ $dept->tests_count }} Tests
+                            </div>
+                        </div>
+                    </div>
                 </a>
             </div>
             @endforeach
@@ -334,14 +304,28 @@
         <div class="row g-4">
             @foreach($doctors as $i => $doc)
             <div class="col-lg-3 col-md-6" data-aos="fade-up" data-aos-delay="{{ ($i+1)*100 }}">
-                <div class="doctor-card">
-                    <img src="{{ $doc->image ? asset('storage/'.$doc->image) : 'https://images.unsplash.com/photo-1594824436998-058a23116fc7?auto=format&fit=crop&w=500&q=80' }}" alt="{{ $doc->name }}">
-                    <div class="doc-body">
-                        <h5>{{ $doc->name }}</h5>
-                        <p class="specialty text-primary fw-semibold">{{ $doc->department ? $doc->department->name : 'Specialist' }}</p>
-                        <p class="degree">{{ $doc->specialization }}<br>{{ $doc->experience_years }} Years Experience</p>
+                <div class="doctor-card-premium h-100">
+                    <div class="doc-img-wrapper">
+                        <img src="{{ $doc->photo ? asset('storage/'.$doc->photo) : 'https://images.unsplash.com/photo-1594824436998-058a23116fc7?auto=format&fit=crop&w=500&q=80' }}" alt="{{ $doc->name }}" class="img-fluid w-100">
+                    </div>
+                    <div class="doc-body p-4 text-center">
+                        <h5 class="fw-bold mb-1">{{ $doc->name }}</h5>
+                        <p class="specialty text-primary fw-semibold mb-2">
+                            <i class="bi bi-heart-pulse-fill me-1"></i>{{ $doc->department ? $doc->department->name : 'Specialist' }}
+                        </p>
+                        <p class="degree small text-muted mb-3">{{ $doc->specialization }}</p>
+                        
+                        <div class="d-flex justify-content-center gap-3 mb-3 border-top pt-3 opacity-75">
+                            <div class="text-muted small" title="Experience">
+                                <i class="bi bi-briefcase-fill text-primary"></i> {{ $doc->experience_years ?? 0 }} Yrs
+                            </div>
+                            <div class="text-muted small" title="Fee">
+                                <i class="bi bi-cash-coin text-success"></i> ৳{{ $doc->consultation_fee ?? 0 }}
+                            </div>
+                        </div>
+
                         <div class="d-flex gap-2 justify-content-center">
-                            <a href="{{ url('/appointment') }}" class="btn btn-sm btn-primary rounded-pill px-3">Book Appointment</a>
+                            <a href="{{ url('/appointment') }}?doctor={{ $doc->id }}" class="btn btn-primary rounded-pill px-4 w-100 fw-bold">Book Now</a>
                         </div>
                     </div>
                 </div>
@@ -563,6 +547,90 @@
 }
 .test-card-premium:hover::before {
     opacity: 1;
+}
+
+/* Premium Department Card Styles */
+.dept-card-premium {
+    background: #ffffff;
+    border-radius: 1.5rem;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+    border: 1px solid rgba(0, 0, 0, 0.03);
+    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+    position: relative;
+    overflow: hidden;
+}
+.dept-card-premium:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.08);
+    border-color: rgba(var(--bs-primary-rgb), 0.2);
+}
+.dept-card-premium::before {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    height: 3px;
+    background: var(--bs-primary);
+    transform: scaleX(0);
+    transform-origin: center;
+    transition: transform 0.3s ease;
+}
+.dept-card-premium:hover::before {
+    transform: scaleX(1);
+}
+.dept-icon-wrapper {
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    background: rgba(var(--bs-primary-rgb), 0.08);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.8rem;
+    transition: all 0.3s ease;
+}
+.dept-card-premium:hover .dept-icon-wrapper {
+    background: var(--bs-primary);
+    color: #ffffff !important;
+}
+.dept-card-premium:hover .dept-icon-wrapper i {
+    color: #ffffff !important;
+}
+
+/* Premium Doctor Card Styles */
+.doctor-card-premium {
+    background: #ffffff;
+    border-radius: 1.25rem;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+    border: 1px solid rgba(0, 0, 0, 0.03);
+    transition: all 0.3s ease;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+}
+.doctor-card-premium:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.08);
+    border-color: rgba(var(--bs-primary-rgb), 0.15);
+}
+.doc-img-wrapper {
+    position: relative;
+    overflow: hidden;
+    height: 240px;
+}
+.doc-img-wrapper img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: top;
+    transition: transform 0.5s ease;
+}
+.doctor-card-premium:hover .doc-img-wrapper img {
+    transform: scale(1.05);
+}
+.doctor-card-premium .doc-body {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
 }
 </style>
 @endpush

@@ -13,7 +13,7 @@
                 <ul class="mb-0">@foreach($errors->all() as $e)<li>{{ $e }}</li>@endforeach</ul>
             </div>
         @endif
-        <form action="{{ route('doctors.store') }}" method="POST">
+        <form action="{{ route('doctors.store') }}" method="POST" enctype="multipart/form-data">
             @csrf
             <div class="row g-3">
                 <div class="col-md-6">
@@ -35,6 +35,13 @@
                 <div class="col-md-4">
                     <label class="form-label">Consultation Fee (৳) <span class="text-danger">*</span></label>
                     <input type="number" name="consultation_fee" class="form-control" step="0.01" value="{{ old('consultation_fee', '0.00') }}" required>
+                </div>
+                <div class="col-md-4">
+                    <label class="form-label">Profile Photo</label>
+                    <input type="file" name="photo" class="form-control @error('photo') is-invalid @enderror" accept="image/*">
+                    @error('photo')
+                        <div class="invalid-feedback">{{ $message }}</div>
+                    @enderror
                 </div>
             </div>
 

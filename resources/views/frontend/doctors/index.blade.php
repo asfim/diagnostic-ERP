@@ -49,28 +49,33 @@
         <div class="row g-4">
             @foreach($doctors as $i => $doc)
             <div class="col-lg-3 col-md-6" data-aos="fade-up" data-aos-delay="{{ ($loop->index % 4) * 80 }}">
-                <div class="doctor-card">
-                    @if($doc->photo)
-                    <img src="{{ asset('storage/'.$doc->photo) }}" alt="{{ $doc->name }}">
-                    @else
-                    <img src="https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?auto=format&fit=crop&w=500&q=80"
-                         alt="{{ $doc->name }}">
-                    @endif
-                    <div class="doc-body">
-                        <h5>{{ $doc->name }}</h5>
-                        <p class="specialty">{{ $doc->specialization }}</p>
-                        <p class="degree">{{ $doc->qualification }}</p>
-                        @if($doc->department)
-                        <span class="badge bg-primary bg-opacity-10 text-primary rounded-pill mb-3 small">
-                            {{ $doc->department->name }}
-                        </span>
+                <div class="doctor-card-premium h-100">
+                    <div class="doc-img-wrapper">
+                        @if($doc->photo)
+                        <img src="{{ asset('storage/'.$doc->photo) }}" alt="{{ $doc->name }}" class="img-fluid w-100">
+                        @else
+                        <img src="https://images.unsplash.com/photo-1594824436998-058a23116fc7?auto=format&fit=crop&w=500&q=80" alt="{{ $doc->name }}" class="img-fluid w-100">
                         @endif
-                        @if($doc->consultation_fee)
-                        <p class="text-primary fw-bold small mb-3">Fee: ৳ {{ number_format($doc->consultation_fee) }}</p>
-                        @endif
-                        <div class="d-flex gap-2 justify-content-center">
-                            <a href="{{ url('/doctors/'.$doc->id) }}" class="btn btn-sm btn-outline-primary rounded-pill px-3">Profile</a>
-                            <a href="{{ url('/appointment') }}?doctor={{ $doc->id }}" class="btn btn-sm btn-primary rounded-pill px-3">Book</a>
+                    </div>
+                    <div class="doc-body p-4 text-center">
+                        <h5 class="fw-bold mb-1">{{ $doc->name }}</h5>
+                        <p class="specialty text-primary fw-semibold mb-2">
+                            <i class="bi bi-heart-pulse-fill me-1"></i>{{ $doc->department ? $doc->department->name : 'Specialist' }}
+                        </p>
+                        <p class="degree small text-muted mb-3">{{ $doc->specialization }}</p>
+                        
+                        <div class="d-flex justify-content-center gap-3 mb-3 border-top pt-3 opacity-75">
+                            <div class="text-muted small" title="Experience">
+                                <i class="bi bi-briefcase-fill text-primary"></i> {{ $doc->experience_years ?? 0 }} Yrs
+                            </div>
+                            <div class="text-muted small" title="Fee">
+                                <i class="bi bi-cash-coin text-success"></i> ৳{{ $doc->consultation_fee ?? 0 }}
+                            </div>
+                        </div>
+
+                        <div class="d-flex gap-2 justify-content-center mt-auto">
+                            <a href="{{ url('/doctors/'.$doc->id) }}" class="btn btn-outline-primary rounded-pill px-3 w-50">Profile</a>
+                            <a href="{{ url('/appointment') }}?doctor={{ $doc->id }}" class="btn btn-primary rounded-pill px-3 w-50 fw-bold">Book</a>
                         </div>
                     </div>
                 </div>
@@ -82,5 +87,46 @@
 
     </div>
 </section>
+
+@push('styles')
+<style>
+/* Premium Doctor Card Styles */
+.doctor-card-premium {
+    background: #ffffff;
+    border-radius: 1.25rem;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+    border: 1px solid rgba(0, 0, 0, 0.03);
+    transition: all 0.3s ease;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+}
+.doctor-card-premium:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.08);
+    border-color: rgba(var(--bs-primary-rgb), 0.15);
+}
+.doc-img-wrapper {
+    position: relative;
+    overflow: hidden;
+    height: 240px;
+}
+.doc-img-wrapper img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: top;
+    transition: transform 0.5s ease;
+}
+.doctor-card-premium:hover .doc-img-wrapper img {
+    transform: scale(1.05);
+}
+.doctor-card-premium .doc-body {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+}
+</style>
+@endpush
 
 @endsection

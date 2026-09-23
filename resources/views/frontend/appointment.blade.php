@@ -37,10 +37,10 @@
 
                             <div class="mb-4">
                                 <label class="form-label fw-semibold">Department <span class="text-danger">*</span></label>
-                                <select name="department_id" id="departmentSelect" class="form-select rounded-pill border-primary" required>
+                                <select name="department_id" id="departmentSelect" class="form-select rounded-pill border-primary">
                                     <option value="">— Choose Department —</option>
                                     @foreach($departments as $dept)
-                                    <option value="{{ $dept->id }}" {{ (isset($selectedTest) && $selectedTest->department_id == $dept->id) ? 'selected' : '' }}>
+                                    <option value="{{ $dept->id }}" {{ (isset($selectedTest) && $selectedTest->department_id == $dept->id) || (isset($selectedDoctor) && $selectedDoctor->department_id == $dept->id) ? 'selected' : '' }}>
                                         {{ $dept->name }}
                                     </option>
                                     @endforeach
@@ -50,6 +50,10 @@
                                     <i class="bi bi-check-circle me-1"></i> Department auto-selected for: {{ $selectedTest->name }}
                                 </div>
                                 <input type="hidden" name="notes" value="Booking for Test: {{ $selectedTest->name }} ({{ $selectedTest->test_code }})">
+                                @elseif(isset($selectedDoctor))
+                                <div class="mt-2 text-success small fw-semibold">
+                                    <i class="bi bi-check-circle me-1"></i> Department auto-selected for: Dr. {{ $selectedDoctor->name }}
+                                </div>
                                 @endif
                             </div>
 
@@ -59,7 +63,7 @@
                                     @foreach(['consultation' => ['icon'=>'bi-person-check','label'=>'Consultation'], 'followup' => ['icon'=>'bi-arrow-repeat','label'=>'Follow Up'], 'diagnostic' => ['icon'=>'bi-clipboard2-pulse','label'=>'Diagnostic']] as $val => $opt)
                                     <div class="col-md-4">
                                         <input type="radio" class="btn-check" name="appointment_type" id="type_{{ $val }}" value="{{ $val }}" 
-                                            {{ (isset($selectedTest) && $val == 'diagnostic') ? 'checked' : (!isset($selectedTest) && $loop->first ? 'checked' : '') }}>
+                                            {{ (isset($selectedTest) && $val == 'diagnostic') ? 'checked' : ((isset($selectedDoctor) && $val == 'consultation') ? 'checked' : (!isset($selectedTest) && !isset($selectedDoctor) && $loop->first ? 'checked' : '')) }}>
                                         <label class="btn btn-outline-primary w-100 rounded-3 py-3 d-flex flex-column align-items-center gap-2" for="type_{{ $val }}">
                                             <i class="bi {{ $opt['icon'] }} fs-3"></i>
                                             <span class="fw-semibold">{{ $opt['label'] }}</span>
@@ -72,11 +76,12 @@
                             <div class="mb-4" id="doctorSelectionDiv">
                                 <label class="form-label fw-semibold">Doctor <span class="text-danger">*</span></label>
                                 <select name="doctor_id" id="doctorSelect" class="form-select rounded-pill border-primary" required>
-                                    <option value="">— Select Department First —</option>
+                                    <option value="">— Select Doctor —</option>
                                     @foreach($doctors as $doc)
                                     <option value="{{ $doc->id }}"
                                             data-fee="{{ $doc->consultation_fee }}"
-                                            data-dept="{{ $doc->department_id }}">
+                                            data-dept="{{ $doc->department_id }}"
+                                            {{ (isset($selectedDoctor) && $selectedDoctor->id == $doc->id) ? 'selected' : '' }}>
                                         {{ $doc->name }} — {{ $doc->specialization }}
                                         @if($doc->consultation_fee) (৳ {{ number_format($doc->consultation_fee) }}) @endif
                                     </option>
@@ -326,7 +331,12 @@ document.getElementById('departmentSelect').addEventListener('change', function(
     testSelect.innerHTML = '<option value="">Loading…</option>';
 
     if (!deptId) {
-        docSelect.innerHTML = '<option value="">— Select Department First —</option>';
+        // Reset to all doctors
+        docSelect.innerHTML = '<option value="">— Select Doctor —</option>';
+        @foreach($doctors as $doc)
+        docSelect.innerHTML += `<option value="{{ $doc->id }}" data-fee="{{ $doc->consultation_fee }}">{{ $doc->name }} — {{ $doc->specialization }} (৳ {{ number_format($doc->consultation_fee ?? 0) }})</option>`;
+        @endforeach
+        
         testSelect.innerHTML = '<option value="">— Select Department First —</option>';
         return;
     }
@@ -337,8 +347,10 @@ document.getElementById('departmentSelect').addEventListener('change', function(
         .then(docs => {
             docSelect.innerHTML = '<option value="">— Select Doctor —</option>';
             docs.forEach(d => {
-                docSelect.innerHTML += `<option value="${d.id}" data-fee="${d.consultation_fee}">${d.name} — ${d.specialization} (৳ ${Number(d.consultation_fee||0).toLocaleString()})</option>`;
+                const isSelected = (window.autoSelectDoctorId && window.autoSelectDoctorId == d.id) ? 'selected' : '';
+                docSelect.innerHTML += `<option value="${d.id}" data-fee="${d.consultation_fee}" ${isSelected}>${d.name} — ${d.specialization} (৳ ${Number(d.consultation_fee||0).toLocaleString()})</option>`;
             });
+            window.autoSelectDoctorId = null; // Clear after selection
         });
 
     // Fetch Tests
@@ -389,6 +401,17 @@ toggleDoctorVisibility();
 @if(isset($selectedTest))
     // Auto-trigger department change if pre-selected
     document.addEventListener('DOMContentLoaded', function() {
+        const deptSelect = document.getElementById('departmentSelect');
+        if (deptSelect.value) {
+            deptSelect.dispatchEvent(new Event('change'));
+        }
+    });
+@endif
+
+@if(isset($selectedDoctor))
+    // Auto-trigger department change if pre-selected and store doctor ID
+    document.addEventListener('DOMContentLoaded', function() {
+        window.autoSelectDoctorId = {{ $selectedDoctor->id }};
         const deptSelect = document.getElementById('departmentSelect');
         if (deptSelect.value) {
             deptSelect.dispatchEvent(new Event('change'));

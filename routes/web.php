@@ -27,6 +27,7 @@ Route::get('/packages', [\App\Http\Controllers\Frontend\PackageController::class
 Route::get('/packages/{id}', [\App\Http\Controllers\Frontend\PackageController::class, 'show']);
 
 Route::get('/doctors', [\App\Http\Controllers\Frontend\DoctorController::class, 'index']);
+Route::get('/doctors/{id}', [\App\Http\Controllers\Frontend\DoctorController::class, 'show'])->whereNumber('id');
 
 Route::get('/appointment', [\App\Http\Controllers\Frontend\AppointmentController::class, 'index'])->name('frontend.appointment');
 Route::post('/appointment', [\App\Http\Controllers\Frontend\AppointmentController::class, 'store'])->name('frontend.appointment.store');
@@ -70,7 +71,7 @@ Route::get('/dashboard', [\App\Http\Controllers\DashboardController::class, 'ind
 
 Route::middleware('auth')->group(function () {
     Route::resource('patients', \App\Http\Controllers\PatientController::class);
-    Route::resource('doctors', \App\Http\Controllers\DoctorController::class);
+    Route::resource('admin-doctors', \App\Http\Controllers\DoctorController::class)->names('doctors')->parameters(['admin-doctors' => 'doctor']);
     Route::resource('appointments', \App\Http\Controllers\AppointmentController::class);
     Route::patch('appointments/{appointment}/status', [\App\Http\Controllers\AppointmentController::class, 'updateStatus'])->name('appointments.updateStatus');
     Route::resource('admin-tests', \App\Http\Controllers\TestController::class)->names('tests')->parameters(['admin-tests' => 'test']);

@@ -30,6 +30,7 @@ class DoctorController extends Controller
             'create_account'   => 'nullable',
             'login_email'      => 'nullable|email|unique:users,email|required_if:create_account,1',
             'password'         => 'nullable|string|min:8|required_if:create_account,1',
+            'photo'            => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
         ]);
         
         $userId = null;
@@ -54,6 +55,11 @@ class DoctorController extends Controller
         $lastDoc = Doctor::latest('id')->first();
         $nextId  = $lastDoc ? $lastDoc->id + 1 : 1;
 
+        $photoPath = null;
+        if ($request->hasFile('photo')) {
+            $photoPath = $request->file('photo')->store('doctors', 'public');
+        }
+
         Doctor::create([
             'doctor_id'        => 'DR-' . str_pad($nextId, 4, '0', STR_PAD_LEFT),
             'user_id'          => $userId,
@@ -62,6 +68,7 @@ class DoctorController extends Controller
             'mobile'           => $validated['mobile'],
             'email'            => $validated['email'] ?? null,
             'consultation_fee' => $validated['consultation_fee'],
+            'photo'            => $photoPath,
         ]);
 
         return redirect()->route('doctors.index')->with('success', 'Doctor added successfully!');
@@ -85,8 +92,16 @@ class DoctorController extends Controller
             'mobile' => 'required|string|max:20',
             'email' => 'nullable|email',
             'consultation_fee' => 'required|numeric|min:0',
+            'photo' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
         ]);
         
+        if ($request->hasFile('photo')) {
+            if ($doctor->photo) {
+                \Illuminate\Support\Facades\Storage::disk('public')->delete($doctor->photo);
+            }
+            $data['photo'] = $request->file('photo')->store('doctors', 'public');
+        }
+
         $doctor->update($data);
         return redirect()->route('doctors.index')->with('success', 'Doctor updated successfully!');
     }
