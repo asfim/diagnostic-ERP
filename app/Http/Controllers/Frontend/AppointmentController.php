@@ -36,6 +36,15 @@ class AppointmentController extends Controller
         return response()->json($doctors);
     }
 
+    public function getTestsByDepartment(Request $request)
+    {
+        $tests = Test::where('department_id', $request->department_id)
+                     ->where('status', 1)
+                     ->get(['id', 'name', 'test_code', 'price']);
+                     
+        return response()->json($tests);
+    }
+
     public function getAvailableSlots(Request $request)
     {
         $schedules = DoctorSchedule::where('doctor_id', $request->doctor_id)->get();
@@ -69,6 +78,17 @@ class AppointmentController extends Controller
 
         $doctor = $request->doctor_id ? Doctor::findOrFail($request->doctor_id) : null;
 
+        $notes = $request->notes;
+        
+        // If a test was selected from the dropdown, append it to notes
+        if ($request->filled('test_id')) {
+            $test = Test::find($request->test_id);
+            if ($test) {
+                $notes = $notes ? $notes . "\n" : "";
+                $notes .= "Booking for Test: {$test->name} ({$test->test_code})";
+            }
+        }
+
         $appointment = Appointment::create([
             'appointment_id'   => 'APT-' . strtoupper(Str::random(8)),
             'patient_id'       => $patient->id,
@@ -79,7 +99,7 @@ class AppointmentController extends Controller
             'appointment_type' => $request->appointment_type,
             'consultation_fee' => $doctor ? $doctor->consultation_fee : 0,
             'status'           => 'scheduled',
-            'notes'            => $request->notes,
+            'notes'            => $notes,
         ]);
 
         return redirect()->route('frontend.appointment.confirmation', $appointment->id)

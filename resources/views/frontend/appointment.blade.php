@@ -84,6 +84,13 @@
                                 </select>
                             </div>
 
+                            <div class="mb-4" id="testSelectionDiv" style="display: none;">
+                                <label class="form-label fw-semibold">Diagnostic Test <span class="text-danger">*</span></label>
+                                <select name="test_id" id="testSelect" class="form-select rounded-pill border-primary">
+                                    <option value="">— Select Department First —</option>
+                                </select>
+                            </div>
+
                             <button type="button" class="btn btn-primary rounded-pill px-5 py-2 fw-bold next-step" data-next="2">
                                 Next: Select Date &amp; Time <i class="bi bi-arrow-right ms-2"></i>
                             </button>
@@ -269,20 +276,62 @@ function showStep(num) {
     window.scrollTo({ top: 300, behavior: 'smooth' });
 }
 
-nextBtns.forEach(btn => btn.addEventListener('click', () => showStep(parseInt(btn.dataset.next))));
-prevBtns.forEach(btn => btn.addEventListener('click', () => showStep(parseInt(btn.dataset.prev))));
-
-// Department → Doctor filter
-document.getElementById('departmentSelect').addEventListener('change', function() {
-    const deptId = this.value;
-    const docSelect = document.getElementById('doctorSelect');
-    docSelect.innerHTML = '<option value="">Loading…</option>';
-
-    if (!deptId) {
-        docSelect.innerHTML = '<option value="">— Select Department First —</option>';
+nextBtns.forEach(btn => btn.addEventListener('click', function() {
+    const nextStepNum = parseInt(this.dataset.next);
+    const currentStepNum = nextStepNum - 1;
+    const currentStepEl = document.getElementById('step' + currentStepNum);
+    
+    // Validate current step fields
+    const invalidInputs = currentStepEl.querySelectorAll(':invalid');
+    if (invalidInputs.length > 0) {
+        invalidInputs[0].reportValidity();
         return;
     }
 
+    showStep(nextStepNum);
+
+    // Populate Summary on Step 4
+    if (nextStepNum === 4) {
+        const deptText = document.getElementById('departmentSelect').options[document.getElementById('departmentSelect').selectedIndex].text;
+        const doctorText = document.getElementById('doctorSelect').value ? document.getElementById('doctorSelect').options[document.getElementById('doctorSelect').selectedIndex].text.split('—')[0] : 'None (Diagnostic)';
+        const date = document.querySelector('input[name="date"]').value;
+        const time = document.querySelector('select[name="time"]').value;
+        const patient = document.querySelector('input[name="patient_name"]').value;
+        const mobile = document.querySelector('input[name="mobile"]').value;
+        const sType = document.querySelector('input[name="appointment_type"]:checked').value;
+        const testText = document.getElementById('testSelect').value ? document.getElementById('testSelect').options[document.getElementById('testSelect').selectedIndex].text : '';
+        
+        document.getElementById('summaryBox').innerHTML = `
+            <div class="row g-3">
+                <div class="col-6"><small class="text-muted d-block">Department</small><strong>${deptText}</strong></div>
+                <div class="col-6"><small class="text-muted d-block">Doctor</small><strong>${doctorText}</strong></div>
+                <div class="col-6"><small class="text-muted d-block">Service Type</small><strong class="text-capitalize">${sType}</strong></div>
+                ${sType === 'diagnostic' && testText ? `<div class="col-6"><small class="text-muted d-block">Test</small><strong>${testText}</strong></div>` : ''}
+                <div class="col-6"><small class="text-muted d-block">Date & Time</small><strong>${date} at ${time}</strong></div>
+                <div class="col-6"><small class="text-muted d-block">Patient</small><strong>${patient}</strong></div>
+                <div class="col-6"><small class="text-muted d-block">Contact</small><strong>${mobile}</strong></div>
+            </div>
+        `;
+    }
+}));
+prevBtns.forEach(btn => btn.addEventListener('click', () => showStep(parseInt(btn.dataset.prev))));
+
+// Department → Doctor & Test filter
+document.getElementById('departmentSelect').addEventListener('change', function() {
+    const deptId = this.value;
+    const docSelect = document.getElementById('doctorSelect');
+    const testSelect = document.getElementById('testSelect');
+    
+    docSelect.innerHTML = '<option value="">Loading…</option>';
+    testSelect.innerHTML = '<option value="">Loading…</option>';
+
+    if (!deptId) {
+        docSelect.innerHTML = '<option value="">— Select Department First —</option>';
+        testSelect.innerHTML = '<option value="">— Select Department First —</option>';
+        return;
+    }
+
+    // Fetch Doctors
     fetch('/api/doctors-by-department?department_id=' + deptId)
         .then(r => r.json())
         .then(docs => {
@@ -291,21 +340,42 @@ document.getElementById('departmentSelect').addEventListener('change', function(
                 docSelect.innerHTML += `<option value="${d.id}" data-fee="${d.consultation_fee}">${d.name} — ${d.specialization} (৳ ${Number(d.consultation_fee||0).toLocaleString()})</option>`;
             });
         });
+
+    // Fetch Tests
+    fetch('/api/tests-by-department?department_id=' + deptId)
+        .then(r => r.json())
+        .then(tests => {
+            testSelect.innerHTML = '<option value="">— Select Test —</option>';
+            tests.forEach(t => {
+                testSelect.innerHTML += `<option value="${t.id}">${t.name} (৳ ${Number(t.price||0).toLocaleString()})</option>`;
+            });
+        });
 });
 
-// Toggle Doctor visibility based on Service Type
+// Toggle Doctor/Test visibility based on Service Type
 function toggleDoctorVisibility() {
     const isDiagnostic = document.querySelector('input[name="appointment_type"]:checked').value === 'diagnostic';
     const doctorDiv = document.getElementById('doctorSelectionDiv');
     const doctorSelect = document.getElementById('doctorSelect');
+    const testDiv = document.getElementById('testSelectionDiv');
+    const testSelect = document.getElementById('testSelect');
     
     if (isDiagnostic) {
+        // Show Test, Hide Doctor
         doctorDiv.style.display = 'none';
         doctorSelect.removeAttribute('required');
-        doctorSelect.value = ''; // clear selection
+        doctorSelect.value = ''; 
+        
+        testDiv.style.display = 'block';
+        testSelect.setAttribute('required', 'required');
     } else {
+        // Show Doctor, Hide Test
         doctorDiv.style.display = 'block';
         doctorSelect.setAttribute('required', 'required');
+        
+        testDiv.style.display = 'none';
+        testSelect.removeAttribute('required');
+        testSelect.value = '';
     }
 }
 

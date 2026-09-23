@@ -34,6 +34,7 @@ Route::get('/appointment/confirmation/{id}', [\App\Http\Controllers\Frontend\App
 
 // API routes for appointment form
 Route::get('/api/doctors-by-department', [\App\Http\Controllers\Frontend\AppointmentController::class, 'getDoctorsByDepartment']);
+Route::get('/api/tests-by-department', [\App\Http\Controllers\Frontend\AppointmentController::class, 'getTestsByDepartment']);
 Route::get('/api/doctor-slots', [\App\Http\Controllers\Frontend\AppointmentController::class, 'getAvailableSlots']);
 
 Route::get('/home-collection', function () {
