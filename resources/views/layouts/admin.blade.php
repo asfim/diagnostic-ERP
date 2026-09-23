@@ -388,7 +388,7 @@
         }
         
         .status-pill {
-            border-radius: 20px;
+            border-radius: 9px;
             padding: 4px 12px;
             font-size: 0.74rem;
             font-weight: 700;
@@ -396,6 +396,15 @@
             display: inline-flex;
             align-items: center;
             gap: 5px;
+        }
+        .status-dropdown {
+            border-radius: 9px !important;
+            padding: 4px 30px 4px 12px !important;
+            font-size: 0.78rem !important;
+            font-weight: 700 !important;
+            height: auto !important;
+            width: auto !important;
+            min-width: 100px;
         }
         .pill-success  { background: #dcfce7; color: #15803d; }
         .pill-warning  { background: #fef9c3; color: #92400e; }
