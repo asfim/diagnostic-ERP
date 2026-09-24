@@ -5,6 +5,7 @@ use App\Http\Controllers\InvoiceController;
 use App\Http\Controllers\AccountController;
 use App\Http\Controllers\ReportController;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Artisan;
 
 Route::get('/', [\App\Http\Controllers\Frontend\HomeController::class, 'index']);
 
@@ -131,3 +132,27 @@ Route::middleware('auth')->group(function () {
 });
 
 require __DIR__.'/auth.php';
+
+// ================================================================
+// UTILITY ARTISAN ROUTES (Cache Clear & Storage Link)
+// ================================================================
+Route::get('/clear-cache', function () {
+    Artisan::call('cache:clear');
+    Artisan::call('config:clear');
+    Artisan::call('route:clear');
+    Artisan::call('view:clear');
+    return '<div style="font-family:sans-serif; padding:40px; text-align:center;">
+                <h2 style="color:#15803d;">✅ Application Cache Cleared Successfully!</h2>
+                <p style="color:#64748b;">Cache, Config, Route, and View caches have been cleared.</p>
+                <a href="' . url('/') . '" style="display:inline-block; margin-top:15px; padding:10px 20px; background:#2563eb; color:#fff; text-decoration:none; border-radius:8px;">Back to Home</a>
+            </div>';
+});
+
+Route::get('/storage-link', function () {
+    Artisan::call('storage:link');
+    return '<div style="font-family:sans-serif; padding:40px; text-align:center;">
+                <h2 style="color:#15803d;">✅ Storage Link Created Successfully!</h2>
+                <p style="color:#64748b;">The [public/storage] directory has been linked to [storage/app/public].</p>
+                <a href="' . url('/') . '" style="display:inline-block; margin-top:15px; padding:10px 20px; background:#2563eb; color:#fff; text-decoration:none; border-radius:8px;">Back to Home</a>
+            </div>';
+});
